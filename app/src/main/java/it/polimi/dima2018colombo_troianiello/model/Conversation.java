@@ -8,14 +8,18 @@ import java.util.List;
  */
 public class Conversation {
 
-    private List<User> users;
-    private List<Message> messages;
+    private final User users [];
+    private final List<Message> messages;
 
     /**
      * The constructor of Conversation.
+     * @param user1 First participant of the conversation.
+     * @param user2 Second participant of the conversation.
      */
-    public Conversation() {
-        this.users = new ArrayList<>();
+    public Conversation(User user1, User user2) {
+        this.users = new User[2];
+        this.users[0] = user1;
+        this.users[1] = user2;
         this.messages = new ArrayList<>();
     }
 
@@ -23,16 +27,8 @@ public class Conversation {
      * Returns the list of all participants of the conversation.
      * @return Participants of the conversation.
      */
-    public List<User> getUsers() {
+    public User[] getUsers() {
         return users;
-    }
-
-    /**
-     * Add a new user to the conversation.
-     * @param user New user.
-     */
-    public void addUser(User user) {
-        this.users.add(user);
     }
 
     /**

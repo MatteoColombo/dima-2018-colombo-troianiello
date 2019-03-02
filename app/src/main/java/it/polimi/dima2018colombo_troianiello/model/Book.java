@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class Book {
 
-    private String isbn;
+    private final String isbn;
     private String title;
     private List<String> authors;
     private String publisher;
@@ -49,14 +49,6 @@ public class Book {
      */
     public String getIsbn() {
         return isbn;
-    }
-
-    /**
-     * Sets the new isbn of the book.
-     * @param isbn New numeric commercial book identifier.
-     */
-    public void setIsbn(String isbn) {
-        this.isbn=isbn;
     }
 
     /**

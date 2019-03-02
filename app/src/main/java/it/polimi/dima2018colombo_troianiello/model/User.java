@@ -8,33 +8,24 @@ import java.util.List;
 public class User {
 
     private String name;
-    private String password;
     private String email;
-    private List<User> friends;
-    private List<Book> wishlist;
-    private List<Book> collection;
-    private List<Review> reviews;
-    private List<Conversation> conversations;
-    private List<Advertisement> advertisements;
+    private final List<Book> wishlist;
+    private final List<Book> collection;
+    private final List<Advertisement> advertisements;
     private Photo photo;
 
     /**
      * The constructor of User.
      * @param name The nickname of the user.
-     * @param password The password of the user.
      * @param email The email address of the user.
      * @param photo The optional image of the user.
      */
-    public User(String name, String password, String email, Photo photo) {
+    public User(String name, String email, Photo photo) {
         this.name = name;
-        this.password = password;
         this.email = email;
         this.photo = photo;
-        this.friends = new ArrayList<>();
         this.wishlist = new ArrayList<>();
         this.collection = new ArrayList<>();
-        this.reviews = new ArrayList<>();
-        this.conversations = new ArrayList<>();
         this.advertisements = new ArrayList<>();
     }
 
@@ -52,22 +43,6 @@ public class User {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Returns the password of the user.
-     * @return The password of the user.
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets new password of the user
-     * @param password New password of the user.
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     /**
@@ -103,6 +78,30 @@ public class User {
     }
 
     /**
+     * Adds a new book to the wishlist of the user.
+     * @param book New wished book.
+     */
+    public void addWishlist(Book book) {
+        this.wishlist.add(book);
+    }
+
+    /**
+     * Adds a new book to the collection of the user.
+     * @param book New owned book.
+     */
+    public void addCollection(Book book) {
+        this.collection.add(book);
+    }
+
+    /**
+     * Adds a new advertisement, created by the user.
+     * @param advertisement New advertisement
+     */
+    public void addAdvetisement(Advertisement advertisement) {
+        this.advertisements.add(advertisement);
+    }
+
+    /**
      * It generates a string formed by the most significant informations of the user.
      * @return string.
      */
@@ -110,7 +109,6 @@ public class User {
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email +
                 '}';
     }
