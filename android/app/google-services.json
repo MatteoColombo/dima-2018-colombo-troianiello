@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "622944039611",
+    "firebase_url": "https://dima-2018-3c0aa.firebaseio.com",
+    "project_id": "dima-2018-3c0aa",
+    "storage_bucket": "dima-2018-3c0aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622944039611:android:e97ac1d919d266a5",
+        "android_client_info": {
+          "package_name": "it.polimi.dima2018_colombo_troianiello"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "622944039611-56j0ba9p4g0dqq23s4bqe54l9g5a274q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.polimi.dima2018_colombo_troianiello",
+            "certificate_hash": "d6fb11109ed19003c4c241f472a6ccddce5a8dc5"
+          }
+        },
+        {
+          "client_id": "622944039611-27jqi1jb9vr4tqg90c5vr60u3a96dpns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRA0WP3N-UDyUsx56eOwWJnF137hPmR20"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "622944039611-27jqi1jb9vr4tqg90c5vr60u3a96dpns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
