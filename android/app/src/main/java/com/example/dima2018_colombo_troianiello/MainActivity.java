@@ -1,4 +1,4 @@
-package it.polimi.dima2018_colombo_troianiello;
+package com.example.dima2018_colombo_troianiello;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

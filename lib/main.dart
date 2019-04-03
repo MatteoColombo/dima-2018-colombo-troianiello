@@ -6,14 +6,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: "Dima 2018",
-        theme: ThemeData(
-          primaryColor: Colors.orange[700],
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Dima 2018"),
         ),
-        home: _handleHomePage());
-  }
-
-  Widget _handleHomePage() {
-    return null;
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              MaterialButton(
+                child: Text("Login with Google"),
+                onPressed: () => null,
+                color: Colors.white,
+              ),
+              MaterialButton(
+                child: Text("Logout"),
+                onPressed: () => null,
+                color: Colors.red,
+                textColor: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
