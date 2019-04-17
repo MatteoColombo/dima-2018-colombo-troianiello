@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'book.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(BookPage());
 
 class MyApp extends StatelessWidget {
   @override
