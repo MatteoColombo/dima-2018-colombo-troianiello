@@ -22,6 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  cloud_firestore:
+    dependency: "direct main"
+    description:
+      name: cloud_firestore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.10"
   collection:
     dependency: transitive
     description:
@@ -57,11 +64,25 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1+1"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1+1"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_image_compress:
+    dependency: "direct main"
+    description:
+      name: flutter_image_compress
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -74,6 +95,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1+1"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0+2"
   intl:
     dependency: "direct main"
     description:
@@ -109,6 +137,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
+  progress_hud:
+    dependency: "direct main"
+    description:
+      name: progress_hud
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   quiver:
     dependency: transitive
     description:
@@ -116,13 +151,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  rxdart:
-    dependency: "direct main"
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.21.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -186,4 +214,4 @@ packages:
     version: "2.0.8"
 sdks:
   dart: ">=2.1.0 <3.0.0"
-  flutter: ">=0.1.4 <2.0.0"
+  flutter: ">=1.2.0 <2.0.0"
