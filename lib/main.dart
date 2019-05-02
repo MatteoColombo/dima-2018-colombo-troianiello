@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './auth.dart';
 import './login.dart';
 import './splash.dart';
+import './view/library/library-list.dart';
 import 'mainactivity.dart';
 
 void main() => runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.red[700],
+        primaryColor: Colors.blue[700],
         accentColor: Colors.yellow,
       ),
       home: MainWidgetManager(),
@@ -31,7 +32,7 @@ class MainWidgetManager extends StatelessWidget {
           return SplashScreen();
         } else {
           if (snapshot.hasData) {
-            return MainActivity(snapshot.data.displayName);
+            return LibraryList();
           } else {
             return LoginPage();
           }
