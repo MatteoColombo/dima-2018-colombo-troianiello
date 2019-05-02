@@ -6,7 +6,7 @@ import './splash.dart';
 import './view/library/library-list.dart';
 import 'mainactivity.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(BookPage());
 
 class MyApp extends StatelessWidget {
   @override
