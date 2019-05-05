@@ -5,6 +5,7 @@ import './list-options-enum.dart';
 import '../../model/library.model.dart';
 import '../common/confirm-dialog.dart';
 import './edit-library.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class LibraryList extends StatelessWidget {
   @override
@@ -30,7 +31,11 @@ class LibraryList extends StatelessWidget {
               (BuildContext context, AsyncSnapshot<List<Library>> snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: Text("Nessuna libreria"),
+                child: Theme(
+                  data:
+                      Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+                  child: CircularProgressIndicator(),
+                ),
               );
             } else {
               List<Library> libraries = snapshot.data;
@@ -58,19 +63,17 @@ class LibraryListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(_library.name),
-      leading: _library.image != null
-          ? Image.network(
-              _library.image,
-              width: 50,
-              height: 50,
-              fit: BoxFit.fitWidth,
-            )
-          : Image.asset(
-              "images/library.jpeg",
-              height: 50,
-              width: 50,
-              fit: BoxFit.fitHeight,
-            ),
+      leading: CachedNetworkImage(
+        width: 50,
+        height: 50,
+        fit: BoxFit.fitWidth,
+        imageUrl: _library.image,
+        placeholder: (context, url) => Theme(
+            data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+            child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) => Image.asset("images/library.png",
+            width: 50, height: 50, fit: BoxFit.fitHeight),
+      ),
       trailing: IconButton(
         icon: Icon(
           _library.isFavourite ? Icons.star : Icons.star_border,

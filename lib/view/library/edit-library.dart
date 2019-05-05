@@ -3,6 +3,8 @@ import '../../model/library.model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import '../../firebase/library-repo.dart';
+import '../common/loading-spinner.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class EditLibrary extends StatefulWidget {
   EditLibrary({this.library, this.isNew});
@@ -20,12 +22,14 @@ class _EditLibraryState extends State<EditLibrary> {
     }
 
     _textController = TextEditingController(text: _library.name);
+    _saving = false;
   }
 
   Library _library;
   bool _isNew;
   TextEditingController _textController;
   File _image;
+  bool _saving;
 
   @override
   void dispose() {
@@ -35,128 +39,146 @@ class _EditLibraryState extends State<EditLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    Widget imgWidget;
+    List<Widget> scaffoldBody = [_buildBody(context)];
+    if (_saving) scaffoldBody.add(LoadingSpinner());
+
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Stack(children: scaffoldBody),
+      ),
+    );
+  }
+
+  Column _buildBody(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            _getImgWidget(context),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Modifica immagine",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        IconButton(
+                          iconSize: 36,
+                          color: Theme.of(context).primaryColor,
+                          onPressed: () => _getImage(true),
+                          icon: Icon(
+                            Icons.camera_alt,
+                            semanticLabel: "Scatta una foto",
+                          ),
+                        ),
+                        IconButton(
+                          iconSize: 36,
+                          color: Theme.of(context).primaryColor,
+                          onPressed: () => _getImage(false),
+                          icon: Icon(
+                            Icons.file_upload,
+                            semanticLabel: "Carica immagine",
+                          ),
+                        ),
+                        IconButton(
+                          iconSize: 36,
+                          color: Theme.of(context).primaryColor,
+                          onPressed: () => _deleteImage(),
+                          icon: Icon(
+                            Icons.delete,
+                            semanticLabel: "Elimina",
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          child: TextField(
+            controller: _textController,
+            decoration: InputDecoration(
+              labelText: "Nome",
+              hintText: "per esempio: DC Comics",
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          child: CheckboxListTile(
+            value: _library.isFavourite,
+            title: Text("Libreria preferita"),
+            activeColor: Theme.of(context).primaryColor,
+            onChanged: (bool check) {
+              setState(() {
+                _library.isFavourite = check;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(
+        _isNew ? "Nuova libreria" : "Modifica ${_library.name}",
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.check),
+          onPressed: () => _handleSave(context),
+        )
+      ],
+    );
+  }
+
+  Widget _getImgWidget(BuildContext context) {
     if (_library.image == null && _image == null)
-      imgWidget = Image.asset(
+      return Image.asset(
         "images/library.jpeg",
         height: 110,
         width: 110,
         fit: BoxFit.fitHeight,
       );
-    else if (_image != null) {
-      imgWidget = Image.file(
+    else if (_image != null)
+      return Image.file(
         _image,
         height: 110,
         width: 110,
         fit: BoxFit.fitWidth,
       );
-    } else {
-      imgWidget = Image.network(
-        _library.image,
-        height: 110,
-        width: 110,
-        fit: BoxFit.fitWidth,
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _isNew ? "Nuova libreria" : "Modifica ${_library.name}",
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () => _handleSave(context),
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                imgWidget,
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Modifica immagine",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            IconButton(
-                              iconSize: 36,
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () => _getImageFromCamera(),
-                              icon: Icon(
-                                Icons.camera_alt,
-                                semanticLabel: "Scatta una foto",
-                              ),
-                            ),
-                            IconButton(
-                              iconSize: 36,
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () => _getImageFromGallery(),
-                              icon: Icon(
-                                Icons.file_upload,
-                                semanticLabel: "Carica immagine",
-                              ),
-                            ),
-                            IconButton(
-                              iconSize: 36,
-                              color: Theme.of(context).primaryColor,
-                              onPressed: () => _deleteImage(),
-                              icon: Icon(
-                                Icons.delete,
-                                semanticLabel: "Elimina",
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 16),
-              child: TextField(
-                controller: _textController,
-                decoration: InputDecoration(
-                  labelText: "Nome",
-                  hintText: "per esempio: DC Comics",
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 16),
-              child: CheckboxListTile(
-                value: _library.isFavourite,
-                title: Text("Libreria preferita"),
-                activeColor: Theme.of(context).primaryColor,
-                onChanged: (bool check) {
-                  setState(() {
-                    _library.isFavourite = check;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+    return CachedNetworkImage(
+      width: 110,
+      height: 110,
+      fit: BoxFit.fitWidth,
+      imageUrl: _library.image,
+      placeholder: (context, url) => Theme(
+          data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+          child: CircularProgressIndicator()),
+      errorWidget: (context, url, error) => Image.asset("images/library.png",
+          width: 110, height: 110, fit: BoxFit.fitHeight),
     );
   }
 
   Future _handleSave(BuildContext context) async {
+    setState(() {
+      _saving = true;
+    });
     if (_image != null) {
       String imageUrl = await libManager.uploadFile(_image);
       _library.image = imageUrl;
@@ -169,27 +191,25 @@ class _EditLibraryState extends State<EditLibrary> {
   Future _saveLibrary(BuildContext context) async {
     _library.name = _textController.text;
     await libManager.saveLibrary(_library);
+    setState(() {
+      _saving = false;
+    });
     Navigator.of(context).pop();
   }
 
-  Future _getImageFromCamera() async {
-    _image = null;
-    var image = await ImagePicker.pickImage(
-        source: ImageSource.camera, maxWidth: 200, maxHeight: 200);
+  _getImage(bool camera) async {
+    try {
+      var image = await ImagePicker.pickImage(
+          source: camera ? ImageSource.camera : ImageSource.gallery,
+          maxWidth: 200,
+          maxHeight: 200);
 
-    setState(() {
-      _image = image;
-    });
-  }
-
-  Future _getImageFromGallery() async {
-    _image = null;
-    var image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, maxWidth: 200, maxHeight: 200);
-
-    setState(() {
-      _image = image;
-    });
+      setState(() {
+        _image = image;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   _deleteImage() {
