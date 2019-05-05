@@ -63,17 +63,28 @@ class LibraryListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(_library.name),
-      leading: CachedNetworkImage(
-        width: 50,
-        height: 50,
-        fit: BoxFit.fitWidth,
-        imageUrl: _library.image,
-        placeholder: (context, url) => Theme(
-            data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
-            child: CircularProgressIndicator()),
-        errorWidget: (context, url, error) => Image.asset("images/library.png",
-            width: 50, height: 50, fit: BoxFit.fitHeight),
-      ),
+      leading: _library.image != null
+          ? CachedNetworkImage(
+              width: 50,
+              height: 50,
+              fit: BoxFit.fitWidth,
+              imageUrl: _library.image,
+              placeholder: (context, url) => Theme(
+                  data:
+                      Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+                  child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Image.asset(
+                  "images/library.jpeg",
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.fitHeight),
+            )
+          : Image.asset(
+              "images/library.jpeg",
+              width: 50,
+              height: 50,
+              fit: BoxFit.fitHeight,
+            ),
       trailing: IconButton(
         icon: Icon(
           _library.isFavourite ? Icons.star : Icons.star_border,

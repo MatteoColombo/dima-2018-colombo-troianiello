@@ -23,6 +23,7 @@ class _EditLibraryState extends State<EditLibrary> {
 
     _textController = TextEditingController(text: _library.name);
     _saving = false;
+    _textFieldValidator = false;
   }
 
   Library _library;
@@ -30,6 +31,7 @@ class _EditLibraryState extends State<EditLibrary> {
   TextEditingController _textController;
   File _image;
   bool _saving;
+  bool _textFieldValidator;
 
   @override
   void dispose() {
@@ -113,6 +115,7 @@ class _EditLibraryState extends State<EditLibrary> {
             decoration: InputDecoration(
               labelText: "Nome",
               hintText: "per esempio: DC Comics",
+              errorText: _textFieldValidator ? "Inserire un nome" : null,
             ),
           ),
         ),
@@ -141,7 +144,16 @@ class _EditLibraryState extends State<EditLibrary> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.check),
-          onPressed: () => _handleSave(context),
+          onPressed: () {
+            setState(() {
+              _textController.text.isEmpty
+                  ? _textFieldValidator = true
+                  : _textFieldValidator = false;
+            });
+            if (_textFieldValidator == false) {
+              _handleSave(context);
+            }
+          },
         )
       ],
     );
@@ -170,7 +182,7 @@ class _EditLibraryState extends State<EditLibrary> {
       placeholder: (context, url) => Theme(
           data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
           child: CircularProgressIndicator()),
-      errorWidget: (context, url, error) => Image.asset("images/library.png",
+      errorWidget: (context, url, error) => Image.asset("images/library.jpeg",
           width: 110, height: 110, fit: BoxFit.fitHeight),
     );
   }
