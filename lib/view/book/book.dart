@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'descriptionTextWidget.dart';
-import 'package:intl/intl.dart';
+import '../common/descriptionTextWidget.dart';
+import './entryDialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BookPage extends StatelessWidget {
   @override
@@ -20,17 +21,21 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: Column(
+      body: ListView(
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+          Column(
             children: <Widget>[
-              _buildImageSection(context),
-              _buildMainInfoSection(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  _buildImageSection(context),
+                  _buildMainInfoSection(),
+                ],
+              ),
+              _buildSecondSection(),
             ],
           ),
-          _buildSecondSection(),
         ],
       ),
     );
@@ -54,15 +59,30 @@ class Page extends StatelessWidget {
     MediaQueryData data = MediaQuery.of(context);
     double _width = data.size.width * 2 / 5;
     double _height = _width * (4 / 3);
+    CachedNetworkImage _cachedImage = CachedNetworkImage(
+      imageUrl:
+          'http://goodcomicbooks.com/wp-content/uploads/2011/02/flspcv01.jpg',
+      placeholder: (context, url) => SizedBox(
+            width: 50,
+            height: 50,
+            child: Theme(
+              data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+              child: CircularProgressIndicator(),
+            ),
+          ),
+      errorWidget: (context, url, error) => Image.asset(
+            "images/book.jpg",
+          ),
+    );
     return GestureDetector(
-        onTap: () => _showImage(context),
-        child: Container(
-          padding: const EdgeInsets.only(top: 8.0),
-          width: _width,
-          height: _height,
-          child: Image.network(
-              'http://goodcomicbooks.com/wp-content/uploads/2011/02/flspcv01.jpg'),
-        ));
+      onTap: () => _showImage(context, _cachedImage),
+      child: Container(
+        width: _width,
+        height: _height,
+        padding: const EdgeInsets.only(top: 8.0),
+        child: _cachedImage,
+      ),
+    );
   }
 
   Widget _buildMainInfoSection() {
@@ -99,6 +119,14 @@ class Page extends StatelessWidget {
 
   Widget _buildDescSection() {
     String string =
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer laoreet scelerisque mollis. '
+        'Duis pharetra ex eget turpis feugiat, in sodales massa condimentum. Nulla ac aliquam augue. Mauris purus magna, sodales in varius ac, '
+        'condimentum sit amet felis. Morbi eget ipsum accumsan, placerat mauris quis, feugiat massa. Cras eu sem at mi sagittis malesuada. '
+        'Vestibulum nec risus cursus, scelerisque massa iaculis, hendrerit nibh.'
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer laoreet scelerisque mollis. '
+        'Duis pharetra ex eget turpis feugiat, in sodales massa condimentum. Nulla ac aliquam augue. Mauris purus magna, sodales in varius ac, '
+        'condimentum sit amet felis. Morbi eget ipsum accumsan, placerat mauris quis, feugiat massa. Cras eu sem at mi sagittis malesuada. '
+        'Vestibulum nec risus cursus, scelerisque massa iaculis, hendrerit nibh.'
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer laoreet scelerisque mollis. '
         'Duis pharetra ex eget turpis feugiat, in sodales massa condimentum. Nulla ac aliquam augue. Mauris purus magna, sodales in varius ac, '
         'condimentum sit amet felis. Morbi eget ipsum accumsan, placerat mauris quis, feugiat massa. Cras eu sem at mi sagittis malesuada. '
@@ -160,7 +188,7 @@ class Page extends StatelessWidget {
     );
   }
 
-  void _showImage(BuildContext context) {
+  void _showImage(BuildContext context, CachedNetworkImage _image) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -170,11 +198,7 @@ class Page extends StatelessWidget {
             alignment: Alignment.topRight,
             children: <Widget>[
               Container(
-                //padding: const EdgeInsets.all(24.0),
-                child: Image.network(
-                  'http://goodcomicbooks.com/wp-content/uploads/2011/02/flspcv01.jpg',
-                  fit: BoxFit.contain,
-                ),
+                child: _image,
               ),
             ],
           ),
@@ -189,127 +213,5 @@ class Page extends StatelessWidget {
           return new AddEntryDialog();
         },
         fullscreenDialog: true));
-  }
-}
-
-class AddEntryDialog extends StatefulWidget {
-  @override
-  AddEntryDialogState createState() => new AddEntryDialogState();
-}
-
-class AddEntryDialogState extends State<AddEntryDialog> {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: const Text('New entry'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.done),
-            tooltip: "Done",
-            color: Colors.white,
-            onPressed: () => null,
-          ),
-        ],
-      ),
-      body: _buildBody(),
-    );
-  }
-
-  Widget _buildBody() {
-    return Column(
-      children: <Widget>[
-        TextField(
-          controller: null,
-          decoration: InputDecoration(
-            hintText: 'Titolo',
-            labelText: 'Title',
-          ),
-        ),
-        Row(
-          children: <Widget>[
-            Text('Authors'),
-            IconButton(
-              icon: Icon(Icons.add_circle),
-              onPressed: () => null,
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Autore1",
-                ),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => null,
-            ),
-          ],
-        ),
-        Text('Description'),
-        TextFormField(
-          decoration: InputDecoration(
-            labelText: "Titolo",
-          ),
-        ),
-        Text('Release date'),
-        ListTile(
-          leading: new Icon(Icons.today, color: Colors.grey[500]),
-          title: new DateTimeItem(
-            dateTime: DateTime.now(),
-            onChanged: (dateTime) => setState(() => null),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class DateTimeItem extends StatelessWidget {
-  DateTimeItem({Key key, DateTime dateTime, @required this.onChanged})
-      : assert(onChanged != null),
-        date = dateTime == null
-            ? new DateTime.now()
-            : new DateTime(dateTime.year, dateTime.month, dateTime.day),
-        time = dateTime == null
-            ? new DateTime.now()
-            : new TimeOfDay(hour: dateTime.hour, minute: dateTime.minute),
-        super(key: key);
-
-  final DateTime date;
-  final TimeOfDay time;
-  final ValueChanged<DateTime> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return new Row(
-      children: <Widget>[
-        new Expanded(
-          child: new InkWell(
-            onTap: (() => _showDatePicker(context)),
-            child: new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 8.0),
-                child: new Text(new DateFormat('EEEE, MMMM d').format(date))),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Future _showDatePicker(BuildContext context) async {
-    DateTime dateTimePicked = await showDatePicker(
-        context: context,
-        initialDate: date,
-        firstDate: date.subtract(const Duration(days: 20000)),
-        lastDate: new DateTime.now());
-
-    if (dateTimePicked != null) {
-      onChanged(new DateTime(dateTimePicked.year, dateTimePicked.month,
-          dateTimePicked.day, time.hour, time.minute));
-    }
   }
 }
