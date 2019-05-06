@@ -2,16 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/library.model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
+import './auth.dart';
 
 class _LibraryControl {
   CollectionReference _db = Firestore.instance.collection("libraries");
 
-  Stream<List<Library>> getLibraryStream() {
-    return _db.snapshots().map((QuerySnapshot snap) {
+  Stream<List<Library>> getLibraryStream() async* {
+    String userId = await authService.getUserId();
+    print(userId);
+    Stream<QuerySnapshot> source =
+        _db.where("uid", isEqualTo: userId).snapshots();
+
+    await for (QuerySnapshot data in source) {
       List<Library> libList = List<Library>();
-      snap.documents.forEach((DocumentSnapshot doc) {
+      data.documents.forEach((DocumentSnapshot doc) {
         Library lib = Library();
         lib.assimilate(doc);
         libList.add(lib);
@@ -22,8 +27,9 @@ class _LibraryControl {
         if (b.isFavourite && !a.isFavourite) return 1;
         return a.name.toLowerCase().compareTo(b.name.toLowerCase());
       });
-      return libList;
-    });
+
+      yield libList;
+    }
   }
 
   void updateFavouritePreference(DocumentReference libRef, bool preference) {
@@ -35,7 +41,8 @@ class _LibraryControl {
       return _db.document().setData({
         "name": lib.name,
         "isFavourite": lib.isFavourite,
-        "image": lib.image
+        "image": lib.image,
+        "uid": authService.userId
       });
     } else {
       return _db.document(lib.reference.documentID).updateData({
@@ -51,10 +58,9 @@ class _LibraryControl {
   }
 
   Future<String> uploadFile(File image) async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
     StorageReference ref = FirebaseStorage.instance
         .ref()
-        .child("${user.uid}/${basename(image.path)}");
+        .child("libraries/${authService.userId}/${basename(image.path)}");
     StorageUploadTask uploadTask = ref.putFile(image);
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }

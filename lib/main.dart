@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './auth.dart';
+import './firebase/auth.dart';
 import './login.dart';
 import './splash.dart';
 import './view/library/library-list.dart';

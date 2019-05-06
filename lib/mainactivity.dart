@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './auth.dart';
+import './firebase/auth.dart';
 
 class MainActivity extends StatelessWidget {
   MainActivity(this._userName);

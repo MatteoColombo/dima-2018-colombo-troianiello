@@ -38,16 +38,22 @@ class LibraryList extends StatelessWidget {
                 ),
               );
             } else {
-              List<Library> libraries = snapshot.data;
+              if (snapshot.data.length == 0) {
+                return Center(
+                  child: Text("Nessuna libreria"),
+                );
+              } else {
+                List<Library> libraries = snapshot.data;
 
-              return ListView.builder(
-                padding: EdgeInsets.all(10),
-                itemCount: (libraries.length) * 2,
-                itemBuilder: (context, i) {
-                  if (i % 2 == 1) return Divider();
-                  return LibraryListItem(libraries[i ~/ 2]);
-                },
-              );
+                return ListView.builder(
+                  padding: EdgeInsets.all(10),
+                  itemCount: (libraries.length) * 2,
+                  itemBuilder: (context, i) {
+                    if (i % 2 == 1) return Divider();
+                    return LibraryListItem(libraries[i ~/ 2]);
+                  },
+                );
+              }
             }
           },
         ));
