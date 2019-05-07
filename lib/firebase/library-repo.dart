@@ -10,7 +10,6 @@ class _LibraryControl {
 
   Stream<List<Library>> getLibraryStream() async* {
     String userId = await authService.getUserId();
-    print(userId);
     Stream<QuerySnapshot> source =
         _db.where("uid", isEqualTo: userId).snapshots();
 
@@ -36,19 +35,20 @@ class _LibraryControl {
     libRef.updateData({'isFavourite': preference});
   }
 
-  Future<void> saveLibrary(Library lib) {
+  Future<void> saveLibrary(Library lib) async {
     if (lib.reference == null) {
       return _db.document().setData({
         "name": lib.name,
         "isFavourite": lib.isFavourite,
         "image": lib.image,
-        "uid": authService.userId
+        "uid": await authService.getUserId()
       });
     } else {
       return _db.document(lib.reference.documentID).updateData({
         "name": lib.name,
         "isFavourite": lib.isFavourite,
-        "image": lib.image
+        "image": lib.image,
+        "uid": await authService.getUserId()
       });
     }
   }
