@@ -7,7 +7,9 @@ import './view/library/library-list.dart';
 import 'mainactivity.dart';
 import './view/book/book.dart';
 
-void main() => runApp((BookPage()));
+void main() => runApp((BookPage(
+      isbn: '9781401242152' /*'9788804711957'*/,
+    )));
 
 class MyApp extends StatelessWidget {
   @override
