@@ -1,58 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import '../../model/author.model.dart';
 
 class AuthorsSectionWidget extends StatefulWidget {
-  final List<String> authors;
+  final List<Author> authors;
 
   AuthorsSectionWidget({@required this.authors});
   _AuthorsSectionWidgetState createState() => new _AuthorsSectionWidgetState();
 }
 
 class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
- 
-   @override
+  @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container(
+      height: 100.0 * widget.authors.length,
+      child: _buildListView(),
+    );
+  }
+
+  Widget _buildListView(){
+return ListView(
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text(
-              "Authors: ",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              icon: Icon(Icons.add_circle),
-              onPressed: () => null,
-            ),
-            Column(children: _buildAuthorsForms(),)
-          ],
+        ListTile(
+          title: Text(
+            "Authors: ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.add_circle),
+            onPressed: () => null,
+          ),
         ),
+        ..._buildAuthorsForms(),
       ],
     );
   }
 
-  List<Widget> _buildAuthorsForms(){
-    List<Widget> _forms= new List<Widget>();
-    for(String author in widget.authors){
-      _forms.add(
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: author,
-                ),
-              ),
+  List<Widget> _buildAuthorsForms() {
+    List<Widget> forms = new List<Widget>();
+    for (Author author in widget.authors) {
+      forms.add(
+        ListTile(
+          leading: Icon(Icons.person),
+          title: TextFormField(
+            decoration: InputDecoration(
+              hintText: author.toString(),
             ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => setState(() {
-                widget.authors.remove(author);
-              }),
-            ),
-          ],
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => setState(() {
+                  widget.authors.remove(author);
+                }),
+          ),
         ),
       );
-      return _forms;
     }
+    return forms;
   }
 }

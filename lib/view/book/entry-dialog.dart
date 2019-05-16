@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../common/date-picker.dart';
 import '../../model/book.model.dart';
+import './authors-section.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AddEntryDialog extends StatefulWidget {
@@ -43,7 +44,9 @@ class AddEntryDialogState extends State<AddEntryDialog> {
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[_buildImageSection(context),],
+          children: <Widget>[
+            _buildImageSection(context),
+          ],
         ),
         Text(
           "Title: ",
@@ -54,7 +57,9 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             hintText: widget.book.title,
           ),
         ),
-        _buildAuthorsSection(),
+        AuthorsSectionWidget(
+          authors: widget.book.authors,
+        ),
         Text(
           "Description: ",
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -125,22 +130,23 @@ class AddEntryDialogState extends State<AddEntryDialog> {
     return Container(
       width: _width,
       height: _height,
-      child:Stack(
-      children: <Widget>[
-        CachedNetworkImage(
-          imageUrl: widget.book.image,
-          alignment: Alignment.center,
-        ),
-        Container(
-          alignment: Alignment.center,
-          color: Colors.white30,
-          child: Icon(Icons.photo_camera),
-        ),
-      ],
-    ),);
+      child: Stack(
+        children: <Widget>[
+          CachedNetworkImage(
+            imageUrl: widget.book.image,
+            alignment: Alignment.center,
+          ),
+          Container(
+            alignment: Alignment.center,
+            color: Colors.white30,
+            child: Icon(Icons.photo_camera),
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget _buildAuthorsSection() {
+  /*Widget _buildAuthorsSection() {
     return Column(
       children: <Widget>[
         Row(
@@ -172,5 +178,5 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
       ],
     );
-  }
+  }*/
 }

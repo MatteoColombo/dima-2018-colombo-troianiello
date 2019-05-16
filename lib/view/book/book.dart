@@ -1,4 +1,5 @@
 import '../../model/book.model.dart';
+import '../../model/author.model.dart';
 import 'package:flutter/material.dart';
 import '../common/description-text.dart';
 import './entry-dialog.dart';
@@ -262,10 +263,10 @@ class BookPage extends StatelessWidget {
         fullscreenDialog: true));
   }
 
-  List<Widget> _buildAuthorsSection(List<String> authors) {
+  List<Widget> _buildAuthorsSection(List<Author> authors) {
     List<Widget> authorsWidgets = List<Widget>();
-      for (String author in authors) {
-        authorsWidgets.add(Text(author));
+      for (Author author in authors) {
+        authorsWidgets.add(Text(author.toString()));
       }
     return authorsWidgets;
   }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/author.model.dart';
 
 class Book {
   String isbn;
@@ -10,7 +11,7 @@ class Book {
   String price;
   String publisher;
   DateTime releaseDate;
-  List<String> _authors;
+  List<Author> _authors;
 
   Book(
       {this.isbn,
@@ -22,7 +23,7 @@ class Book {
       this.price,
       this.publisher,
       this.releaseDate}) {
-    _authors = new List<String>();
+    _authors = new List<Author>();
   }
   assimilate(DocumentSnapshot snap) {
     isbn = snap.documentID;
@@ -36,13 +37,13 @@ class Book {
     releaseDate = snap['releaseDate'];
   }
 
-  void addAuthor(String author) {
+  void addAuthor(Author author) {
     _authors.add(author);
   }
 
-  void deleteAuthor(String author){
+  void deleteAuthor(Author author){
     _authors.remove(author);
   }
 
-  List<String> get authors => _authors;
+  List<Author> get authors => _authors;
 }

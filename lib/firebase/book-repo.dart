@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/book.model.dart';
+import '../model/author.model.dart';
 
 class _BookControl {
   CollectionReference _collectionBook = Firestore.instance.collection("books");
@@ -15,7 +16,9 @@ class _BookControl {
       QuerySnapshot creations= await _collectionCreations.where("book",isEqualTo: modelBook.isbn).getDocuments();
       for (DocumentSnapshot result in creations.documents) {
           DocumentSnapshot documentAuthor = await _collectionAuthors.document(result['author']).get();
-          modelBook.addAuthor(documentAuthor['name'] + ' ' + documentAuthor['surname']);
+          Author author= Author();
+          author.assimilate(documentAuthor);
+          modelBook.addAuthor(author);
       }
       yield modelBook;
     }
