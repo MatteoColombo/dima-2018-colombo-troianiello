@@ -12,23 +12,21 @@ class AuthorsSectionWidget extends StatefulWidget {
 class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100.0 * widget.authors.length,
-      child: _buildListView(),
-    );
-  }
-
-  Widget _buildListView(){
-return ListView(
+    return Column(
       children: <Widget>[
         ListTile(
           title: Text(
-            "Authors: ",
+            "Authors",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           trailing: IconButton(
             icon: Icon(Icons.add_circle),
-            onPressed: () => null,
+            onPressed: () => setState(() {
+                  Author newAuthor = Author();
+                  newAuthor.name = 'Nome';
+                  newAuthor.surname = 'Cognome';
+                  widget.authors.add(newAuthor);
+                }),
           ),
         ),
         ..._buildAuthorsForms(),
@@ -40,18 +38,39 @@ return ListView(
     List<Widget> forms = new List<Widget>();
     for (Author author in widget.authors) {
       forms.add(
-        ListTile(
-          leading: Icon(Icons.person),
-          title: TextFormField(
-            decoration: InputDecoration(
-              hintText: author.toString(),
+        Container(
+          child: ListTile(
+            leading: Icon(Icons.person),
+            title: TextFormField(
+              decoration: InputDecoration(
+                hintText: author.toString(),
+              ),
+              initialValue: author.toString(),
+              validator: (String text) {
+                RegExp regExp = RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+                if (!text.contains(' ') || !regExp.hasMatch(text))
+                  return 'Author must have a name and a surname';
+                else
+                  return null;
+              },
+              onSaved: (String text) {
+                List<String> strings=text.split(' ');
+                author.clear();
+                author.name= strings.removeAt(0);
+                author.surname=strings.removeLast();
+                author.secondName="";
+                for(String string in strings)
+                  author.secondName += " $string";
+              },
             ),
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () => setState(() {
-                  widget.authors.remove(author);
-                }),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: (widget.authors.length > 1)
+                  ? () => setState(() {
+                        widget.authors.remove(author);
+                      })
+                  : null,
+            ),
           ),
         ),
       );

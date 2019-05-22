@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import '../common/date-picker.dart';
 import '../../model/book.model.dart';
 import './authors-section.dart';
+import './../../firebase/book-repo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AddEntryDialog extends StatefulWidget {
   final Book book;
-
   AddEntryDialog({@required this.book});
   @override
   AddEntryDialogState createState() => new AddEntryDialogState();
 }
 
 class AddEntryDialogState extends State<AddEntryDialog> {
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -23,19 +24,32 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             icon: Icon(Icons.done),
             tooltip: "Done",
             color: Colors.white,
-            onPressed: () => null,
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _saveChanges(context);
+              }
+            },
           ),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: _buildBody(context),
+          Form(
+            key: _formKey,
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: _buildBody(context),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Future _saveChanges(BuildContext context) async {
+    await bookManager.saveReuqest(widget.book);
+    Navigator.of(context).pop();
   }
 
   Widget _buildBody(BuildContext context) {
@@ -48,75 +62,108 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             _buildImageSection(context),
           ],
         ),
-        Text(
-          "Title: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextField(
-          decoration: InputDecoration(
-            hintText: widget.book.title,
+        ListTile(
+          title: Text(
+            "Title",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: TextFormField(
+            decoration: InputDecoration(
+              hintText: widget.book.title,
+            ),
+            initialValue: widget.book.title,
+            onSaved: (text) => widget.book.title = text,
           ),
         ),
         AuthorsSectionWidget(
           authors: widget.book.authors,
         ),
-        Text(
-          "Description: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: widget.book.description,
+        ListTile(
+          title: Text(
+            "Description",
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          maxLines: 5,
-          keyboardType: TextInputType.multiline,
-        ),
-        Divider(color: Colors.transparent),
-        Text(
-          "Publisher: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: widget.book.publisher,
+          subtitle: TextFormField(
+            decoration: InputDecoration(
+              hintText: widget.book.description,
+            ),
+            maxLines: 5,
+            keyboardType: TextInputType.multiline,
+            initialValue: widget.book.description,
+            onSaved: (text) => widget.book.description = text,
           ),
-        ),
-        Text(
-          "Release Date: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         ListTile(
-          leading: new Icon(Icons.today, color: Colors.grey[500]),
-          title: new DateTimeItem(
+          title: Text(
+            "Publisher",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: TextFormField(
+            decoration: InputDecoration(
+              hintText: widget.book.publisher,
+            ),
+            initialValue: widget.book.publisher,
+            onSaved: (text) => widget.book.publisher = text,
+          ),
+        ),
+        ListTile(
+          title: Text(
+            "Release Date",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        ListTile(
+          leading: Icon(Icons.today, color: Colors.grey[500]),
+          title: DateTimeItem(
             dateTime: widget.book.releaseDate,
-            onChanged: (dateTime) => setState(() => null),
+            onChanged: (dateTime) =>
+                setState(() => widget.book.releaseDate = dateTime),
           ),
         ),
-        Text(
-          "Pages: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: widget.book.pages.toString(),
+        ListTile(
+          title: Text(
+            "Pages",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: TextFormField(
+            decoration: InputDecoration(
+              hintText: widget.book.pages.toString(),
+            ),
+            initialValue: widget.book.pages.toString(),
+            validator: (String text) {
+              if (int.tryParse(text).isNaN)
+                return 'Pages must be a number';
+              else
+                return null;
+            },
+            keyboardType: TextInputType.number,
+            onSaved: (text) => widget.book.pages = int.tryParse(text),
           ),
         ),
-        Text(
-          "Edition: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: widget.book.edition,
+        ListTile(
+          title: Text(
+            "Edition",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: TextFormField(
+            decoration: InputDecoration(
+              hintText: widget.book.edition,
+            ),
+            initialValue: widget.book.edition,
+            onSaved: (text) => widget.book.edition = text,
           ),
         ),
-        Text(
-          "Price: ",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: widget.book.price,
+        ListTile(
+          title: Text(
+            "Price",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: TextFormField(
+            decoration: InputDecoration(
+              hintText: widget.book.price,
+            ),
+            initialValue: widget.book.price,
+            onSaved: (text) => widget.book.price = text,
           ),
         ),
       ],
@@ -131,10 +178,10 @@ class AddEntryDialogState extends State<AddEntryDialog> {
       width: _width,
       height: _height,
       child: Stack(
+        alignment: Alignment.center,
         children: <Widget>[
           CachedNetworkImage(
             imageUrl: widget.book.image,
-            alignment: Alignment.center,
           ),
           Container(
             alignment: Alignment.center,
@@ -145,38 +192,4 @@ class AddEntryDialogState extends State<AddEntryDialog> {
       ),
     );
   }
-
-  /*Widget _buildAuthorsSection() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text(
-              "Authors: ",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              icon: Icon(Icons.add_circle),
-              onPressed: () => null,
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Autore1",
-                ),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => null,
-            ),
-          ],
-        ),
-      ],
-    );
-  }*/
 }

@@ -5,25 +5,33 @@ class Author {
   String secondName;
   String surname;
 
-  Author(
-      {this.name,
-      this.secondName,
-      this.surname,}) {
-  }
-  
+  Author({
+    this.name,
+    this.secondName,
+    this.surname,
+  });
+
   assimilate(DocumentSnapshot snap) {
     name = snap['name'];
-    if(snap['secondName']!=null)
-      secondName = snap['secondName'];
+    if (snap['secondName'] != null) secondName = snap['secondName'];
     surname = snap['surname'];
   }
 
+  void clear() {
+    name = '';
+    secondName = null;
+    surname = '';
+  }
+
   @override
-  String toString(){
-    String string= name;
-    if (secondName!=null)
-      string= string + " " + secondName;
-    string = string + " " + surname;
-    return string;
+  String toString() =>
+      '$name ${(secondName != null) ? secondName : ""} $surname';
+
+  Author clone() {
+    Author author = Author();
+    author.name = this.name;
+    author.secondName = this.secondName;
+    author.surname = this.surname;
+    return author;
   }
 }

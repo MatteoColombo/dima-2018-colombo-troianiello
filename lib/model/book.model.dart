@@ -41,9 +41,26 @@ class Book {
     _authors.add(author);
   }
 
-  void deleteAuthor(Author author){
+  void deleteAuthor(Author author) {
     _authors.remove(author);
   }
 
   List<Author> get authors => _authors;
+
+  Book clone() {
+    Book book = Book();
+    book.isbn = this.isbn;
+    book.title = this.title;
+    book.image = this.image;
+    book.description = this.description;
+    book.edition = this.edition;
+    book.pages = this.pages;
+    book.price = this.price;
+    book.publisher = this.publisher;
+    book.releaseDate = this.releaseDate;
+    for(Author author in this._authors){
+      book.addAuthor(author.clone());
+    }
+    return book;
+  }
 }

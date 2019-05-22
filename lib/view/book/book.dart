@@ -257,7 +257,7 @@ class BookPage extends StatelessWidget {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new AddEntryDialog(
-            book: _book,
+            book: _book.clone(),
           );
         },
         fullscreenDialog: true));
