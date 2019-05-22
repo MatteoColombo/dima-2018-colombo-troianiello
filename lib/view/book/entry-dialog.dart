@@ -9,11 +9,17 @@ class AddEntryDialog extends StatefulWidget {
   final Book book;
   AddEntryDialog({@required this.book});
   @override
-  AddEntryDialogState createState() => new AddEntryDialogState();
+  AddEntryDialogState createState() => new AddEntryDialogState(book);
 }
 
 class AddEntryDialogState extends State<AddEntryDialog> {
+  Book book;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  AddEntryDialogState(Book book) {
+    this.book = book.clone();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -37,10 +43,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         children: <Widget>[
           Form(
             key: _formKey,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              child: _buildBody(context),
-            ),
+            child: _buildBody(context),
           ),
         ],
       ),
@@ -48,7 +51,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
   }
 
   Future _saveChanges(BuildContext context) async {
-    await bookManager.saveReuqest(widget.book);
+    await bookManager.saveReuqest(book);
     Navigator.of(context).pop();
   }
 
@@ -69,14 +72,14 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           ),
           subtitle: TextFormField(
             decoration: InputDecoration(
-              hintText: widget.book.title,
+              hintText: book.title,
             ),
-            initialValue: widget.book.title,
-            onSaved: (text) => widget.book.title = text,
+            initialValue: book.title,
+            onSaved: (text) => book.title = text,
           ),
         ),
         AuthorsSectionWidget(
-          authors: widget.book.authors,
+          authors: book.authors,
         ),
         ListTile(
           title: Text(
@@ -85,12 +88,12 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           ),
           subtitle: TextFormField(
             decoration: InputDecoration(
-              hintText: widget.book.description,
+              hintText: book.description,
             ),
             maxLines: 5,
             keyboardType: TextInputType.multiline,
-            initialValue: widget.book.description,
-            onSaved: (text) => widget.book.description = text,
+            initialValue: book.description,
+            onSaved: (text) => book.description = text,
           ),
         ),
         ListTile(
@@ -100,10 +103,10 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           ),
           subtitle: TextFormField(
             decoration: InputDecoration(
-              hintText: widget.book.publisher,
+              hintText: book.publisher,
             ),
-            initialValue: widget.book.publisher,
-            onSaved: (text) => widget.book.publisher = text,
+            initialValue: book.publisher,
+            onSaved: (text) => book.publisher = text,
           ),
         ),
         ListTile(
@@ -115,9 +118,9 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ListTile(
           leading: Icon(Icons.today, color: Colors.grey[500]),
           title: DateTimeItem(
-            dateTime: widget.book.releaseDate,
+            dateTime: book.releaseDate,
             onChanged: (dateTime) =>
-                setState(() => widget.book.releaseDate = dateTime),
+                setState(() => book.releaseDate = dateTime),
           ),
         ),
         ListTile(
@@ -127,9 +130,9 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           ),
           subtitle: TextFormField(
             decoration: InputDecoration(
-              hintText: widget.book.pages.toString(),
+              hintText: book.pages.toString(),
             ),
-            initialValue: widget.book.pages.toString(),
+            initialValue: book.pages.toString(),
             validator: (String text) {
               if (int.tryParse(text).isNaN)
                 return 'Pages must be a number';
@@ -137,7 +140,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
                 return null;
             },
             keyboardType: TextInputType.number,
-            onSaved: (text) => widget.book.pages = int.tryParse(text),
+            onSaved: (text) => book.pages = int.tryParse(text),
           ),
         ),
         ListTile(
@@ -147,10 +150,10 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           ),
           subtitle: TextFormField(
             decoration: InputDecoration(
-              hintText: widget.book.edition,
+              hintText: book.edition,
             ),
-            initialValue: widget.book.edition,
-            onSaved: (text) => widget.book.edition = text,
+            initialValue: book.edition,
+            onSaved: (text) => book.edition = text,
           ),
         ),
         ListTile(
@@ -160,10 +163,10 @@ class AddEntryDialogState extends State<AddEntryDialog> {
           ),
           subtitle: TextFormField(
             decoration: InputDecoration(
-              hintText: widget.book.price,
+              hintText: book.price,
             ),
-            initialValue: widget.book.price,
-            onSaved: (text) => widget.book.price = text,
+            initialValue: book.price,
+            onSaved: (text) => book.price = text,
           ),
         ),
       ],
@@ -181,7 +184,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         alignment: Alignment.center,
         children: <Widget>[
           CachedNetworkImage(
-            imageUrl: widget.book.image,
+            imageUrl: book.image,
           ),
           Container(
             alignment: Alignment.center,
