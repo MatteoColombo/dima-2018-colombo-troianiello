@@ -8,8 +8,9 @@ import 'mainactivity.dart';
 import './view/book/book.dart';
 
 void main() => runApp((BookPage(
-      isbn: '9781401242152' 
-      //'9788804711957',
+      isbn: //'9781401242152' 
+      '9788804711957'
+      //'0',
     )));
 
 class MyApp extends StatelessWidget {

@@ -37,7 +37,15 @@ class BookPage extends StatelessWidget {
             ),
           );
         else {
-          return _build(context, snapshot.data);
+          /*if (snapshot.data.isbn==null)
+            return Scaffold(
+              appBar: AppBar(),
+              body: Center(
+                child: Text("No book"),
+              ),
+            );
+          else*/
+            return _build(context, snapshot.data);
         }
       },
     );
@@ -265,9 +273,9 @@ class BookPage extends StatelessWidget {
 
   List<Widget> _buildAuthorsSection(List<Author> authors) {
     List<Widget> authorsWidgets = List<Widget>();
-      for (Author author in authors) {
-        authorsWidgets.add(Text(author.toString()));
-      }
+    for (Author author in authors) {
+      authorsWidgets.add(Text(author.toString()));
+    }
     return authorsWidgets;
   }
 }

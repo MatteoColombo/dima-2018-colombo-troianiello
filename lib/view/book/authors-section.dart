@@ -21,6 +21,7 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
     super.initState();
     _addForms();
   }
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,7 +56,7 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
             leading: Icon(Icons.person),
             title: TextFormField(
               initialValue: author.toString(),
-              validator: (String text) {
+              validator: (text) {
                 RegExp regExp =
                     RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
                 if (!text.contains(' ') || !regExp.hasMatch(text))
@@ -63,7 +64,7 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
                 else
                   return null;
               },
-              onSaved: (String text) {
+              onSaved: (text) {
                 List<String> strings = text.split(' ');
                 author.clear();
                 author.name = strings.removeAt(0);

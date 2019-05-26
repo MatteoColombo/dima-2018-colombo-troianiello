@@ -1,9 +1,9 @@
+import 'package:dima2018_colombo_troianiello/view/book/image-form-widget.dart';
 import 'package:flutter/material.dart';
 import '../common/date-picker.dart';
 import '../../model/book.model.dart';
 import './authors-section.dart';
 import './../../firebase/book-repo.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class AddEntryDialog extends StatefulWidget {
   final Book book;
@@ -62,7 +62,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildImageSection(context),
+            ImageFormSectionWidget(book: book,),
           ],
         ),
         ListTile(
@@ -71,10 +71,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            decoration: InputDecoration(
-              hintText: book.title,
-            ),
             initialValue: book.title,
+            validator: (text) => _validator(text),
             onSaved: (text) => book.title = text,
           ),
         ),
@@ -87,12 +85,10 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            decoration: InputDecoration(
-              hintText: book.description,
-            ),
             maxLines: 5,
             keyboardType: TextInputType.multiline,
             initialValue: book.description,
+            validator: (text) => _validator(text),
             onSaved: (text) => book.description = text,
           ),
         ),
@@ -102,10 +98,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            decoration: InputDecoration(
-              hintText: book.publisher,
-            ),
             initialValue: book.publisher,
+            validator: (text) => _validator(text),
             onSaved: (text) => book.publisher = text,
           ),
         ),
@@ -129,11 +123,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            decoration: InputDecoration(
-              hintText: book.pages.toString(),
-            ),
             initialValue: book.pages.toString(),
-            validator: (String text) {
+            validator: (text) {
               if (int.tryParse(text).isNaN)
                 return 'Pages must be a number';
               else
@@ -149,10 +140,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            decoration: InputDecoration(
-              hintText: book.edition,
-            ),
             initialValue: book.edition,
+            validator: (text) => _validator(text),
             onSaved: (text) => book.edition = text,
           ),
         ),
@@ -162,37 +151,19 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            decoration: InputDecoration(
-              hintText: book.price,
-            ),
             initialValue: book.price,
+            validator: (text) => _validator(text),
             onSaved: (text) => book.price = text,
           ),
         ),
       ],
     );
   }
-
-  Widget _buildImageSection(BuildContext context) {
-    MediaQueryData data = MediaQuery.of(context);
-    double _width = data.size.width * 2 / 5;
-    double _height = _width * (4 / 3);
-    return Container(
-      width: _width,
-      height: _height,
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          CachedNetworkImage(
-            imageUrl: book.image,
-          ),
-          Container(
-            alignment: Alignment.center,
-            color: Colors.white30,
-            child: Icon(Icons.photo_camera),
-          ),
-        ],
-      ),
-    );
+  
+  String _validator(String text) {
+    if (text == "")
+      return 'This field cannot be empty';
+    else
+      return null;
   }
 }
