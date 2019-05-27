@@ -37,14 +37,19 @@ class BookPage extends StatelessWidget {
             ),
           );
         else {
-          /*if (snapshot.data.isbn==null)
+          if (snapshot.data.isEmpty())
             return Scaffold(
               appBar: AppBar(),
               body: Center(
-                child: Text("No book"),
+                child: Container(
+                  padding: EdgeInsets.all(60.0),
+                  child: Image.asset(
+                    "images/book-not-found.png",
+                  ),
+                ),
               ),
             );
-          else*/
+          else
             return _build(context, snapshot.data);
         }
       },

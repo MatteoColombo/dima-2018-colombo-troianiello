@@ -16,42 +16,45 @@ class _BookControl {
       Firestore.instance.collection("requests");
 
   Stream<Book> getBook(String isbn) async* {
-    DocumentSnapshot book = await _collectionBook.document(isbn).get();
-    Book modelBook = Book();
-    modelBook.assimilate(book);
-    QuerySnapshot creations = await _collectionCreations
-        .where("book", isEqualTo: modelBook.isbn)
-        .getDocuments();
-    for (DocumentSnapshot result in creations.documents) {
-      DocumentSnapshot documentAuthor =
-          await _collectionAuthors.document(result['author']).get();
-      Author author = Author();
-      author.assimilate(documentAuthor);
-      modelBook.addAuthor(author);
+    try {
+      DocumentSnapshot book = await _collectionBook.document(isbn).get();
+      Book modelBook = Book();
+      modelBook.assimilate(book);
+      QuerySnapshot creations = await _collectionCreations
+          .where("book", isEqualTo: modelBook.isbn)
+          .getDocuments();
+      for (DocumentSnapshot result in creations.documents) {
+        DocumentSnapshot documentAuthor =
+            await _collectionAuthors.document(result['author']).get();
+        Author author = Author();
+        author.assimilate(documentAuthor);
+        modelBook.addAuthor(author);
+      }
+      yield modelBook;
+    } catch (e) {
+      yield Book();
     }
-    yield modelBook;
   }
 
   Future<void> saveReuqest(Book book) async {
-    Map<String,dynamic> mapAuthors= Map<String,dynamic>();
-    for(int i=0;i<book.authors.length;i++){
-      mapAuthors.putIfAbsent('author$i', ()=> book.authors[i].toString());
+    Map<String, dynamic> mapAuthors = Map<String, dynamic>();
+    for (int i = 0; i < book.authors.length; i++) {
+      mapAuthors.putIfAbsent('author$i', () => book.authors[i].toString());
     }
-    _collectionRequests.document('${book.isbn}_Porcodio')
-      .setData({
-        "user": "Porcodio",
-        "isbn": book.isbn,
-        "requestDate": DateTime.now(),
-        "title": book.title,
-        "image": book.image,
-        "description": book.description,
-        "edition": book.edition,
-        "publisher": book.publisher,
-        "pages": book.pages,
-        "price": book.price,
-        "releaseDate": book.releaseDate,
-        "authors": mapAuthors,
-      });
+    _collectionRequests.document('${book.isbn}_Porcodio').setData({
+      "user": "Porcodio",
+      "isbn": book.isbn,
+      "requestDate": DateTime.now(),
+      "title": book.title,
+      "image": book.image,
+      "description": book.description,
+      "edition": book.edition,
+      "publisher": book.publisher,
+      "pages": book.pages,
+      "price": book.price,
+      "releaseDate": book.releaseDate,
+      "authors": mapAuthors,
+    });
   }
 
   Future<String> uploadFile(File image) async {

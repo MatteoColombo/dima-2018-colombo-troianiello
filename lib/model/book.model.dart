@@ -25,7 +25,7 @@ class Book {
       this.releaseDate}) {
     _authors = new List<Author>();
   }
-  assimilate(DocumentSnapshot snap) {
+  void assimilate(DocumentSnapshot snap) {
     isbn = snap.documentID;
     title = snap['title'];
     image = snap['image'];
@@ -62,5 +62,9 @@ class Book {
       book.addAuthor(author.clone());
     }
     return book;
+  }
+
+  bool isEmpty(){
+    return this.isbn==null;
   }
 }

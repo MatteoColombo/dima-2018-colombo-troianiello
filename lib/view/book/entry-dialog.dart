@@ -4,6 +4,7 @@ import '../common/date-picker.dart';
 import '../../model/book.model.dart';
 import './authors-section.dart';
 import './../../firebase/book-repo.dart';
+import 'dart:io';
 
 class AddEntryDialog extends StatefulWidget {
   final Book book;
@@ -14,6 +15,7 @@ class AddEntryDialog extends StatefulWidget {
 
 class AddEntryDialogState extends State<AddEntryDialog> {
   Book book;
+  File image;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   AddEntryDialogState(Book book) {
@@ -51,6 +53,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
   }
 
   Future _saveChanges(BuildContext context) async {
+    if (image != null) book.image = await bookManager.uploadFile(image);
     await bookManager.saveReuqest(book);
     Navigator.of(context).pop();
   }
@@ -62,7 +65,11 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ImageFormSectionWidget(book: book,),
+            ImageFormSectionWidget(
+                book: book,
+                saveImage: (File file) {
+                  if (file != null) image = file;
+                }),
           ],
         ),
         ListTile(
@@ -159,7 +166,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
       ],
     );
   }
-  
+
   String _validator(String text) {
     if (text == "")
       return 'This field cannot be empty';

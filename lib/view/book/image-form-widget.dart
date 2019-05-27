@@ -6,11 +6,10 @@ import 'dart:io';
 
 class ImageFormSectionWidget extends StatefulWidget {
   final Book book;
-  ImageFormSectionWidget({@required this.book});
+  final Function saveImage;
+  ImageFormSectionWidget({@required this.book, this.saveImage});
   _ImageFormSectionWidgetState createState() =>
       new _ImageFormSectionWidgetState(book);
-
-  saveImage(){}
 }
 
 class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
@@ -22,43 +21,46 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        _buildImageSection(context),
+        ..._buildImageSection(context),
       ],
     );
   }
 
-  Widget _buildImageSection(BuildContext context) {
+  List<Widget> _buildImageSection(BuildContext context) {
     MediaQueryData data = MediaQuery.of(context);
     double _width = data.size.width * 2 / 5;
     double _height = _width * (4 / 3);
-    return Container(
-      padding: EdgeInsets.only(top: 8.0),
-      width: _width,
-      height: _height,
-      child: Stack(
-        alignment: Alignment.center,
+    List<Widget> children = [
+      Container(
+        padding: EdgeInsets.only(top: 8.0),
+        width: _width,
+        height: _height,
+        child: _getImgWidget(context),
+      ),
+      Row(
         children: <Widget>[
-          _getImgWidget(context),
-          Container(
-            alignment: Alignment.center,
-            color: Colors.white30,
-            child: IconButton(
-              icon: Icon(Icons.photo_camera),
-              onPressed: () => _buildPopupDialog(context),
-            ),
+          IconButton(
+            icon: Icon(Icons.camera),
+            onPressed: () => setState(() {
+                  _getImage(false);
+                  Navigator.of(context).pop();
+                }),
+          ),
+          IconButton(
+            icon: Icon(Icons.image),
+            onPressed: () => setState(() {
+                  _getImage(false);
+                  Navigator.of(context).pop();
+                }),
           ),
         ],
       ),
-    );
+    ];
+    return children;
   }
 
   Widget _getImgWidget(BuildContext context) {
@@ -82,39 +84,7 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
         _image,
       );
   }
-
-  void _buildPopupDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.camera),
-                title: Text('Take a picture'),
-                onTap: () => setState(() {
-                      _getImage(true);
-                      Navigator.of(context).pop();
-                    }),
-              ),
-              ListTile(
-                leading: Icon(Icons.image),
-                title: Text('Take from the gallery'),
-                onTap: () => setState(() {
-                      _getImage(false);
-                      Navigator.of(context).pop();
-                    }),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
+  
   void _getImage(bool camera) async {
     try {
       var image = await ImagePicker.pickImage(
@@ -123,6 +93,7 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
       setState(() {
         _image = image;
       });
+      widget.saveImage(_image);
     } catch (e) {
       print(e);
     }
