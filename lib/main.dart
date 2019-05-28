@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './auth.dart';
+import './firebase/auth.dart';
 import './login.dart';
 import './splash.dart';
 import './view/library/library-list.dart';
+import './view/addbook/add-book.dart';
 import 'mainactivity.dart';
 import './view/book/book.dart';
 
@@ -37,7 +38,7 @@ class MainWidgetManager extends StatelessWidget {
           return SplashScreen();
         } else {
           if (snapshot.hasData) {
-            return LibraryList();
+            return AddBook();
           } else {
             return LoginPage();
           }
