@@ -54,6 +54,7 @@ class _BookControl {
       "price": book.price,
       "releaseDate": book.releaseDate,
       "authors": mapAuthors,
+      "pending":true,
     });
   }
 

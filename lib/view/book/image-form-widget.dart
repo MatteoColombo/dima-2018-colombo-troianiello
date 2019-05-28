@@ -46,15 +46,13 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
           IconButton(
             icon: Icon(Icons.camera),
             onPressed: () => setState(() {
-                  _getImage(false);
-                  Navigator.of(context).pop();
+                  _getImage(true);
                 }),
           ),
           IconButton(
             icon: Icon(Icons.image),
             onPressed: () => setState(() {
                   _getImage(false);
-                  Navigator.of(context).pop();
                 }),
           ),
         ],
