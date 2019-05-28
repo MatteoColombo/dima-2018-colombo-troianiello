@@ -34,7 +34,7 @@ class Book {
     pages = snap['pages'];
     price = snap['price'];
     publisher = snap['publisher'];
-    releaseDate = snap['releaseDate'];
+    releaseDate = snap['releaseDate'].toDate();
   }
 
   void addAuthor(Author author) {
@@ -58,13 +58,13 @@ class Book {
     book.price = this.price;
     book.publisher = this.publisher;
     book.releaseDate = this.releaseDate;
-    for(Author author in this._authors){
+    for (Author author in this._authors) {
       book.addAuthor(author.clone());
     }
     return book;
   }
 
-  bool isEmpty(){
-    return this.isbn==null;
+  bool isEmpty() {
+    return this.isbn == null;
   }
 }

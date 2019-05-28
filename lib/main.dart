@@ -8,11 +8,7 @@ import './view/addbook/add-book.dart';
 import 'mainactivity.dart';
 import './view/book/book.dart';
 
-void main() => runApp((BookPage(
-      isbn: //'9781401242152' 
-      '9788804711957'
-      //'0',
-    )));
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
@@ -38,7 +34,11 @@ class MainWidgetManager extends StatelessWidget {
           return SplashScreen();
         } else {
           if (snapshot.hasData) {
-            return AddBook();
+            return BookPage(
+                isbn: '9781401242152'
+                    //'9788804711957'
+                //'0',
+                );
           } else {
             return LoginPage();
           }

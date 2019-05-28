@@ -188,7 +188,7 @@ class BookPage extends StatelessWidget {
               "Release date: ",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(DateFormat('EEEE,d MMMM y').format(_book.releaseDate)),
+            Text(DateFormat('EEEE, d MMMM y').format(_book.releaseDate)),
           ],
         ),
         Divider(
