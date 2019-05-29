@@ -35,9 +35,10 @@ class MainWidgetManager extends StatelessWidget {
         } else {
           if (snapshot.hasData) {
             return BookPage(
-                isbn: '9781401242152'
-                    //'9788804711957'
+                isbn: '9781401242152',
+                    //'9788804711957',
                 //'0',
+                addBook: false,
                 );
           } else {
             return LoginPage();

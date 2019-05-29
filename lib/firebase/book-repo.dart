@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import '../model/book.model.dart';
 import '../model/author.model.dart';
+import './auth.dart';
 
 class _BookControl {
   CollectionReference _collectionBook = Firestore.instance.collection("books");
@@ -41,8 +41,9 @@ class _BookControl {
     for (int i = 0; i < book.authors.length; i++) {
       mapAuthors.putIfAbsent('author$i', () => book.authors[i].toString());
     }
-    _collectionRequests.document('${book.isbn}_Porcodio').setData({
-      "user": "Porcodio",
+    String userId=await authService.getUserId();
+    _collectionRequests.document('${book.isbn}_$userId').setData({
+      "user": userId,
       "isbn": book.isbn,
       "requestDate": DateTime.now(),
       "title": book.title,

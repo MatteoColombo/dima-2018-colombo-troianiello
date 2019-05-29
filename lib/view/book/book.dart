@@ -9,8 +9,9 @@ import 'package:intl/intl.dart';
 
 class BookPage extends StatelessWidget {
   final String isbn;
+  final bool addBook;
 
-  BookPage({@required this.isbn});
+  BookPage({@required this.isbn,@required this.addBook});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -80,15 +81,32 @@ class BookPage extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context, Book _book) {
+    List<Widget> actions;
+    if (addBook)
+      actions = [
+        IconButton(
+            icon: Icon(Icons.done),
+            tooltip: "Done",
+            color: Colors.white,
+            onPressed: () => null),
+      ];
+    else
+      actions = [
+        IconButton(
+            icon: Icon(Icons.library_books),
+            tooltip: "Suggest changes",
+            color: Colors.white,
+            onPressed: () => null),
+        IconButton(
+            icon: Icon(Icons.help_outline),
+            tooltip: "Suggest changes",
+            color: Colors.white,
+            onPressed: () => _requestModifyDialog(context, _book)),
+      ];
     return AppBar(
       title: Text(_book.title),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.help_outline),
-          tooltip: "Suggest changes",
-          color: Colors.white,
-          onPressed: () => _requestModifyDialog(context, _book),
-        ),
+        ...actions,
       ],
     );
   }

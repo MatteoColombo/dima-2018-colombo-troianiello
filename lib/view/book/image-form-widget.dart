@@ -7,7 +7,7 @@ import 'dart:io';
 class ImageFormSectionWidget extends StatefulWidget {
   final Book book;
   final Function saveImage;
-  ImageFormSectionWidget({@required this.book, this.saveImage});
+  ImageFormSectionWidget({@required this.book,@required this.saveImage});
   _ImageFormSectionWidgetState createState() =>
       new _ImageFormSectionWidgetState(book);
 }
