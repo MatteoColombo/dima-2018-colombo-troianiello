@@ -3,10 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './firebase/auth.dart';
 import './login.dart';
 import './splash.dart';
-import './view/library/library-list.dart';
-import './view/addbook/add-book.dart';
 import 'mainactivity.dart';
-import './view/book/book.dart';
 
 void main() => runApp(MyApp());
 
@@ -34,12 +31,7 @@ class MainWidgetManager extends StatelessWidget {
           return SplashScreen();
         } else {
           if (snapshot.hasData) {
-            return BookPage(
-                isbn: '9781401242152',
-                    //'9788804711957',
-                //'0',
-                addBook: false,
-                );
+            return MainActivity();
           } else {
             return LoginPage();
           }

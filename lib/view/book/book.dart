@@ -14,16 +14,6 @@ class BookPage extends StatelessWidget {
   BookPage({@required this.isbn,@required this.addBook});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: _buildBody(context),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
     return StreamBuilder(
       stream: bookManager.getBook(isbn),
       builder: (BuildContext context, AsyncSnapshot<Book> snapshot) {
