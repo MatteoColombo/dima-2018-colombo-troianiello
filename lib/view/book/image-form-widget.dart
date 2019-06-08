@@ -87,6 +87,8 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
     try {
       var image = await ImagePicker.pickImage(
         source: camera ? ImageSource.camera : ImageSource.gallery,
+        maxHeight: 1280,
+        maxWidth: 720,
       );
       setState(() {
         _image = image;
