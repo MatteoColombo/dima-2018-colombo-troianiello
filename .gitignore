@@ -93,3 +93,5 @@ Documents/**/*.pdf
 *.lof
 #ignore all .lot files
 *.lot
+
+pubspec.lock

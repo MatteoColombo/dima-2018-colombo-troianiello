@@ -1,0 +1,104 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2019-06-13T11:25:31.208545",
+  "title": "Title",
+  "@title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Description",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authors": "Authors",
+  "@authors": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "releaseDate": "Release date",
+  "@releaseDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publisher": "Publisher",
+  "@publisher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "pages": "Pages",
+  "@pages": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "edition": "Edition",
+  "@formats": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "price": "Price",
+  "@price": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showMore": "Show more",
+  "@showMore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showLess": "Show less",
+  "@showLess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "isbn": "ISBN",
+  "@isbn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorErrorMessage": "Author must have a name and a surname",
+  "@authorErrorMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Name",
+  "@name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "surname": "Surname",
+  "@surname": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fieldError": "This field cannot be empty",
+  "@fieldError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "priceError": "Pages must be a number",
+  "@priceError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "done": "Done",
+  "@done": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "suggestChanges": "Suggest changes",
+  "@suggestChanges": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTakePhoto": "Take a photo",
+  "@labelTakePhoto": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelLoadImg": "Load a image",
+  "@labelLoadImg": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

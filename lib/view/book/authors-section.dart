@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../../model/author.model.dart';
+import '../common/localization.dart';
 
 class AuthorsSectionWidget extends StatefulWidget {
   final List<Author> authors;
@@ -28,15 +29,15 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
       children: <Widget>[
         ListTile(
           title: Text(
-            "Authors",
+            Localization.of(context).authors,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           trailing: IconButton(
             icon: Icon(Icons.add_circle),
             onPressed: () => setState(() {
                   Author newAuthor = Author();
-                  newAuthor.name = 'Nome';
-                  newAuthor.surname = 'Cognome';
+                  newAuthor.name = Localization.of(context).name;
+                  newAuthor.surname = Localization.of(context).surname;
                   widget.authors.add(newAuthor);
                   _addForms();
                 }),
@@ -60,7 +61,7 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
                 RegExp regExp =
                     RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
                 if (!text.contains(' ') || !regExp.hasMatch(text))
-                  return 'Author must have a name and a surname';
+                  return Localization.of(context).authorErrorMessage;
                 else
                   return null;
               },

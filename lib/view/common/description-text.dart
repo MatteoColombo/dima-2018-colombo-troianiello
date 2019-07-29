@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'localization.dart';
+
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
 
@@ -43,7 +45,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       new Text(
-                        flag ? "Show more" : "Show less",
+                        flag ? Localization.of(context).showMore : Localization.of(context).showLess,
                         style: new TextStyle(color: Colors.blue),
                       ),
                     ],

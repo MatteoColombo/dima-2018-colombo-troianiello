@@ -1,4 +1,5 @@
-import 'package:dima2018_colombo_troianiello/view/book/image-form-widget.dart';
+import '../book/image-form-widget.dart';
+import '../common/localization.dart';
 import 'package:flutter/material.dart';
 import '../common/date-picker.dart';
 import '../../model/book.model.dart';
@@ -26,11 +27,11 @@ class AddEntryDialogState extends State<AddEntryDialog> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('Suggest changes'),
+        title: Text(Localization.of(context).suggestChanges),
         actions: [
           IconButton(
             icon: Icon(Icons.done),
-            tooltip: "Done",
+            tooltip: Localization.of(context).done,
             color: Colors.white,
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -74,7 +75,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Title",
+            Localization.of(context).title,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
@@ -88,7 +89,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Description",
+           Localization.of(context).description,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
@@ -101,7 +102,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Publisher",
+            Localization.of(context).publisher,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
@@ -112,7 +113,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Release Date",
+            Localization.of(context).releaseDate,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -126,14 +127,14 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Pages",
+            Localization.of(context).pages,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
             initialValue: book.pages.toString(),
             validator: (text) {
               if (int.tryParse(text).isNaN)
-                return 'Pages must be a number';
+                return Localization.of(context).priceError;
               else
                 return null;
             },
@@ -143,7 +144,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Edition",
+           Localization.of(context).edition,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
@@ -154,7 +155,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-            "Price",
+           Localization.of(context).price,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
@@ -169,7 +170,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
 
   String _validator(String text) {
     if (text == "")
-      return 'This field cannot be empty';
+      return Localization.of(context).fieldError;
     else
       return null;
   }
