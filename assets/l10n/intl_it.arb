@@ -1,0 +1,104 @@
+{
+  "@@locale": "it",
+  "@@last_modified": "2019-06-13T11:25:31.208545",
+  "title": "Titolo",
+  "@title": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "description": "Descrizione",
+  "@description": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authors": "Autori",
+  "@authors": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "releaseDate": "Data di pubblicazione",
+  "@releaseDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publisher": "Editore",
+  "@publisher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "pages": "Pagine",
+  "@pages": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "edition": "Edizione",
+  "@format": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "price": "Prezzo",
+  "@price": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showMore": "Mostra di più",
+  "@showMore": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "showLess": "Mostra meno",
+  "@showLess": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "isbn": "ISBN",
+  "@isbn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "authorErrorMessage": "L'autore deve avere un nome e un cognome",
+  "@authorErrorMessage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "name": "Nome",
+  "@name": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "surname": "Cognome",
+  "@surname": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fieldError": "Questo campo non può essere vuoto",
+  "@fieldError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "priceError": "Deve essere un numero",
+  "@priceError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "done": "Fatto",
+  "@done": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "suggestChanges": "Suggerisci correzioni",
+  "@suggestChanges": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelTakePhoto": "Scatta una foto",
+  "@labelTakePhoto": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "labelLoadImg": "Carica immagine",
+  "@labelLoadImg": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

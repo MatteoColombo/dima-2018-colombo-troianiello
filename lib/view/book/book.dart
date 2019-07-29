@@ -7,6 +7,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../firebase/book-repo.dart';
 import 'package:intl/intl.dart';
 
+import '../common/localization.dart';
+
 class BookPage extends StatelessWidget {
   final String isbn;
   final bool addBook;
@@ -14,8 +16,8 @@ class BookPage extends StatelessWidget {
   BookPage({@required this.isbn,@required this.addBook});
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: bookManager.getBook(isbn),
+    return FutureBuilder(
+      future: bookManager.getBook(isbn),
       builder: (BuildContext context, AsyncSnapshot<Book> snapshot) {
         if (!snapshot.hasData)
           return Scaffold(
@@ -35,7 +37,7 @@ class BookPage extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(60.0),
                   child: Image.asset(
-                    "images/book-not-found.png",
+                    "assets/images/book-not-found.png",
                   ),
                 ),
               ),
@@ -59,10 +61,10 @@ class BookPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   _buildImageSection(context, _book),
-                  _buildMainInfoSection(_book),
+                  _buildMainInfoSection(context, _book),
                 ],
               ),
-              _buildSecondSection(_book),
+              _buildSecondSection(context, _book),
             ],
           ),
         ],
@@ -76,7 +78,7 @@ class BookPage extends StatelessWidget {
       actions = [
         IconButton(
             icon: Icon(Icons.done),
-            tooltip: "Done",
+            tooltip: Localization.of(context).done,
             color: Colors.white,
             onPressed: () => null),
       ];
@@ -84,12 +86,12 @@ class BookPage extends StatelessWidget {
       actions = [
         IconButton(
             icon: Icon(Icons.library_books),
-            tooltip: "Suggest changes",
+            tooltip: "",
             color: Colors.white,
             onPressed: () => null),
         IconButton(
             icon: Icon(Icons.help_outline),
-            tooltip: "Suggest changes",
+            tooltip: Localization.of(context).suggestChanges,
             color: Colors.white,
             onPressed: () => _requestModifyDialog(context, _book)),
       ];
@@ -116,7 +118,7 @@ class BookPage extends StatelessWidget {
             ),
           ),
       errorWidget: (context, url, error) => Image.asset(
-            "images/book.jpg",
+            "assets/images/book.jpg",
           ),
     );
     return GestureDetector(
@@ -130,14 +132,14 @@ class BookPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMainInfoSection(Book _book) {
+  Widget _buildMainInfoSection(BuildContext context, Book _book) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "Title",
+            Localization.of(context).title,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(_book.title),
@@ -145,7 +147,7 @@ class BookPage extends StatelessWidget {
             color: Colors.transparent,
           ),
           Text(
-            "Authors",
+            Localization.of(context).authors,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Column(children: _buildAuthorsSection(_book.authors)),
@@ -154,25 +156,25 @@ class BookPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDescSection(Book _book) {
+  Widget _buildDescSection(BuildContext context, Book _book) {
     return new DescriptionTextWidget(text: _book.description);
   }
 
-  Widget _buildSecondSection(Book _book) {
+  Widget _buildSecondSection(BuildContext context, Book _book) {
     return Container(
         padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Divider(),
-            Text('Description', style: TextStyle(fontWeight: FontWeight.bold)),
-            _buildDescSection(_book),
-            _buildSecondaryInformation(_book),
+            Text(Localization.of(context).description, style: TextStyle(fontWeight: FontWeight.bold)),
+            _buildDescSection(context, _book),
+            _buildSecondaryInformation(context, _book),
           ],
         ));
   }
 
-  Widget _buildSecondaryInformation(Book _book) {
+  Widget _buildSecondaryInformation(BuildContext context, Book _book) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -180,7 +182,7 @@ class BookPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Publisher: ",
+              Localization.of(context).publisher+':',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(_book.publisher),
@@ -193,7 +195,7 @@ class BookPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Release date: ",
+              Localization.of(context).releaseDate+': ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(DateFormat('EEEE, d MMMM y').format(_book.releaseDate)),
@@ -206,7 +208,7 @@ class BookPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Pages: ",
+              Localization.of(context).pages+':',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(_book.pages.toString()),
@@ -219,7 +221,7 @@ class BookPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Edition: ",
+              Localization.of(context).edition+':',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(_book.edition),
@@ -232,7 +234,7 @@ class BookPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Price: ",
+              Localization.of(context).price+':',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(_book.price),
@@ -245,7 +247,7 @@ class BookPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              "ISBN: ",
+              Localization.of(context).isbn+':',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(_book.isbn),

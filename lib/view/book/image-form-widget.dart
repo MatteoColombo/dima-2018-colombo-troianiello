@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import '../common/localization.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../model/book.model.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'dart:io';
 class ImageFormSectionWidget extends StatefulWidget {
   final Book book;
   final Function saveImage;
-  ImageFormSectionWidget({@required this.book,@required this.saveImage});
+  ImageFormSectionWidget({@required this.book, @required this.saveImage});
   _ImageFormSectionWidgetState createState() =>
       new _ImageFormSectionWidgetState(book);
 }
@@ -44,13 +45,19 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
       Row(
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.camera),
+            icon: Icon(
+              Icons.camera,
+              semanticLabel: Localization.of(context).labelTakePhoto,
+            ),
             onPressed: () => setState(() {
                   _getImage(true);
                 }),
           ),
           IconButton(
-            icon: Icon(Icons.image),
+            icon: Icon(
+              Icons.image,
+              semanticLabel: Localization.of(context).labelLoadImg,
+            ),
             onPressed: () => setState(() {
                   _getImage(false);
                 }),
@@ -74,7 +81,7 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
               ),
             ),
         errorWidget: (context, url, error) => Image.asset(
-              "images/book.jpg",
+              "assets/images/book.jpg",
             ),
       );
     else
@@ -82,7 +89,7 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
         _image,
       );
   }
-  
+
   void _getImage(bool camera) async {
     try {
       var image = await ImagePicker.pickImage(

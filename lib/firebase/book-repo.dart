@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import '../model/book.model.dart';
 import '../model/author.model.dart';
+import '../model/review.model.dart';
 import './auth.dart';
 
 class _BookControl {
@@ -15,7 +16,7 @@ class _BookControl {
   CollectionReference _collectionRequests =
       Firestore.instance.collection("requests");
 
-  Stream<Book> getBook(String isbn) async* {
+  Future<Book> getBook(String isbn) async {
     try {
       DocumentSnapshot book = await _collectionBook.document(isbn).get();
       Book modelBook = Book();
@@ -30,11 +31,34 @@ class _BookControl {
         author.assimilate(documentAuthor);
         modelBook.addAuthor(author);
       }
-      yield modelBook;
+      return modelBook;
     } catch (e) {
-      yield Book();
+      return Book();
     }
   }
+
+  /*Future<List<Review>> getReview(String isbn) async {
+    try {
+      QuerySnapshot reviewsSnapshot = await _collectionBook.document(isbn).collection("reviews").getDocuments();
+      List<Review> reviews=new List<Review>();
+      for (DocumentSnapshot result in reviewsSnapshot.documents) {
+            
+      reviews.add(new Review().assimilate(snap));
+      QuerySnapshot creations = await _collectionCreations
+          .where("book", isEqualTo: modelBook.isbn)
+          .getDocuments();
+      for (DocumentSnapshot result in creations.documents) {
+        DocumentSnapshot documentAuthor =
+            await _collectionAuthors.document(result['author']).get();
+        Author author = Author();
+        author.assimilate(documentAuthor);
+        modelBook.addAuthor(author);
+      }
+      return ;
+    } catch (e) {
+      return new List<Review>();
+    }
+  }*/
 
   Future<void> saveReuqest(Book book) async {
     Map<String, dynamic> mapAuthors = Map<String, dynamic>();
