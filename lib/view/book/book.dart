@@ -16,8 +16,8 @@ class BookPage extends StatelessWidget {
   BookPage({@required this.isbn,@required this.addBook});
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: bookManager.getBook(isbn),
+    return FutureBuilder(
+      future: bookManager.getBook(isbn),
       builder: (BuildContext context, AsyncSnapshot<Book> snapshot) {
         if (!snapshot.hasData)
           return Scaffold(
