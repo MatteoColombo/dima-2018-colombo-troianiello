@@ -6,9 +6,10 @@ class _AuthService {
   FirebaseAuth auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   Firestore _db = Firestore.instance;
-  String userId;
+  FirebaseUser _user;
 
   Future<FirebaseUser> handleLogin() async {
+    print("called");
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -17,8 +18,9 @@ class _AuthService {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final FirebaseUser user = (await auth.signInWithCredential(credential)).user;
-      userId = user.uid;
+      final FirebaseUser user =
+          (await auth.signInWithCredential(credential)).user;
+      _user = user;
       updateUserDate(user);
       return user;
     } catch (e) {
@@ -43,8 +45,24 @@ class _AuthService {
   }
 
   Future<String> getUserId() async {
-    userId = (await auth.currentUser()).uid;
-    return userId;
+    if (_user == null) {
+      _user = await auth.currentUser();
+    }
+    return _user.uid;
+  }
+
+  Future<String> getUserName() async {
+    if (_user == null) {
+      _user = await auth.currentUser();
+    }
+    return _user.displayName;
+  }
+
+  Future<FirebaseUser> getUser() async {
+    if (_user == null) {
+      _user = await auth.currentUser();
+    }
+    return _user;
   }
 }
 
