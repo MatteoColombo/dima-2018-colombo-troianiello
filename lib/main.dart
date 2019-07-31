@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './firebase/auth.dart';
 import './login.dart';
-import './splash.dart';
-import 'mainactivity.dart';
+import 'main-activity.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,8 +24,8 @@ class MyApp extends StatelessWidget {
       ],
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.blue[700],
-        accentColor: Colors.yellow,
+        primaryColor: Color.fromRGBO(140, 0, 50, 1),
+        accentColor: Color.fromRGBO(140, 0, 50, 1),
       ),
       home: MainWidgetManager(),
     );
@@ -39,14 +38,10 @@ class MainWidgetManager extends StatelessWidget {
     return StreamBuilder<FirebaseUser>(
       stream: authService.auth.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SplashScreen();
+        if (snapshot.hasData) {
+          return MainActivity();
         } else {
-          if (snapshot.hasData) {
-            return MainActivity();
-          } else {
-            return LoginPage();
-          }
+          return LoginPage();
         }
       },
     );
