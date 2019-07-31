@@ -55,7 +55,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
 
   Future _saveChanges(BuildContext context) async {
     if (image != null) book.image = await bookManager.uploadFile(image);
-    await bookManager.saveReuqest(book);
+    await bookManager.saveRequest(book);
     Navigator.of(context).pop();
   }
 
