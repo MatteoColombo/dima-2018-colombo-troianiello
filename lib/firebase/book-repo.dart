@@ -37,35 +37,27 @@ class _BookControl {
     }
   }
 
-  /*Future<List<Review>> getReview(String isbn) async {
-    try {
-      QuerySnapshot reviewsSnapshot = await _collectionBook.document(isbn).collection("reviews").getDocuments();
-      List<Review> reviews=new List<Review>();
-      for (DocumentSnapshot result in reviewsSnapshot.documents) {
-            
-      reviews.add(new Review().assimilate(snap));
-      QuerySnapshot creations = await _collectionCreations
-          .where("book", isEqualTo: modelBook.isbn)
-          .getDocuments();
-      for (DocumentSnapshot result in creations.documents) {
-        DocumentSnapshot documentAuthor =
-            await _collectionAuthors.document(result['author']).get();
-        Author author = Author();
-        author.assimilate(documentAuthor);
-        modelBook.addAuthor(author);
-      }
-      return ;
-    } catch (e) {
-      return new List<Review>();
+  Stream<List<Review>> getReviews(String isbn) async* {
+    List<Review> reviews;
+    Stream<QuerySnapshot> reviewsSnapshot =
+        _collectionBook.document(isbn).collection("reviews").snapshots();
+    await for (QuerySnapshot result in reviewsSnapshot) {
+      reviews = new List<Review>();
+      result.documents.forEach((DocumentSnapshot document) {
+        Review review = new Review();
+        review.assimilate(document);
+        reviews.add(review);
+      });
+      yield reviews;
     }
-  }*/
+  }
 
-  Future<void> saveReuqest(Book book) async {
+  Future<void> saveRequest(Book book) async {
     Map<String, dynamic> mapAuthors = Map<String, dynamic>();
     for (int i = 0; i < book.authors.length; i++) {
       mapAuthors.putIfAbsent('author$i', () => book.authors[i].toString());
     }
-    String userId=await authService.getUserId();
+    String userId = await authService.getUserId();
     _collectionRequests.document('${book.isbn}_$userId').setData({
       "user": userId,
       "isbn": book.isbn,
@@ -79,7 +71,25 @@ class _BookControl {
       "price": book.price,
       "releaseDate": book.releaseDate,
       "authors": mapAuthors,
-      "pending":true,
+      "pending": true,
+    });
+  }
+
+  Future<void> saveReview(Review review, String isbn) async {
+    String userId = await authService.getUserId();
+    //String userName = await authService.getUserName();
+    String userName = "Aaaaaa Bbbbbbb";
+    List<String> strings = userName.split(' ');
+    String initials = strings.removeAt(0)[0] + strings.removeLast()[0];
+    _collectionBook
+        .document(isbn)
+        .collection('reviews')
+        .document('review_$userId')
+        .setData({
+      "date": DateTime.now(),
+      "score": review.score,
+      "text": review.text,
+      "user": initials,
     });
   }
 
