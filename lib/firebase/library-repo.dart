@@ -58,9 +58,10 @@ class _LibraryControl {
   }
 
   Future<String> uploadFile(File image) async {
+    String uid = await authService.getUserId();
     StorageReference ref = FirebaseStorage.instance
         .ref()
-        .child("libraries/${authService.userId}/${basename(image.path)}");
+        .child("libraries/$uid/${basename(image.path)}");
     StorageUploadTask uploadTask = ref.putFile(image);
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }

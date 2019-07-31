@@ -4,18 +4,18 @@ class LoadingSpinner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[300].withOpacity(0.5),
-      child: Center(
-        child: Theme(
-          child: SizedBox(
-            width: 70,
-            height: 70,
-            child: CircularProgressIndicator(
-              strokeWidth: 10.0,
-            ),
+      width: 90,
+      height: 130,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            title: Text("Saving new library",style: TextStyle(fontSize: 18),),
           ),
-          data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
-        ),
+          ListTile(
+            leading: CircularProgressIndicator(),
+            title: Text("please wait..."),
+          )
+        ],
       ),
     );
   }
