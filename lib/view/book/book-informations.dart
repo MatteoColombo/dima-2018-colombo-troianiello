@@ -68,7 +68,7 @@ class BookInformations extends StatelessWidget {
         children: <Widget>[
           Text(
             Localization.of(context).title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
           Text(book.title),
           Divider(
@@ -76,7 +76,7 @@ class BookInformations extends StatelessWidget {
           ),
           Text(
             Localization.of(context).authors,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
           Column(children: _buildAuthorsSection(book.authors)),
         ],
@@ -96,7 +96,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Divider(),
             Text(Localization.of(context).description,
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
             _buildDescSection(context, book),
             _buildSecondaryInformation(context, book),
           ],
@@ -112,7 +112,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).publisher + ':',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
             ),
             Text(book.publisher),
           ],
@@ -125,7 +125,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).releaseDate + ': ',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
             ),
             Text(DateFormat('EEEE, d MMMM y').format(book.releaseDate)),
           ],
@@ -138,7 +138,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).pages + ':',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
             ),
             Text(book.pages.toString()),
           ],
@@ -151,7 +151,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).edition + ':',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
             ),
             Text(book.edition),
           ],
@@ -164,7 +164,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).price + ':',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
             ),
             Text(book.price),
           ],
@@ -177,7 +177,7 @@ class BookInformations extends StatelessWidget {
           children: <Widget>[
             Text(
               Localization.of(context).isbn + ':',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
             ),
             Text(book.isbn),
           ],

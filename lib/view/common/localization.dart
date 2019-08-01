@@ -158,6 +158,41 @@ class Localization {
       name: 'labelLoadImg',
     );
   }
+
+  String get reviews{
+    return Intl.message(
+      'Reviews',
+      name: 'reviews',
+    );
+  }
+
+  String get otherReviews{
+    return Intl.message(
+      'Other reviews',
+      name: 'otherReviews',
+    );
+  }
+
+  String get publish{
+    return Intl.message(
+      'Publish',
+      name: 'publish',
+    );
+  }
+
+  String get allReviews{
+    return Intl.message(
+      'All',
+      name: 'allReviews',
+    );
+  }
+
+  String get hintReview{
+    return Intl.message(
+      'Write a review',
+      name: 'hintReview',
+    );
+  }
 }
 
 class LocalizationDelegate extends LocalizationsDelegate<Localization> {

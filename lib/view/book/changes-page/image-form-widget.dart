@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import '../common/localization.dart';
+import '../../common/localization.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../model/book.model.dart';
+import '../../../model/book.model.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-06-13T12:32:49.882275",
+  "@@last_modified": "2019-08-01T16:44:15.365651",
   "title": "Title",
   "@title": {
     "type": "text",
@@ -97,6 +97,31 @@
   },
   "labelLoadImg": "Load a image",
   "@labelLoadImg": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "reviews": "Reviews",
+  "@reviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "otherReviews": "Other reviews",
+  "@otherReviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publish": "Publish",
+  "@publish": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "allReviews": "All",
+  "@allReviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintReview": "Write a review",
+  "@hintReview": {
     "type": "text",
     "placeholders": {}
   }
