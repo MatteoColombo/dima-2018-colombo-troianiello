@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../model/library.model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,20 +6,23 @@ import 'dart:io';
 import '../../firebase/library-repo.dart';
 import '../common/loading-spinner.dart';
 
-class NewLibrary extends StatefulWidget {
-  NewLibrary({Key key}) : super(key: key);
+class EditLibrary extends StatefulWidget {
+  EditLibrary({Key key, this.library}) : super(key: key);
+  final Library library;
 
-  _NewLibraryState createState() => _NewLibraryState();
+  _EditLibraryState createState() => _EditLibraryState(library);
 }
 
-class _NewLibraryState extends State<NewLibrary> {
+class _EditLibraryState extends State<EditLibrary> {
   bool _favourite = false;
   File _image;
   TextEditingController _controller;
   bool _saving = false;
+  Library _library;
 
-  _NewLibraryState() {
-    _controller = TextEditingController(text: "");
+  _EditLibraryState(this._library) {
+    _controller = TextEditingController(text: _library.name);
+    _favourite = _library.isFavourite;
   }
 
   @override
@@ -63,14 +67,17 @@ class _NewLibraryState extends State<NewLibrary> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      if (_image != null)
+                      if (_image != null || _library.image != null)
                         IconButton(
                           icon: Icon(Icons.delete),
                           iconSize: 24,
                           onPressed: () {
-                            setState(() {
+                            if (_image != null) {
                               _image = null;
-                            });
+                            } else if (_library.image != null) {
+                              _library.image = null;
+                            }
+                            setState(() {});
                           },
                         ),
                       IconButton(
@@ -118,7 +125,7 @@ class _NewLibraryState extends State<NewLibrary> {
               FlatButton(
                 onPressed:
                     _controller.text.length == 0 ? null : () => _handleSave(),
-                child: Text("CREATE"),
+                child: Text("SAVE"),
               )
             ],
           ),
@@ -143,17 +150,25 @@ class _NewLibraryState extends State<NewLibrary> {
     }
   }
 
-  Image _getImage(double width) {
-    if (_image == null)
+  Widget _getImage(double width) {
+    if (_image != null) {
+      return Image.file(
+        _image,
+        height: width,
+        fit: BoxFit.cover,
+      );
+    } else if (_library.image != null) {
+      return CachedNetworkImage(
+        height: width,
+        fit: BoxFit.cover,
+        imageUrl: _library.image,
+      );
+    } else {
       return Image.asset(
         "assets/images/library.jpeg",
         fit: BoxFit.cover,
       );
-    return Image.file(
-      _image,
-      height: width,
-      fit: BoxFit.cover,
-    );
+    }
   }
 
   Future _handleSave() async {
@@ -169,15 +184,17 @@ class _NewLibraryState extends State<NewLibrary> {
   }
 
   Future _saveLibrary(String imageUrl) async {
-    Library lib = new Library(
-      image: imageUrl ?? null,
-      name: _controller.text,
-      isFavourite: _favourite,
-    );
+    Library lib = new Library();
+    lib.reference = _library.reference;
+    lib.bookCount = _library.bookCount;
+    lib.name = _controller.text;
+    lib.isFavourite = _favourite;
+    lib.image = imageUrl ?? _library.image;
     await libManager.saveLibrary(lib);
     setState(() {
       _saving = false;
     });
+
     Navigator.of(context).pop();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/library/edit-library.dart';
 import 'package:flutter/material.dart';
 import '../../firebase/library-repo.dart';
 import './library-options.dart';
@@ -43,16 +44,24 @@ class LibraryList extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 8.0, top: 16, right: 8.0),
+                            left: 8.0, top: 16, right: 0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: l.image != null
-                              ? Image.network(
-                                  l.image,
-                                  alignment: Alignment.center,
+                              ? CachedNetworkImage(
                                   width: 90,
                                   height: 90,
                                   fit: BoxFit.cover,
+                                  imageUrl: l.image,
+                                  placeholder: (context, _) => Container(
+                                    width: 90,
+                                    height: 90,
+                                    alignment: Alignment.center,
+                                    child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CircularProgressIndicator()),
+                                  ),
                                 )
                               : Image.asset(
                                   "assets/images/library.jpeg",
@@ -68,7 +77,7 @@ class LibraryList extends StatelessWidget {
                           children: <Widget>[
                             ListTile(
                               trailing: IconButton(
-                                onPressed: () => null,
+                                onPressed: () => _changeFavouriteState(l),
                                 iconSize: 32,
                                 icon: Icon(
                                   l.isFavourite
@@ -77,22 +86,58 @@ class LibraryList extends StatelessWidget {
                                 ),
                               ),
                               title: Text(l.name),
-                              subtitle: Text('Contiene 22 libri'),
+                              subtitle:
+                                  Text('Contiene ${l.bookCount ?? 0} libri'),
                             ),
                             ButtonTheme.bar(
                               padding: EdgeInsets.zero,
                               // make buttons use the appropriate styles for cards
                               child: ButtonBar(
-                                
                                 children: <Widget>[
-                                  FlatButton(
-                                    child: const Text('OPEN'),
-                                    onPressed: () {/* ... */},
-                                  ),
-                                  FlatButton(
-                                    child: const Text('EDIT'),
-                                    onPressed: () {/* ... */},
-                                  ),
+                                  IconTheme(
+                                    data:
+                                        IconThemeData(color: Colors.grey[500]),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 16, bottom: 2),
+                                      child: PopupMenuButton(
+                                        onSelected: (val) =>
+                                            _handleCardMenu(val, l, context),
+                                        itemBuilder: (context) {
+                                          return [
+                                            PopupMenuItem(
+                                              value: 0,
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 16),
+                                                    child: Icon(Icons.edit),
+                                                  ),
+                                                  Text("Edit Library")
+                                                ],
+                                              ),
+                                            ),
+                                            PopupMenuItem(
+                                              value: 1,
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 16),
+                                                    child: Icon(Icons.delete),
+                                                  ),
+                                                  Text("Delete Library")
+                                                ],
+                                              ),
+                                            ),
+                                          ];
+                                        },
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -109,68 +154,27 @@ class LibraryList extends StatelessWidget {
       },
     );
   }
-}
 
-class LibraryListItem extends StatelessWidget {
-  LibraryListItem(this._library);
-
-  final Library _library;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(_library.name),
-      leading: _library.image != null
-          ? CachedNetworkImage(
-              width: 50,
-              height: 50,
-              fit: BoxFit.fitWidth,
-              imageUrl: _library.image,
-              placeholder: (context, url) => Theme(
-                  data:
-                      Theme.of(context).copyWith(accentColor: Colors.grey[400]),
-                  child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => Image.asset(
-                  "assets/images/library.jpeg",
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.fitHeight),
-            )
-          : Image.asset(
-              "assets/images/library.jpeg",
-              width: 50,
-              height: 50,
-              fit: BoxFit.fitHeight,
-            ),
-      trailing: IconButton(
-        icon: Icon(
-          _library.isFavourite ? Icons.star : Icons.star_border,
-          color: Colors.red,
+  _handleCardMenu(int val, Library lib, BuildContext context) async {
+    print(lib);
+    if (val == 0) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => EditLibrary(
+          library: lib,
         ),
-        onPressed: () => libManager.updateFavouritePreference(
-            _library.reference, !_library.isFavourite),
-      ),
-      onLongPress: () =>
-          OptionsDialog().showOptionsDialog(context).then((LibraryOption res) {
-        if (res == LibraryOption.Delete) {
-          ConfirmDialog()
-              .instance(context, "Vuoi cancellare la libreria?")
-              .then((bool answer) {
-            if (answer) {
-              libManager.deleteLibrary(_library);
-            }
-          });
-        } else if (res == LibraryOption.Edit) {
-          /*Navigator.push(
-            context,
-            /MaterialPageRoute(
-                builder: (BuildContext context) => EditLibrary(
-                      isNew: false,
-                      library: _library,
-                    )),
-          );*/
-        }
-      }),
-    );
+      );
+    } else if (val == 1) {
+      bool confirm = await ConfirmDialog().instance(context, "Are you sure?");
+      if (confirm ?? false) {
+        libManager.deleteLibrary(lib);
+      }
+    }
+  }
+
+  _changeFavouriteState(Library library) {
+    libManager.updateFavouritePreference(
+        library.reference, !library.isFavourite);
   }
 }

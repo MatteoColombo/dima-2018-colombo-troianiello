@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './view/common/localization.dart';
 
@@ -38,11 +39,14 @@ class MainWidgetManager extends StatelessWidget {
     return StreamBuilder<FirebaseUser>(
       stream: authService.auth.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
-        if (snapshot.hasData) {
-          return MainActivity();
-        } else {
-          return LoginPage();
-        }
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasData) {
+            return MainActivity();
+          } else {
+            return LoginPage();
+          }
+        } else
+          return Splash();
       },
     );
   }

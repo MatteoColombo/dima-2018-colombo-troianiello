@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/view/library/new-library.dart';
 import 'package:dima2018_colombo_troianiello/view/library/library-list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,7 @@ class MainActivity extends StatefulWidget {
 
 class _MainActivityState extends State<MainActivity> {
   FirebaseUser _user;
+  String _initials;
 
   _MainActivityState() {
     _initUser();
@@ -18,6 +20,12 @@ class _MainActivityState extends State<MainActivity> {
 
   _initUser() async {
     _user = await authService.getUser();
+    List<String> name = _user.displayName.split(" ");
+    print(name);
+    _initials = name.first.substring(0, 1).toUpperCase() +
+        name.last.substring(0, 1).toUpperCase();
+    print(_user.photoUrl);
+    print(_initials);
     setState(() {});
   }
 
@@ -51,14 +59,31 @@ class _MainActivityState extends State<MainActivity> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text("${_user?.displayName}"),
-            accountEmail: Text("${_user?.email}"),
-            currentAccountPicture: _user != null
-                ? CircleAvatar(
-                    backgroundImage: NetworkImage(_user?.photoUrl),
-                  )
-                : null,
-          ),
+              accountName: Text("${_user?.displayName}"),
+              accountEmail: Text("${_user?.email}"),
+              currentAccountPicture: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: CachedNetworkImage(
+                  width: 40,
+                  height: 40,
+                  placeholder: (context, _) => Container(
+                    color: Colors.green,
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Text(
+                      _initials,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          color: Colors.white),
+                    ),
+                  ),
+                  imageUrl: _user != null && _user.photoUrl != null
+                      ? _user.photoUrl
+                      : "",
+                ),
+              )),
           ListTile(
             leading: Icon(
               MdiIcons.settings,
