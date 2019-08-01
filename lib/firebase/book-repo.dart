@@ -92,6 +92,7 @@ class _BookControl {
       "score": review.score,
       "text": review.text,
       "user": initials,
+      "userId": userId,
     });
   }
 

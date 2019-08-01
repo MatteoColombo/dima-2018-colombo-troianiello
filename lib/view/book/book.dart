@@ -1,9 +1,9 @@
 import 'package:dima2018_colombo_troianiello/view/book/book-informations.dart';
 
-import './reviews-widget.dart';
+import './reviews-page/reviews-widget.dart';
 import '../../model/book.model.dart';
 import 'package:flutter/material.dart';
-import './entry-dialog.dart';
+import './changes-page/entry-dialog.dart';
 import '../../firebase/book-repo.dart';
 import '../common/localization.dart';
 
