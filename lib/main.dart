@@ -37,7 +37,7 @@ class MainWidgetManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<FirebaseUser>(
-      stream: authService.auth.onAuthStateChanged,
+      stream: authService.getAuthStateChanges(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
@@ -45,8 +45,9 @@ class MainWidgetManager extends StatelessWidget {
           } else {
             return LoginPage();
           }
-        } else
+        } else {
           return Splash();
+        }
       },
     );
   }

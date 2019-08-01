@@ -18,15 +18,11 @@ class _MainActivityState extends State<MainActivity> {
     _initUser();
   }
 
-  _initUser() async {
-    _user = await authService.getUser();
+  _initUser() {
+    _user = authService.getUser();
     List<String> name = _user.displayName.split(" ");
-    print(name);
     _initials = name.first.substring(0, 1).toUpperCase() +
         name.last.substring(0, 1).toUpperCase();
-    print(_user.photoUrl);
-    print(_initials);
-    setState(() {});
   }
 
   @override

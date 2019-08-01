@@ -3,13 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class _AuthService {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   Firestore _db = Firestore.instance;
   FirebaseUser _user;
 
   Future<FirebaseUser> handleLogin() async {
-    print("called");
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -19,12 +18,22 @@ class _AuthService {
         idToken: googleAuth.idToken,
       );
       final FirebaseUser user =
-          (await auth.signInWithCredential(credential)).user;
+          (await _auth.signInWithCredential(credential)).user;
       _user = user;
       updateUserDate(user);
       return user;
     } catch (e) {
       return null;
+    }
+  }
+
+  Stream<FirebaseUser> getAuthStateChanges() async* {
+    Stream<FirebaseUser> user = _auth.onAuthStateChanged;
+    await for (FirebaseUser u in user) {
+      if (u != null) {
+        _user = u;
+      }
+      yield u;
     }
   }
 
@@ -40,30 +49,15 @@ class _AuthService {
   }
 
   signOut() {
-    auth.signOut();
+    _auth.signOut();
     _googleSignIn.signOut();
   }
 
-  Future<String> getUserId() async {
-    if (_user == null) {
-      _user = await auth.currentUser();
-    }
-    return _user.uid;
-  }
+  String getUserId() => _user.uid;
 
-  Future<String> getUserName() async {
-    if (_user == null) {
-      _user = await auth.currentUser();
-    }
-    return _user.displayName;
-  }
+  String getUserName() => _user.displayName;
 
-  Future<FirebaseUser> getUser() async {
-    if (_user == null) {
-      _user = await auth.currentUser();
-    }
-    return _user;
-  }
+  FirebaseUser getUser() => _user;
 }
 
 final _AuthService authService = _AuthService();

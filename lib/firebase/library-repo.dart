@@ -9,7 +9,7 @@ class _LibraryControl {
   CollectionReference _db = Firestore.instance.collection("libraries");
 
   Stream<List<Library>> getLibraryStream() async* {
-    String userId = await authService.getUserId();
+    String userId = authService.getUserId();
     Stream<QuerySnapshot> source =
         _db.where("uid", isEqualTo: userId).snapshots();
 
@@ -41,14 +41,14 @@ class _LibraryControl {
         "name": lib.name,
         "isFavourite": lib.isFavourite,
         "image": lib.image,
-        "uid": await authService.getUserId()
+        "uid": authService.getUserId()
       });
     } else {
       return _db.document(lib.reference.documentID).updateData({
         "name": lib.name,
         "isFavourite": lib.isFavourite,
         "image": lib.image,
-        "uid": await authService.getUserId()
+        "uid": authService.getUserId()
       });
     }
   }
@@ -58,7 +58,7 @@ class _LibraryControl {
   }
 
   Future<String> uploadFile(File image) async {
-    String uid = await authService.getUserId();
+    String uid = authService.getUserId();
     StorageReference ref = FirebaseStorage.instance
         .ref()
         .child("libraries/$uid/${basename(image.path)}");

@@ -4,7 +4,11 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("loading"),
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
