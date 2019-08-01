@@ -100,5 +100,30 @@
   "@labelLoadImg": {
     "type": "text",
     "placeholders": {}
+  },
+  "reviews": "Recensioni",
+  "@reviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "otherReviews": "Altre recensioni",
+  "@otherReviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publish": "Pubblica",
+  "@publish": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "allReviews": "Tutte",
+  "@allReviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintReview": "Scrivi una recensione",
+  "@hintReview": {
+    "type": "text",
+    "placeholders": {}
   }
 }

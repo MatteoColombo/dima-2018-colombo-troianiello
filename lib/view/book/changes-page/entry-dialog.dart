@@ -1,10 +1,10 @@
-import '../book/image-form-widget.dart';
-import '../common/localization.dart';
+import './image-form-widget.dart';
+import '../../common/localization.dart';
 import 'package:flutter/material.dart';
-import '../common/date-picker.dart';
-import '../../model/book.model.dart';
+import '../../common/date-picker.dart';
+import '../../../model/book.model.dart';
 import './authors-section.dart';
-import './../../firebase/book-repo.dart';
+import './../../../firebase/book-repo.dart';
 import 'dart:io';
 
 class AddEntryDialog extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../../model/author.model.dart';
-import '../common/localization.dart';
+import '../../../model/author.model.dart';
+import '../../common/localization.dart';
 
 class AuthorsSectionWidget extends StatefulWidget {
   final List<Author> authors;
