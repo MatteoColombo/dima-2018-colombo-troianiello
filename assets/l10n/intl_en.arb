@@ -100,5 +100,30 @@
   "@labelLoadImg": {
     "type": "text",
     "placeholders": {}
+  },
+  "reviews": "Reviews",
+  "@reviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "otherReviews": "Other reviews",
+  "@otherReviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "publish": "Publish",
+  "@publish": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "allReviews": "All",
+  "@allReviews": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "hintReview": "Write a review",
+  "@hintReview": {
+    "type": "text",
+    "placeholders": {}
   }
 }

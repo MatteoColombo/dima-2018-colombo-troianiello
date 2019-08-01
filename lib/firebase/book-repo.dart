@@ -48,6 +48,9 @@ class _BookControl {
         review.assimilate(document);
         reviews.add(review);
       });
+      reviews.sort((a,b){
+        return -(a.date.compareTo(b.date));
+      });
       yield reviews;
     }
   }
@@ -77,8 +80,7 @@ class _BookControl {
 
   Future<void> saveReview(Review review, String isbn) async {
     String userId = await authService.getUserId();
-    //String userName = await authService.getUserName();
-    String userName = "Aaaaaa Bbbbbbb";
+    String userName = await authService.getUserName();
     List<String> strings = userName.split(' ');
     String initials = strings.removeAt(0)[0] + strings.removeLast()[0];
     _collectionBook
