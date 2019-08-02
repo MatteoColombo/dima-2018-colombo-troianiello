@@ -35,7 +35,7 @@ class _EditLibraryState extends State<EditLibrary> {
   Widget build(BuildContext context) {
     Widget child;
     if (_saving)
-      child = LoadingSpinner();
+      child = LoadingSpinner("Saving library");
     else
       child = _getDialog();
     return Dialog(
@@ -185,7 +185,7 @@ class _EditLibraryState extends State<EditLibrary> {
 
   Future _saveLibrary(String imageUrl) async {
     Library lib = new Library();
-    lib.reference = _library.reference;
+    lib.id = _library.id;
     lib.bookCount = _library.bookCount;
     lib.name = _controller.text;
     lib.isFavourite = _favourite;

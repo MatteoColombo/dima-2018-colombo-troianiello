@@ -1,8 +1,7 @@
+import 'package:dima2018_colombo_troianiello/view/library/book-list.dart';
 import 'package:dima2018_colombo_troianiello/view/library/edit-library.dart';
 import 'package:flutter/material.dart';
 import '../../firebase/library-repo.dart';
-import './library-options.dart';
-import './list-options-enum.dart';
 import '../../model/library.model.dart';
 import '../common/confirm-dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -36,115 +35,124 @@ class LibraryList extends StatelessWidget {
               padding: EdgeInsets.all(8),
               itemBuilder: (context, i) {
                 Library l = libraries[i];
-                return Card(
-                  elevation: 8,
-                  margin: EdgeInsets.all(8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8.0, top: 16, right: 0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: l.image != null
-                              ? CachedNetworkImage(
-                                  width: 90,
-                                  height: 90,
-                                  fit: BoxFit.cover,
-                                  imageUrl: l.image,
-                                  placeholder: (context, _) => Container(
-                                    width: 90,
-                                    height: 90,
-                                    alignment: Alignment.center,
-                                    child: SizedBox(
-                                        width: 40,
-                                        height: 40,
-                                        child: CircularProgressIndicator()),
-                                  ),
-                                )
-                              : Image.asset(
-                                  "assets/images/library.jpeg",
-                                  width: 90,
-                                  height: 90,
-                                  fit: BoxFit.cover,
-                                ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              trailing: IconButton(
-                                onPressed: () => _changeFavouriteState(l),
-                                iconSize: 32,
-                                icon: Icon(
-                                  l.isFavourite
-                                      ? Icons.star
-                                      : Icons.star_border,
-                                ),
-                              ),
-                              title: Text(l.name),
-                              subtitle:
-                                  Text('Contiene ${l.bookCount ?? 0} libri'),
-                            ),
-                            ButtonTheme.bar(
-                              padding: EdgeInsets.zero,
-                              // make buttons use the appropriate styles for cards
-                              child: ButtonBar(
-                                children: <Widget>[
-                                  IconTheme(
-                                    data:
-                                        IconThemeData(color: Colors.grey[500]),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 16, bottom: 2),
-                                      child: PopupMenuButton(
-                                        onSelected: (val) =>
-                                            _handleCardMenu(val, l, context),
-                                        itemBuilder: (context) {
-                                          return [
-                                            PopupMenuItem(
-                                              value: 0,
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 16),
-                                                    child: Icon(Icons.edit),
-                                                  ),
-                                                  Text("Edit Library")
-                                                ],
-                                              ),
-                                            ),
-                                            PopupMenuItem(
-                                              value: 1,
-                                              child: Row(
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 16),
-                                                    child: Icon(Icons.delete),
-                                                  ),
-                                                  Text("Delete Library")
-                                                ],
-                                              ),
-                                            ),
-                                          ];
-                                        },
+                return InkWell(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => BookList(
+                            library: l,
+                          ))),
+                  child: Card(
+                    elevation: 8,
+                    margin: EdgeInsets.all(8),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 8.0, top: 16, right: 0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Hero(
+                              child: l.image != null
+                                  ? CachedNetworkImage(
+                                      width: 90,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                      imageUrl: l.image,
+                                      placeholder: (context, _) => Container(
+                                        width: 90,
+                                        height: 90,
+                                        alignment: Alignment.center,
+                                        child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child: CircularProgressIndicator()),
                                       ),
+                                    )
+                                  : Image.asset(
+                                      "assets/images/library.jpeg",
+                                      width: 90,
+                                      height: 90,
+                                      fit: BoxFit.cover,
                                     ),
-                                  )
-                                ],
-                              ),
+                              tag: l.id,
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                trailing: IconButton(
+                                  onPressed: () => _changeFavouriteState(l),
+                                  iconSize: 32,
+                                  icon: Icon(
+                                    l.isFavourite
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                  ),
+                                ),
+                                title: Text(l.name),
+                                subtitle:
+                                    Text('Contiene ${l.bookCount ?? 0} libri'),
+                              ),
+                              ButtonTheme.bar(
+                                padding: EdgeInsets.zero,
+                                // make buttons use the appropriate styles for cards
+                                child: ButtonBar(
+                                  children: <Widget>[
+                                    IconTheme(
+                                      data: IconThemeData(
+                                          color: Colors.grey[500]),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 16, bottom: 2),
+                                        child: PopupMenuButton(
+                                          onSelected: (val) =>
+                                              _handleCardMenu(val, l, context),
+                                          itemBuilder: (context) {
+                                            return [
+                                              PopupMenuItem(
+                                                value: 0,
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 16),
+                                                      child: Icon(Icons.edit),
+                                                    ),
+                                                    Text("Edit Library")
+                                                  ],
+                                                ),
+                                              ),
+                                              PopupMenuItem(
+                                                value: 1,
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 16),
+                                                      child: Icon(Icons.delete),
+                                                    ),
+                                                    Text("Delete Library")
+                                                  ],
+                                                ),
+                                              ),
+                                            ];
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -175,6 +183,6 @@ class LibraryList extends StatelessWidget {
 
   _changeFavouriteState(Library library) {
     libManager.updateFavouritePreference(
-        library.reference, !library.isFavourite);
+        library.id, !library.isFavourite);
   }
 }
