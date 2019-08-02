@@ -33,6 +33,18 @@ class _ReviewsSectionState extends State<ReviewsSection> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: bookManager.getOtherReviews(widget.isbn),
+      builder: (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
+        if (!snapshot.hasData)
+          return Container();
+        else
+          return _build(context, snapshot.data);
+      },
+    );
+  }
+
+  Widget _build(BuildContext context, List<Review> reviews) {
     return Column(
       children: <Widget>[
         ListTile(
@@ -41,7 +53,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             Localization.of(context).otherReviews,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 15.0,
+              fontSize: 17.0,
             ),
           ),
         ),
@@ -54,35 +66,21 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ],
           ),
         ),
-        _build(context),
+        ..._buildReviews(reviews.where(_functionSelected).toList()),
       ],
     );
   }
 
-  Widget _build(BuildContext context) {
-    return StreamBuilder(
-      stream: bookManager.getReviews(widget.isbn),
-      builder: (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
-        if (!snapshot.hasData)
-          return Center(
-            child: Theme(
-              data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
-              child: CircularProgressIndicator(),
-            ),
-          );
-        else {
-          return _buildReviews(snapshot.data.where(_functionSelected).toList());
-        }
-      },
-    );
-  }
-
-  Widget _buildReviews(List<Review> reviews) {
+  List<Widget> _buildReviews(List<Review> reviews) {
+    reviews.sort((a, b) {
+      return -(a.date.compareTo(b.date));
+    });
     List<Widget> reviewsBlock = new List<Widget>();
     for (Review review in reviews) {
       reviewsBlock.add(Divider());
-      reviewsBlock.add(ListTile(
-        title: Column(
+      reviewsBlock.add(Padding(
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ListTile(
@@ -114,29 +112,23 @@ class _ReviewsSectionState extends State<ReviewsSection> {
               ),
               subtitle: Text(DateFormat(' d MMMM y').format(review.date)),
             ),
-            Text(
-              '"' + review.text + '"',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
+            if (review.text.length != 0)
+              Text(
+                '"' + review.text + '"',
+                style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16.0),
+              ),
           ],
         ),
       ));
     }
-    return Column(
-      children: <Widget>[
-        ...reviewsBlock,
-        Divider(
-          color: Colors.transparent,
-        )
-      ],
-    );
+    return reviewsBlock;
   }
 
   List<Widget> _buildFilterSection() {
     List<Widget> _filters = new List<Widget>();
     _filters.add(
       Container(
-        padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
         child: ChoiceChip(
           elevation: 5.0,
           label: Text(Localization.of(context).allReviews.toUpperCase()),
@@ -162,7 +154,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     for (int i = 5; i > 0; i--)
       _filters.add(
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
           child: ChoiceChip(
             elevation: 5.0,
             label: Row(

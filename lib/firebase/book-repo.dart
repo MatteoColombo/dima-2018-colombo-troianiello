@@ -37,22 +37,30 @@ class _BookControl {
     }
   }
 
-  Stream<List<Review>> getReviews(String isbn) async* {
-    List<Review> reviews;
-    Stream<QuerySnapshot> reviewsSnapshot =
-        _collectionBook.document(isbn).collection("reviews").snapshots();
-    await for (QuerySnapshot result in reviewsSnapshot) {
-      reviews = new List<Review>();
-      result.documents.forEach((DocumentSnapshot document) {
-        Review review = new Review();
-        review.assimilate(document);
-        reviews.add(review);
-      });
-      reviews.sort((a,b){
-        return -(a.date.compareTo(b.date));
-      });
-      yield reviews;
+  Future<Review> getUserReview(String isbn) async {
+    DocumentSnapshot document = await _collectionBook
+        .document(isbn)
+        .collection("reviews")
+        .document('review_${authService.getUserId()}')
+        .get();
+    Review review = new Review();
+    if (document.exists) review.assimilate(document);
+    return review;
+  }
+
+  Future<List<Review>> getOtherReviews(String isbn) async {
+    List<Review> reviews = new List<Review>();
+    QuerySnapshot reviewsSnapshot = await _collectionBook
+        .document(isbn)
+        .collection("reviews")
+        .getDocuments();
+    for (DocumentSnapshot document in reviewsSnapshot.documents) {
+      Review review = new Review();
+      review.assimilate(document);
+      reviews.add(review);
     }
+    reviews= reviews.where((review) =>review.userId!=authService.getUserId()).toList();
+    return reviews;
   }
 
   Future<void> saveRequest(Book book) async {
@@ -60,7 +68,7 @@ class _BookControl {
     for (int i = 0; i < book.authors.length; i++) {
       mapAuthors.putIfAbsent('author$i', () => book.authors[i].toString());
     }
-    String userId = await authService.getUserId();
+    String userId = authService.getUserId();
     _collectionRequests.document('${book.isbn}_$userId').setData({
       "user": userId,
       "isbn": book.isbn,
@@ -78,12 +86,12 @@ class _BookControl {
     });
   }
 
-  Future<void> saveReview(Review review, String isbn) async {
-    String userId = await authService.getUserId();
-    String userName = await authService.getUserName();
+  Future<Review> saveReview(Review review, String isbn) async {
+    String userId = authService.getUserId();
+    String userName = authService.getUserName();
     List<String> strings = userName.split(' ');
     String initials = strings.removeAt(0)[0] + strings.removeLast()[0];
-    _collectionBook
+    await _collectionBook
         .document(isbn)
         .collection('reviews')
         .document('review_$userId')
@@ -94,6 +102,7 @@ class _BookControl {
       "user": initials,
       "userId": userId,
     });
+    return this.getUserReview(isbn);
   }
 
   Future<String> uploadFile(File image) async {
