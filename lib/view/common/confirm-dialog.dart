@@ -11,12 +11,12 @@ class ConfirmDialog {
               ButtonBar(
                 children: <Widget>[
                   FlatButton(
-                    child: Text("annulla"),
+                    child: Text("ANNULLA"),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
-                    child: Text("Sì"),
+                    child: Text("SÌ"),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],
