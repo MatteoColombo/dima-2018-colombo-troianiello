@@ -31,7 +31,7 @@ class _NewLibraryState extends State<NewLibrary> {
   Widget build(BuildContext context) {
     Widget child;
     if (_saving)
-      child = LoadingSpinner();
+      child = LoadingSpinner("Saving library");
     else
       child = _getDialog();
     return Dialog(

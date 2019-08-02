@@ -4,7 +4,7 @@ class Library {
   Library({
     this.name,
     this.isFavourite,
-    this.reference,
+    this.id,
     this.image,
     this.bookCount,
   });
@@ -12,13 +12,13 @@ class Library {
   bool isFavourite;
   String image;
   int bookCount;
-  DocumentReference reference;
+  String id;
 
   assimilate(DocumentSnapshot snap) {
     name = snap['name'];
     isFavourite = snap['isFavourite'] ?? false;
     image = snap['image'];
     bookCount = snap['bookCount'] ?? 0;
-    reference = snap.reference;
+    id = snap.documentID;
   }
 }
