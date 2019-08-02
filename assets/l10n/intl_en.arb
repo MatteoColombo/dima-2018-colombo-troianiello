@@ -101,8 +101,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "reviews": "Reviews",
-  "@reviews": {
+  "review": "Your review",
+  "@review": {
     "type": "text",
     "placeholders": {}
   },
@@ -121,7 +121,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "hintReview": "Write a review",
+  "hintReview": "Write a review (optional)",
   "@hintReview": {
     "type": "text",
     "placeholders": {}

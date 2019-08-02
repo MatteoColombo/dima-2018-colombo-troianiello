@@ -8,18 +8,22 @@ class Review {
   DateTime date;
 
   Review() {
-    userId = "";
-    user = "";
-    text = "";
+    userId = null;
+    user = null;
+    text = null;
     score = 1;
     date = null;
   }
 
-  assimilate(DocumentSnapshot snap) {
+  void assimilate(DocumentSnapshot snap) {
     user = snap['user'];
     userId = snap['userId'];
     text = snap['text'];
     score = snap['score'];
     date = snap['date'].toDate();
+  }
+
+  bool isEmpty(){
+    return this.user==null;
   }
 }

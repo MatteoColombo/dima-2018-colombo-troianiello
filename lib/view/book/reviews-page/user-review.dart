@@ -5,73 +5,187 @@ import '../../../firebase/book-repo.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../common/localization.dart';
 
-class UserReviewSection extends StatefulWidget {
+class UserReviewSection extends StatelessWidget {
   final String isbn;
   final bool addBook;
-  final Review review;
   UserReviewSection({
     @required this.isbn,
     @required this.addBook,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: bookManager.getUserReview(isbn),
+        builder: (BuildContext context, AsyncSnapshot<Review> snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: Theme(
+                data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          else {
+            return _UserReviewSection(
+              review: snapshot.data,
+              isbn: isbn,
+              addBook: addBook,
+            );
+          }
+        });
+  }
+}
+
+class _UserReviewSection extends StatefulWidget {
+  final String isbn;
+  final bool addBook;
+  final Review review;
+  _UserReviewSection({
     @required this.review,
+    @required this.isbn,
+    @required this.addBook,
   });
 
   @override
   _UserReviewSectionState createState() => new _UserReviewSectionState();
 }
 
-class _UserReviewSectionState extends State<UserReviewSection> {
-  Review newReview;
+class _UserReviewSectionState extends State<_UserReviewSection> {
+  Review review;
+  bool isModifyMode;
+  bool isNotInitialMode;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    newReview = Review();
+    review = widget.review;
+    isNotInitialMode = false;
+    isModifyMode = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (review.isEmpty())
+      isNotInitialMode = false;
+    else {
+      isNotInitialMode = true;
+    }
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                Localization.of(context).review,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22.0,
+                ),
+              ),
+              if (isNotInitialMode)
+                isModifyMode
+                    ? IconButton(
+                        padding: const EdgeInsets.all(0.0),
+                        icon: Icon(Icons.close),
+                        onPressed: () => setState(() => isModifyMode = false),
+                      )
+                    : IconButton(
+                        padding: const EdgeInsets.all(0.0),
+                        icon: Icon(Icons.edit),
+                        onPressed: () => setState(() => isModifyMode = true),
+                      ),
+            ],
+          ),
+        ),
+        if (!isNotInitialMode)
+          _buildForm(context)
+        else if (isModifyMode)
+          _buildForm(context)
+        else
+          _buildReview(context),
+      ],
+    );
+  }
+
+  Widget _buildReview(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(0.0),
+            leading: Stack(
+              children: [
+                CircleAvatar(
+                  child: Text(
+                    review.user,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(140, 0, 50, 1),
+                  radius: 25,
+                ),
+              ],
+            ),
+            title: FlutterRatingBar(
+              allowHalfRating: false,
+              itemCount: 5,
+              initialRating: review.score.toDouble(),
+              fillColor: Colors.grey,
+              borderColor: Colors.grey,
+              itemSize: 15.0,
+              ignoreGestures: true,
+              onRatingUpdate: (v) {},
+            ),
+            subtitle: Text(DateFormat(' d MMMM y').format(review.date)),
+          ),
+          if (review.text.length != 0)
+            Text(
+              '"' + review.text + '"',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontSize: 16.0,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
-          ListTile(
-            title: Text(
-              Localization.of(context).reviews,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
-            ),
-          ),
           FlutterRatingBar(
             allowHalfRating: false,
             onRatingUpdate: (v) {
               setState(() {
-                newReview.score = v.toInt();
+                review.score = v.toInt();
               });
             },
             itemCount: 5,
-            initialRating: newReview.score.toDouble(),
+            initialRating: review.score.toDouble(),
             fillColor: Colors.grey,
             borderColor: Colors.grey,
             itemSize: 30.0,
           ),
-          ListTile(
-            title: TextFormField(
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
+            child: TextFormField(
               maxLines: 5,
               maxLength: 300,
+              initialValue: review.isEmpty() ? "" : review.text,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: Localization.of(context).hintReview,
               ),
-              validator: (text) {
-                if (text.length == 0)
-                  return Localization.of(context).fieldError;
-                else
-                  return null;
-              },
-              onSaved: (text) => newReview.text = text,
+              onSaved: (text) => review.text = text,
             ),
           ),
           Align(
@@ -84,10 +198,13 @@ class _UserReviewSectionState extends State<UserReviewSection> {
                   fontSize: 17.0,
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate() && !widget.addBook) {
                   _formKey.currentState.save();
-                  bookManager.saveReview(newReview, widget.isbn);
+                  Review newReview =
+                      await bookManager.saveReview(review, widget.isbn);
+                  isModifyMode = false;
+                  setState(() => review = newReview);
                 }
               },
             ),
