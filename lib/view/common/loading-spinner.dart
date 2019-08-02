@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LoadingSpinner extends StatelessWidget {
+  LoadingSpinner(this.msg);
+  final String msg;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -9,7 +11,10 @@ class LoadingSpinner extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text("Saving new library",style: TextStyle(fontSize: 18),),
+            title: Text(
+              msg,
+              style: TextStyle(fontSize: 18),
+            ),
           ),
           ListTile(
             leading: CircularProgressIndicator(),

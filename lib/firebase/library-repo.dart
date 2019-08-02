@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dima2018_colombo_troianiello/firebase/book-repo.dart';
+import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import '../model/library.model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -31,12 +33,12 @@ class _LibraryControl {
     }
   }
 
-  void updateFavouritePreference(DocumentReference libRef, bool preference) {
-    libRef.updateData({'isFavourite': preference});
+  void updateFavouritePreference(String id, bool preference) {
+    _db.document(id).updateData({'isFavourite': preference});
   }
 
   Future<void> saveLibrary(Library lib) async {
-    if (lib.reference == null) {
+    if (lib.id == null) {
       return _db.document().setData({
         "name": lib.name,
         "isFavourite": lib.isFavourite,
@@ -44,7 +46,7 @@ class _LibraryControl {
         "uid": authService.getUserId()
       });
     } else {
-      return _db.document(lib.reference.documentID).updateData({
+      return _db.document(lib.id).updateData({
         "name": lib.name,
         "isFavourite": lib.isFavourite,
         "image": lib.image,
@@ -54,7 +56,7 @@ class _LibraryControl {
   }
 
   void deleteLibrary(Library lib) {
-    _db.document(lib.reference.documentID).delete();
+    _db.document(lib.id).delete();
   }
 
   Future<String> uploadFile(File image) async {
@@ -64,6 +66,46 @@ class _LibraryControl {
         .child("libraries/$uid/${basename(image.path)}");
     StorageUploadTask uploadTask = ref.putFile(image);
     return await (await uploadTask.onComplete).ref.getDownloadURL();
+  }
+
+  Future<List<Book>> getBooks(Library library) async {
+    QuerySnapshot snap =
+        await _db.document(library.id).collection("owned_books").getDocuments();
+
+    List<Book> books = [];
+    print("idk");
+    print(snap.documents.length);
+    for (DocumentSnapshot doc in snap.documents) {
+      Book b = Book();
+      b.assimilate(doc);
+      books.add(b);
+    }
+    return books;
+  }
+
+  Future<bool> addBookToUserLibrary(String isbn, String libraryId) async {
+    Book book = await bookManager.getBook(isbn);
+    if (book.isbn == null) return false;
+    await _db
+        .document(libraryId)
+        .collection("owned_books")
+        .document(isbn)
+        .setData({
+      "isbn": book.isbn,
+      "releaseDate": book.releaseDate,
+      "publisher": book.publisher,
+      "title": book.title,
+      "image": book.image
+    });
+    return true;
+  }
+
+  deleteBookFromLibrary(String isbn, String libraryId) async {
+    await _db
+        .document(libraryId)
+        .collection("owned_books")
+        .document(isbn)
+        .delete();
   }
 }
 
