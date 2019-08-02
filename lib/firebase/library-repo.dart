@@ -85,7 +85,7 @@ class _LibraryControl {
 
   Future<bool> addBookToUserLibrary(String isbn, String libraryId) async {
     Book book = await bookManager.getBook(isbn);
-    if (book.isbn == null) return false;
+    if (book == null) return false;
     await _db
         .document(libraryId)
         .collection("owned_books")
