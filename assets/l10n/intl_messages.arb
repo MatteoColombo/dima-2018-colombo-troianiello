@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-01T16:44:15.365651",
+  "@@last_modified": "2019-08-02T18:51:29.499779",
   "title": "Title",
   "@title": {
     "type": "text",
@@ -100,8 +100,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "reviews": "Reviews",
-  "@reviews": {
+  "review": "Your review",
+  "@review": {
     "type": "text",
     "placeholders": {}
   },
@@ -120,7 +120,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "hintReview": "Write a review",
+  "hintReview": "Write a review (optional)",
   "@hintReview": {
     "type": "text",
     "placeholders": {}

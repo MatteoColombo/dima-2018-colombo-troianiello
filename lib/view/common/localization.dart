@@ -159,10 +159,10 @@ class Localization {
     );
   }
 
-  String get reviews{
+  String get review{
     return Intl.message(
-      'Reviews',
-      name: 'reviews',
+      'Your review',
+      name: 'review',
     );
   }
 
