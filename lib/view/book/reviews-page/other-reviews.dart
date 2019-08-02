@@ -242,9 +242,10 @@ class _ListReviewState extends State<_ListReviews> {
 
   @override
   Widget build(BuildContext context) {
-    return _build(context); /*Expanded(
+    return SizedBox(
+      height: 320,
       child: _build(context),
-    );*/
+    );
   }
 
   Widget _build(BuildContext context) {
