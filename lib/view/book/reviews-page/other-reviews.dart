@@ -45,6 +45,9 @@ class _ReviewsSectionState extends State<ReviewsSection> {
   }
 
   Widget _build(BuildContext context, List<Review> reviews) {
+    reviews.sort((a, b) {
+      return -(a.date.compareTo(b.date));
+    });
     return Column(
       children: <Widget>[
         ListTile(
@@ -66,7 +69,8 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ],
           ),
         ),
-        ..._buildReviews(reviews.where(_functionSelected).toList()),
+        _ListReviews(reviews: reviews.where(_functionSelected).toList()),
+        //..._buildReviews(reviews.where(_functionSelected).toList()),
       ],
     );
   }
@@ -186,5 +190,116 @@ class _ReviewsSectionState extends State<ReviewsSection> {
         ),
       );
     return _filters;
+  }
+}
+
+class _ListReviews extends StatefulWidget {
+  _ListReviews({Key key, @required this.reviews}) : super(key: key);
+  final List<Review> reviews;
+
+  @override
+  _ListReviewState createState() => new _ListReviewState();
+}
+
+class _ListReviewState extends State<_ListReviews> {
+  int present;
+  int perPage;
+  ScrollController controller;
+  List<Review> items;
+  List<Color> colors;
+
+  @override
+  void initState() {
+    super.initState();
+    present = 0;
+    if (widget.reviews.length < 3)
+      perPage = widget.reviews.length;
+    else
+      perPage = 3;
+    colors = [
+      Color.fromRGBO(140, 100, 50, 1),
+      Color.fromRGBO(100, 100, 100, 1),
+    ];
+    items = List<Review>();
+    controller = ScrollController()..addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    print(controller.position.extentAfter);
+    if (controller.position.extentAfter < 500) {
+      setState(() {
+        items.addAll(widget.reviews.getRange(present, present+perPage-1));
+        present=present+perPage;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _build(context); /*Expanded(
+      child: _build(context),
+    );*/
+  }
+
+  Widget _build(BuildContext context) {
+    return Scrollbar(
+      child: ListView.builder(
+        controller: controller,
+        itemCount: widget.reviews.length,
+        itemBuilder: (context, index) {
+          return Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Divider(),
+                      ListTile(
+                        contentPadding: EdgeInsets.all(0.0),
+                        leading: Stack(
+                          children: [
+                            CircleAvatar(
+                              child: Text(
+                                widget.reviews[index].user,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              backgroundColor: colors.elementAt(index % 2),
+                              radius: 25,
+                            ),
+                          ],
+                        ),
+                        title: FlutterRatingBar(
+                          allowHalfRating: false,
+                          itemCount: 5,
+                          initialRating: widget.reviews[index].score.toDouble(),
+                          fillColor: Colors.grey,
+                          borderColor: Colors.grey,
+                          itemSize: 15.0,
+                          ignoreGestures: true,
+                          onRatingUpdate: (v) {},
+                        ),
+                        subtitle: Text(DateFormat(' d MMMM y')
+                            .format(widget.reviews[index].date)),
+                      ),
+                      if (widget.reviews[index].text.length != 0)
+                        Text(
+                          '"' + widget.reviews[index].text + '"',
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic, fontSize: 16.0),
+                        ),
+                    ],
+                  ),
+                );
+        },
+      ),
+    );
   }
 }

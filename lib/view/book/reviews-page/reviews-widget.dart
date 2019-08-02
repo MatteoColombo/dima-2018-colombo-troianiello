@@ -10,17 +10,19 @@ class ReviewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      children: <Widget>[
-        UserReviewSection(
-          isbn: isbn,
-          addBook: addBook,
-        ),
-        ReviewsSection(
-          isbn: isbn,
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: Column(
+        children: <Widget>[
+          UserReviewSection(
+            isbn: isbn,
+            addBook: addBook,
+          ),
+          ReviewsSection(
+            isbn: isbn,
+          ),
+        ],
+      ),
     );
   }
 }

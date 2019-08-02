@@ -17,9 +17,10 @@ class _BookControl {
       Firestore.instance.collection("requests");
 
   Future<Book> getBook(String isbn) async {
+    Book modelBook= Book();
     try {
       DocumentSnapshot book = await _collectionBook.document(isbn).get();
-      Book modelBook = Book();
+      if (!book.exists) return null;
       modelBook.assimilate(book);
       QuerySnapshot creations = await _collectionCreations
           .where("book", isEqualTo: modelBook.isbn)
@@ -59,7 +60,9 @@ class _BookControl {
       review.assimilate(document);
       reviews.add(review);
     }
-    reviews= reviews.where((review) =>review.userId!=authService.getUserId()).toList();
+    reviews = reviews
+        .where((review) => review.userId != authService.getUserId())
+        .toList();
     return reviews;
   }
 
