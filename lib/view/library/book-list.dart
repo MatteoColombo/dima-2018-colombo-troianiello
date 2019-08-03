@@ -3,8 +3,8 @@ import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
+import 'package:dima2018_colombo_troianiello/view/library/add-book.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class BookList extends StatefulWidget {
@@ -89,9 +89,9 @@ class _BookListState extends State<BookList> {
             ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _addBook(),
-        child: Icon(Icons.add),
+      floatingActionButton: AddBook(
+        libraryId: _library.id,
+        done: _getBooksList,
       ),
     );
   }
@@ -189,29 +189,6 @@ class _BookListState extends State<BookList> {
         await libManager.deleteBookFromLibrary(isbn, _library.id);
         _getBooksList();
         break;
-    }
-  }
-
-  _addBook() async {
-    String isbn =
-        await FlutterBarcodeScanner.scanBarcode("#ffffff", "Cancel", true);
-    if (isbn != null) {
-      RegExp regexp = RegExp("^[0-9]{13,13}");
-      if (regexp.hasMatch(isbn)) {
-        bool added = await libManager.addBookToUserLibrary(isbn, _library.id);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => BookPage(
-              addBook: !added,
-              isbn: isbn,
-            ),
-          ),
-        );
-        _getBooksList();
-      } else {
-        print("not a valid isbn");
-      }
-      print(isbn);
     }
   }
 }
