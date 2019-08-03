@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../model/review.model.dart';
-import '../../../firebase/book-repo.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../common/localization.dart';
 
 class ReviewsSection extends StatefulWidget {
-  final String isbn;
-  ReviewsSection({@required this.isbn});
+  final List<Review> reviews;
+  ReviewsSection({@required this.reviews});
   @override
   _ReviewsSectionState createState() => new _ReviewsSectionState();
 }
@@ -33,20 +32,8 @@ class _ReviewsSectionState extends State<ReviewsSection> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: bookManager.getOtherReviews(widget.isbn),
-      builder: (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
-        if (!snapshot.hasData)
-          return Container();
-        else
-          return _build(context, snapshot.data);
-      },
-    );
-  }
-
-  Widget _build(BuildContext context, List<Review> reviews) {
-    reviews.sort((a, b) {
-      return -(a.date.compareTo(b.date));
+    widget.reviews.sort((a, b) {
+      return (b.date.compareTo(a.date));
     });
     return Column(
       children: <Widget>[
@@ -69,7 +56,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ],
           ),
         ),
-        _ListReviews(reviews: reviews.where(_functionSelected).toList()),
+        _ListReviews(reviews: widget.reviews.where(_functionSelected).toList()),
         //..._buildReviews(reviews.where(_functionSelected).toList()),
       ],
     );

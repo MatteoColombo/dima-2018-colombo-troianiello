@@ -13,25 +13,25 @@ class BookInformations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  _buildImageSection(context, book),
-                  _buildMainInfoSection(context, book),
-                ],
-              ),
-              _buildSecondSection(context, book),
-            ],
-          ),
-        ],
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                _buildImageSection(context, book),
+                _buildMainInfoSection(context, book),
+              ],
+            ),
+            _buildSecondSection(context, book),
+          ],
+        ),
+      ],
     );
   }
 
-   Widget _buildImageSection(BuildContext context, Book book) {
+  Widget _buildImageSection(BuildContext context, Book book) {
     MediaQueryData data = MediaQuery.of(context);
     double _width = data.size.width * 2 / 5;
     double _height = _width * (4 / 3);
@@ -78,7 +78,10 @@ class BookInformations extends StatelessWidget {
             Localization.of(context).authors,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
-          Column(children: _buildAuthorsSection(book.authors)),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _buildAuthorsSection(book.authors),
+          ),
         ],
       ),
     );
