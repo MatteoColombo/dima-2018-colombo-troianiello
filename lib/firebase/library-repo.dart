@@ -100,6 +100,15 @@ class _LibraryControl {
     return true;
   }
 
+  Future<bool> getIfBookAlreadyThere(String isbn, String libraryId) async {
+    DocumentSnapshot snap = await _db
+        .document(libraryId)
+        .collection("owned_books")
+        .document(isbn)
+        .get();
+    return snap.exists;
+  }
+
   deleteBookFromLibrary(String isbn, String libraryId) async {
     await _db
         .document(libraryId)
