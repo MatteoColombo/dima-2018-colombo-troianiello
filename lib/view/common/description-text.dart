@@ -46,7 +46,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                     children: <Widget>[
                       new Text(
                         flag ? Localization.of(context).showMore : Localization.of(context).showLess,
-                        style: new TextStyle(color: Colors.blue),
+                        style: new TextStyle(color: Colors.blue,fontWeight: FontWeight.bold, fontSize: 15.0,),
                       ),
                     ],
                   ),

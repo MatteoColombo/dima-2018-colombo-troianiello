@@ -11,6 +11,7 @@ class Book {
   String price;
   String publisher;
   DateTime releaseDate;
+  bool toCheck;
   List<Author> _authors;
 
   Book(
@@ -22,7 +23,8 @@ class Book {
       this.pages,
       this.price,
       this.publisher,
-      this.releaseDate}) {
+      this.releaseDate,}) {
+    toCheck = true;
     _authors = new List<Author>();
   }
   void assimilate(DocumentSnapshot snap) {
@@ -34,6 +36,7 @@ class Book {
     pages = snap['pages'];
     price = snap['price'];
     publisher = snap['publisher'];
+    toCheck = snap['toCheck'];
     releaseDate = snap['releaseDate'].toDate();
   }
 

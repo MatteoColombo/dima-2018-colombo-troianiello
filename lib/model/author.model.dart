@@ -1,36 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Author {
+  String id;
   String name;
-  String secondName;
   String surname;
 
   Author({
     this.name,
-    this.secondName,
     this.surname,
   });
 
   assimilate(DocumentSnapshot snap) {
+    id = snap.documentID;
     name = snap['name'];
-    if (snap['secondName'] != null) secondName = snap['secondName'];
     surname = snap['surname'];
   }
 
   void clear() {
     name = '';
-    secondName = null;
     surname = '';
   }
 
   @override
   String toString() =>
-      '$name ${(secondName != null) ? secondName : ""} $surname';
+      '$name $surname';
 
   Author clone() {
     Author author = Author();
+    author.id= id;
     author.name = this.name;
-    author.secondName = this.secondName;
     author.surname = this.surname;
     return author;
   }

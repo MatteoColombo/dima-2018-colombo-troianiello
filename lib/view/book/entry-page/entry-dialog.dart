@@ -7,27 +7,41 @@ import './authors-section.dart';
 import './../../../firebase/book-repo.dart';
 import 'dart:io';
 
-class AddEntryDialog extends StatefulWidget {
+class EntryDialog extends StatefulWidget {
   final Book book;
-  AddEntryDialog({@required this.book});
+  final String isbn;
+  EntryDialog({
+    this.isbn,
+    this.book,
+  }): assert((isbn!=null&&book==null)||(isbn==null&&book!=null));
   @override
-  AddEntryDialogState createState() => new AddEntryDialogState(book);
+  EntryDialogState createState() => new EntryDialogState();
 }
 
-class AddEntryDialogState extends State<AddEntryDialog> {
+class EntryDialogState extends State<EntryDialog> {
+  bool addBook;
   Book book;
   File image;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  AddEntryDialogState(Book book) {
-    this.book = book.clone();
+  @override
+  void initState() {
+    super.initState();
+    addBook= widget.book==null;
+    if (addBook) {
+      this.book = Book();
+      book.isbn = widget.isbn;
+    } else
+      this.book = widget.book.clone();
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: Text(Localization.of(context).suggestChanges),
+        title: addBook
+            ? Text("Add new book")
+            : Text(Localization.of(context).suggestChanges),
         actions: [
           IconButton(
             icon: Icon(Icons.done),
@@ -36,13 +50,14 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                _saveChanges(context);
+                _saveBook(context);
               }
             },
           ),
         ],
       ),
       body: ListView(
+        padding: EdgeInsets.only(bottom:16.0),
         children: <Widget>[
           Form(
             key: _formKey,
@@ -53,10 +68,33 @@ class AddEntryDialogState extends State<AddEntryDialog> {
     );
   }
 
-  Future _saveChanges(BuildContext context) async {
+  Future<void> _saveBook(BuildContext context) async {
+    if (book.image == null && image==null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Errore"),
+            content: new Text("Inserire immagine"),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("Chiudi"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
     if (image != null) book.image = await bookManager.uploadFile(image);
-    await bookManager.saveRequest(book);
-    Navigator.of(context).pop();
+    if (addBook)
+      await bookManager.saveBook(book);
+    else
+      await bookManager.saveRequest(book);
+    Navigator.pop(context,book);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -79,7 +117,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            initialValue: book.title,
+            initialValue: book.title != null ? book.title : "",
             validator: (text) => _validator(text),
             onSaved: (text) => book.title = text,
           ),
@@ -89,13 +127,13 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-           Localization.of(context).description,
+            Localization.of(context).description,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
             maxLines: 5,
             keyboardType: TextInputType.multiline,
-            initialValue: book.description,
+            initialValue: book.description != null ? book.description : "",
             validator: (text) => _validator(text),
             onSaved: (text) => book.description = text,
           ),
@@ -106,7 +144,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            initialValue: book.publisher,
+            initialValue: book.publisher != null ? book.publisher : "",
             validator: (text) => _validator(text),
             onSaved: (text) => book.publisher = text,
           ),
@@ -120,7 +158,8 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ListTile(
           leading: Icon(Icons.today, color: Colors.grey[500]),
           title: DateTimeItem(
-            dateTime: book.releaseDate,
+            dateTime:
+                book.releaseDate != null ? book.releaseDate : DateTime.now(),
             onChanged: (dateTime) =>
                 setState(() => book.releaseDate = dateTime),
           ),
@@ -131,7 +170,7 @@ class AddEntryDialogState extends State<AddEntryDialog> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            initialValue: book.pages.toString(),
+            initialValue: book.pages != null ? book.pages.toString() : "",
             validator: (text) {
               if (int.tryParse(text).isNaN)
                 return Localization.of(context).priceError;
@@ -144,22 +183,22 @@ class AddEntryDialogState extends State<AddEntryDialog> {
         ),
         ListTile(
           title: Text(
-           Localization.of(context).edition,
+            Localization.of(context).edition,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            initialValue: book.edition,
+            initialValue: book.edition != null ? book.edition : "",
             validator: (text) => _validator(text),
             onSaved: (text) => book.edition = text,
           ),
         ),
         ListTile(
           title: Text(
-           Localization.of(context).price,
+            Localization.of(context).price,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: TextFormField(
-            initialValue: book.price,
+            initialValue: book.price != null ? book.price : "",
             validator: (text) => _validator(text),
             onSaved: (text) => book.price = text,
           ),
