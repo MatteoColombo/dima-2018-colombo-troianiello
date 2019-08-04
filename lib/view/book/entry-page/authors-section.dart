@@ -70,9 +70,6 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
                 author.clear();
                 author.name = strings.removeAt(0);
                 author.surname = strings.removeLast();
-                author.secondName = "";
-                for (String string in strings)
-                  author.secondName += " $string";
               },
             ),
             trailing: IconButton(

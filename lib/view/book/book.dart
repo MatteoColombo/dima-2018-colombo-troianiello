@@ -3,15 +3,14 @@ import 'package:dima2018_colombo_troianiello/view/book/book-informations.dart';
 import './reviews-page/reviews-widget.dart';
 import '../../model/book.model.dart';
 import 'package:flutter/material.dart';
-import './changes-page/entry-dialog.dart';
+import './entry-page/entry-dialog.dart';
 import '../../firebase/book-repo.dart';
 import '../common/localization.dart';
 
 class BookPage extends StatelessWidget {
   final String isbn;
-  final bool addBook;
 
-  BookPage({@required this.isbn, @required this.addBook});
+  BookPage({@required this.isbn});
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -55,7 +54,6 @@ class BookPage extends StatelessWidget {
           BookInformations(book: _book),
           ReviewsWidget(
             isbn: _book.isbn,
-            addBook:addBook,
           ),
         ],
       ),
@@ -64,28 +62,20 @@ class BookPage extends StatelessWidget {
 
   AppBar _buildAppBar(BuildContext context, Book _book) {
     List<Widget> actions;
-    if (addBook)
-      actions = [
-        IconButton(
-            icon: Icon(Icons.done,),
-            tooltip: Localization.of(context).done,
-            color: Colors.white,
-            onPressed: () => null),
-      ];
-    else
-      actions = [
-        IconButton(
-          icon: Icon(Icons.library_books),
-          tooltip: "",
-          color: Colors.white,
-          onPressed: () => null,
-        ),
-        IconButton(
-            icon: Icon(Icons.help_outline),
-            tooltip: Localization.of(context).suggestChanges,
-            color: Colors.white,
-            onPressed: () => _requestModifyDialog(context, _book)),
-      ];
+    actions = [
+      IconButton(
+        icon: Icon(Icons.library_books),
+        tooltip: "",
+        color: Colors.white,
+        onPressed: () => null,
+      ),
+      IconButton(
+        icon: Icon(Icons.help_outline),
+        tooltip: Localization.of(context).suggestChanges,
+        color: Colors.white,
+        onPressed: () => _requestModifyDialog(context, _book),
+      ),
+    ];
     return AppBar(
       title: Text(_book.title),
       actions: <Widget>[
@@ -95,9 +85,9 @@ class BookPage extends StatelessWidget {
   }
 
   void _requestModifyDialog(BuildContext context, Book _book) {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Book>(
         builder: (BuildContext context) {
-          return AddEntryDialog(
+          return EntryDialog(
             book: _book,
           );
         },
