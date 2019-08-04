@@ -7,10 +7,8 @@ import '../../common/localization.dart';
 
 class UserReviewSection extends StatelessWidget {
   final String isbn;
-  final bool addBook;
   UserReviewSection({
     @required this.isbn,
-    @required this.addBook,
   });
 
   @override
@@ -29,7 +27,6 @@ class UserReviewSection extends StatelessWidget {
             return _UserReviewSection(
               review: snapshot.data,
               isbn: isbn,
-              addBook: addBook,
             );
           }
         });
@@ -38,12 +35,10 @@ class UserReviewSection extends StatelessWidget {
 
 class _UserReviewSection extends StatefulWidget {
   final String isbn;
-  final bool addBook;
   final Review review;
   _UserReviewSection({
     @required this.review,
     @required this.isbn,
-    @required this.addBook,
   });
 
   @override
@@ -199,7 +194,7 @@ class _UserReviewSectionState extends State<_UserReviewSection> {
                 ),
               ),
               onPressed: () async {
-                if (_formKey.currentState.validate() && !widget.addBook) {
+                if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
                   Review newReview =
                       await bookManager.saveReview(review, widget.isbn);

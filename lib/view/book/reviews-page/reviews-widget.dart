@@ -6,9 +6,9 @@ import './user-review.dart';
 
 class ReviewsWidget extends StatelessWidget {
   final String isbn;
-  final bool addBook;
 
-  ReviewsWidget({@required this.isbn, @required this.addBook});
+  ReviewsWidget({@required this.isbn
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,6 @@ class ReviewsWidget extends StatelessWidget {
         children: <Widget>[
           UserReviewSection(
             isbn: isbn,
-            addBook: addBook,
           ),
           FutureBuilder(
       future: bookManager.getOtherReviews(isbn),

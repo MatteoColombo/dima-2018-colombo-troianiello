@@ -11,23 +11,20 @@ class _BookControl {
   CollectionReference _collectionBook = Firestore.instance.collection("books");
   CollectionReference _collectionAuthors =
       Firestore.instance.collection("authors");
-  CollectionReference _collectionCreations =
-      Firestore.instance.collection("creations");
   CollectionReference _collectionRequests =
       Firestore.instance.collection("requests");
 
   Future<Book> getBook(String isbn) async {
-    Book modelBook= Book();
+    Book modelBook = Book();
     try {
       DocumentSnapshot book = await _collectionBook.document(isbn).get();
       if (!book.exists) return null;
       modelBook.assimilate(book);
-      QuerySnapshot creations = await _collectionCreations
-          .where("book", isEqualTo: modelBook.isbn)
+      QuerySnapshot authors = await _collectionBook
+          .document(isbn)
+          .collection('authors')
           .getDocuments();
-      for (DocumentSnapshot result in creations.documents) {
-        DocumentSnapshot documentAuthor =
-            await _collectionAuthors.document(result['author']).get();
+      for (DocumentSnapshot documentAuthor in authors.documents) {
         Author author = Author();
         author.assimilate(documentAuthor);
         modelBook.addAuthor(author);
@@ -66,11 +63,58 @@ class _BookControl {
     return reviews;
   }
 
-  Future<void> saveRequest(Book book) async {
-    Map<String, dynamic> mapAuthors = Map<String, dynamic>();
-    for (int i = 0; i < book.authors.length; i++) {
-      mapAuthors.putIfAbsent('author$i', () => book.authors[i].toString());
+  Future<void> saveBook(Book book) async {
+    for (Author author in book.authors) {
+      QuerySnapshot results = await _collectionAuthors
+          .where(
+            'name',
+            isEqualTo: author.name,
+          )
+          .where('surname', isEqualTo: author.surname)
+          .getDocuments();
+      if (results.documents.length == 0) {
+        Map<String, dynamic> mapAuthorData = Map<String, dynamic>();
+        mapAuthorData.addAll({
+          'name': author.name,
+          'surname': author.surname,
+        });
+        await _collectionAuthors.document().setData(mapAuthorData);
+        QuerySnapshot newResults = await _collectionAuthors
+            .where(
+              'name',
+              isEqualTo: author.name,
+            )
+            .where('surname', isEqualTo: author.surname)
+            .getDocuments();
+        author.id = newResults.documents.first.documentID;
+      } else
+        author.id = results.documents.first.documentID;
     }
+
+    await _collectionBook.document('${book.isbn}').setData({
+      "title": book.title,
+      "image": book.image,
+      "description": book.description,
+      "edition": book.edition,
+      "publisher": book.publisher,
+      "pages": book.pages,
+      "price": book.price,
+      "releaseDate": book.releaseDate,
+      "toCheck": true,
+    });
+    for (Author author in book.authors) {
+      await _collectionBook
+          .document('${book.isbn}')
+          .collection('authors')
+          .document('${author.id}')
+          .setData({
+        "name": author.name,
+        "surname": author.surname,
+      });
+    }
+  }
+
+  Future<void> saveRequest(Book book) async {
     String userId = authService.getUserId();
     _collectionRequests.document('${book.isbn}_$userId').setData({
       "user": userId,
@@ -84,9 +128,18 @@ class _BookControl {
       "pages": book.pages,
       "price": book.price,
       "releaseDate": book.releaseDate,
-      "authors": mapAuthors,
       "pending": true,
     });
+    for (int i=0;i<book.authors.length;i++) {
+      _collectionRequests
+          .document('${book.isbn}_$userId')
+          .collection('authors')
+          .document('author$i')
+          .setData({
+        'user': book.authors[i].name,
+        'surname': book.authors[i].surname,
+      });
+    }
   }
 
   Future<Review> saveReview(Review review, String isbn) async {

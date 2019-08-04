@@ -46,12 +46,12 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
         children: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.camera,
+              Icons.camera_alt,
               semanticLabel: Localization.of(context).labelTakePhoto,
             ),
             onPressed: () => setState(() {
-                  _getImage(true);
-                }),
+              _getImage(true);
+            }),
           ),
           IconButton(
             icon: Icon(
@@ -59,8 +59,8 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
               semanticLabel: Localization.of(context).labelLoadImg,
             ),
             onPressed: () => setState(() {
-                  _getImage(false);
-                }),
+              _getImage(false);
+            }),
           ),
         ],
       ),
@@ -69,20 +69,24 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
   }
 
   Widget _getImgWidget(BuildContext context) {
+    if (_book.image == null && _image==null)
+      return Image.asset(
+        "assets/images/book.jpg",
+      );
     if (_image == null)
       return CachedNetworkImage(
         imageUrl: _book.image,
         placeholder: (context, url) => SizedBox(
-              width: 50,
-              height: 50,
-              child: Theme(
-                data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
-                child: CircularProgressIndicator(),
-              ),
-            ),
+          width: 50,
+          height: 50,
+          child: Theme(
+            data: Theme.of(context).copyWith(accentColor: Colors.grey[400]),
+            child: CircularProgressIndicator(),
+          ),
+        ),
         errorWidget: (context, url, error) => Image.asset(
-              "assets/images/book.jpg",
-            ),
+          "assets/images/book.jpg",
+        ),
       );
     else
       return Image.file(

@@ -14,19 +14,15 @@ class BookInformations extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Column(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                _buildImageSection(context, book),
-                _buildMainInfoSection(context, book),
-              ],
-            ),
-            _buildSecondSection(context, book),
+            _buildImageSection(context, book),
+            _buildMainInfoSection(context, book),
           ],
         ),
+        _buildSecondSection(context, book),
       ],
     );
   }
@@ -61,7 +57,8 @@ class BookInformations extends StatelessWidget {
   }
 
   Widget _buildMainInfoSection(BuildContext context, Book book) {
-    return Padding(
+    return Container(
+      width: MediaQuery.of(context).size.width*3/5,
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +67,7 @@ class BookInformations extends StatelessWidget {
             Localization.of(context).title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
-          Text(book.title),
+          Text(book.title,),
           Divider(
             color: Colors.transparent,
           ),
@@ -78,10 +75,7 @@ class BookInformations extends StatelessWidget {
             Localization.of(context).authors,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildAuthorsSection(book.authors),
-          ),
+           ..._buildAuthorsSection(book.authors),
         ],
       ),
     );

@@ -57,62 +57,8 @@ class _ReviewsSectionState extends State<ReviewsSection> {
           ),
         ),
         _ListReviews(reviews: widget.reviews.where(_functionSelected).toList()),
-        //..._buildReviews(reviews.where(_functionSelected).toList()),
       ],
     );
-  }
-
-  List<Widget> _buildReviews(List<Review> reviews) {
-    reviews.sort((a, b) {
-      return -(a.date.compareTo(b.date));
-    });
-    List<Widget> reviewsBlock = new List<Widget>();
-    for (Review review in reviews) {
-      reviewsBlock.add(Divider());
-      reviewsBlock.add(Padding(
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.all(0.0),
-              leading: Stack(
-                children: [
-                  CircleAvatar(
-                    child: Text(
-                      review.user,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    backgroundColor:
-                        colors.elementAt(reviews.indexOf(review) % 2),
-                    radius: 25,
-                  ),
-                ],
-              ),
-              title: FlutterRatingBar(
-                allowHalfRating: false,
-                itemCount: 5,
-                initialRating: review.score.toDouble(),
-                fillColor: Colors.grey,
-                borderColor: Colors.grey,
-                itemSize: 15.0,
-                ignoreGestures: true,
-                onRatingUpdate: (v) {},
-              ),
-              subtitle: Text(DateFormat(' d MMMM y').format(review.date)),
-            ),
-            if (review.text.length != 0)
-              Text(
-                '"' + review.text + '"',
-                style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16.0),
-              ),
-          ],
-        ),
-      ));
-    }
-    return reviewsBlock;
   }
 
   List<Widget> _buildFilterSection() {
