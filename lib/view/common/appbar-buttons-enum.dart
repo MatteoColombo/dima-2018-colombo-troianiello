@@ -1,0 +1,1 @@
+enum AppBarBtn { Clear, DeleteAll, Search, Sort, Edit }
