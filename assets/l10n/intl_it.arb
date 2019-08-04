@@ -125,5 +125,30 @@
   "@hintReview": {
     "type": "text",
     "placeholders": {}
+  },
+  "error": "Errore",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Chiudi",
+  "@close": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImage": "Inserisci un'immagine",
+  "@insertImage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingInformations": "Salvataggio delle informazioni",
+  "@savingInformations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addNewBook": "Aggiungi un nuovo libro",
+  "@addNewBook": {
+    "type": "text",
+    "placeholders": {}
   }
 }

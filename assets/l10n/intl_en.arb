@@ -125,5 +125,30 @@
   "@hintReview": {
     "type": "text",
     "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Close",
+  "@close": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImage": "Insert image",
+  "@insertImage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingInformations": "Saving the informations",
+  "@savingInformations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addNewBook": "Add new book",
+  "@addNewBook": {
+    "type": "text",
+    "placeholders": {}
   }
 }

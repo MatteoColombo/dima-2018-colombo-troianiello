@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-02T18:51:29.499779",
+  "@@last_modified": "2019-08-04T20:55:44.801168",
   "title": "Title",
   "@title": {
     "type": "text",
@@ -120,8 +120,33 @@
     "type": "text",
     "placeholders": {}
   },
-  "hintReview": "Write a review (optional)",
+  "hintReview": "Write a review",
   "@hintReview": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "close": "Close",
+  "@close": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImage": "Insert image",
+  "@insertImage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingInformations": "Saving the informations",
+  "@savingInformations": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addNewBook": "Add new book",
+  "@addNewBook": {
     "type": "text",
     "placeholders": {}
   }

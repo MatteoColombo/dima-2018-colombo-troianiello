@@ -22,14 +22,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addNewBook" : MessageLookupByLibrary.simpleMessage("Add new book"),
     "allReviews" : MessageLookupByLibrary.simpleMessage("All"),
     "authorErrorMessage" : MessageLookupByLibrary.simpleMessage("Author must have a name and a surname"),
     "authors" : MessageLookupByLibrary.simpleMessage("Authors"),
+    "close" : MessageLookupByLibrary.simpleMessage("Close"),
     "description" : MessageLookupByLibrary.simpleMessage("Description"),
     "done" : MessageLookupByLibrary.simpleMessage("Done"),
     "edition" : MessageLookupByLibrary.simpleMessage("Edition"),
+    "error" : MessageLookupByLibrary.simpleMessage("Error"),
     "fieldError" : MessageLookupByLibrary.simpleMessage("This field cannot be empty"),
     "hintReview" : MessageLookupByLibrary.simpleMessage("Write a review (optional)"),
+    "insertImage" : MessageLookupByLibrary.simpleMessage("Insert image"),
     "isbn" : MessageLookupByLibrary.simpleMessage("ISBN"),
     "labelLoadImg" : MessageLookupByLibrary.simpleMessage("Load a image"),
     "labelTakePhoto" : MessageLookupByLibrary.simpleMessage("Take a photo"),
@@ -42,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "publisher" : MessageLookupByLibrary.simpleMessage("Publisher"),
     "releaseDate" : MessageLookupByLibrary.simpleMessage("Release date"),
     "review" : MessageLookupByLibrary.simpleMessage("Your review"),
+    "savingInformations" : MessageLookupByLibrary.simpleMessage("Saving the informations"),
     "showLess" : MessageLookupByLibrary.simpleMessage("Show less"),
     "showMore" : MessageLookupByLibrary.simpleMessage("Show more"),
     "suggestChanges" : MessageLookupByLibrary.simpleMessage("Suggest changes"),

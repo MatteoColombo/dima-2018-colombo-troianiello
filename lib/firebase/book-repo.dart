@@ -103,7 +103,7 @@ class _BookControl {
       "toCheck": true,
     });
     for (Author author in book.authors) {
-      await _collectionBook
+      _collectionBook
           .document('${book.isbn}')
           .collection('authors')
           .document('${author.id}')
@@ -130,7 +130,7 @@ class _BookControl {
       "releaseDate": book.releaseDate,
       "pending": true,
     });
-    for (int i=0;i<book.authors.length;i++) {
+    for (int i = 0; i < book.authors.length; i++) {
       _collectionRequests
           .document('${book.isbn}_$userId')
           .collection('authors')
@@ -161,10 +161,10 @@ class _BookControl {
     return this.getUserReview(isbn);
   }
 
-  Future<String> uploadFile(File image) async {
+  Future<String> uploadFile(File image, bool request) async {
     StorageReference ref = FirebaseStorage.instance
         .ref()
-        .child("books/requests/${basename(image.path)}");
+        .child("books/${request ? "requests/" : ""}${basename(image.path)}");
     StorageUploadTask uploadTask = ref.putFile(image);
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
