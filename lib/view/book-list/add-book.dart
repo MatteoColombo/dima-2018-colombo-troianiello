@@ -1,7 +1,7 @@
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
-import 'package:dima2018_colombo_troianiello/view/book/entry-page/entry-dialog.dart';
+import 'package:dima2018_colombo_troianiello/view/book/book-edit-page/book-edit-dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -37,7 +37,7 @@ class AddBook extends StatelessWidget {
           } else {
             Book res = await Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) => EntryDialog(
+                  builder: (context) => BookEditDialog(
                         isbn: isbn,
                       ),
                   fullscreenDialog: true),
