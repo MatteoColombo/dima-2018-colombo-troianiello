@@ -25,6 +25,7 @@ class Book {
       this.publisher,
       this.releaseDate,}) {
     toCheck = true;
+    if(releaseDate==null)releaseDate= DateTime.now();
     _authors = new List<Author>();
   }
   void assimilate(DocumentSnapshot snap) {
