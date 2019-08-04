@@ -1,9 +1,10 @@
+import 'package:dima2018_colombo_troianiello/view/book/book-edit-page/book-edit-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book-informations.dart';
 
 import './reviews-page/reviews-widget.dart';
 import '../../model/book.model.dart';
 import 'package:flutter/material.dart';
-import './entry-page/entry-dialog.dart';
+import './book-edit-page/book-edit-dialog.dart';
 import '../../firebase/book-repo.dart';
 import '../common/localization.dart';
 
@@ -87,7 +88,7 @@ class BookPage extends StatelessWidget {
   void _requestModifyDialog(BuildContext context, Book _book) {
     Navigator.of(context).push(MaterialPageRoute<Book>(
         builder: (BuildContext context) {
-          return EntryDialog(
+          return BookEditDialog(
             book: _book,
           );
         },

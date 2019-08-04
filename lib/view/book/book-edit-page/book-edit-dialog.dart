@@ -5,20 +5,22 @@ import '../../common/date-picker.dart';
 import '../../../model/book.model.dart';
 import './authors-section.dart';
 import './../../../firebase/book-repo.dart';
+import '../../common/loading-spinner.dart';
 import 'dart:io';
 
-class EntryDialog extends StatefulWidget {
+class BookEditDialog extends StatefulWidget {
   final Book book;
   final String isbn;
-  EntryDialog({
+  BookEditDialog({
     this.isbn,
     this.book,
-  }): assert((isbn!=null&&book==null)||(isbn==null&&book!=null));
+  }) : assert((isbn != null && book == null) || (isbn == null && book != null));
   @override
-  EntryDialogState createState() => new EntryDialogState();
+  BookEditDialogState createState() => new BookEditDialogState();
 }
 
-class EntryDialogState extends State<EntryDialog> {
+class BookEditDialogState extends State<BookEditDialog> {
+  bool isSaving;
   bool addBook;
   Book book;
   File image;
@@ -27,7 +29,8 @@ class EntryDialogState extends State<EntryDialog> {
   @override
   void initState() {
     super.initState();
-    addBook= widget.book==null;
+    isSaving = false;
+    addBook = widget.book == null;
     if (addBook) {
       this.book = Book();
       book.isbn = widget.isbn;
@@ -57,19 +60,21 @@ class EntryDialogState extends State<EntryDialog> {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.only(bottom:16.0),
+        padding: EdgeInsets.only(bottom: 16.0),
         children: <Widget>[
-          Form(
-            key: _formKey,
-            child: _buildBody(context),
-          ),
+          isSaving
+              ? LoadingSpinner('Saving informations')
+              : Form(
+                  key: _formKey,
+                  child: _buildBody(context),
+                ),
         ],
       ),
     );
   }
 
   Future<void> _saveBook(BuildContext context) async {
-    if (book.image == null && image==null) {
+    if (book.image == null && image == null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -94,7 +99,7 @@ class EntryDialogState extends State<EntryDialog> {
       await bookManager.saveBook(book);
     else
       await bookManager.saveRequest(book);
-    Navigator.pop(context,book);
+    Navigator.pop(context, book);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -158,8 +163,7 @@ class EntryDialogState extends State<EntryDialog> {
         ListTile(
           leading: Icon(Icons.today, color: Colors.grey[500]),
           title: DateTimeItem(
-            dateTime:
-                book.releaseDate != null ? book.releaseDate : DateTime.now(),
+            dateTime: book.releaseDate,
             onChanged: (dateTime) =>
                 setState(() => book.releaseDate = dateTime),
           ),
