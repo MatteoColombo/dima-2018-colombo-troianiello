@@ -73,8 +73,6 @@ class _LibraryControl {
         await _db.document(library.id).collection("owned_books").getDocuments();
 
     List<Book> books = [];
-    print("idk");
-    print(snap.documents.length);
     for (DocumentSnapshot doc in snap.documents) {
       Book b = Book();
       b.assimilate(doc);
@@ -115,6 +113,10 @@ class _LibraryControl {
         .collection("owned_books")
         .document(isbn)
         .delete();
+  }
+
+  deleteSelectedLibraries(List<String> libs) async {
+    libs.forEach((id) => _db.document(id).delete());
   }
 }
 

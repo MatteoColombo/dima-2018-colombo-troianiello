@@ -1,7 +1,5 @@
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
-import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
-import 'package:dima2018_colombo_troianiello/view/book/changes-page/entry-dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 

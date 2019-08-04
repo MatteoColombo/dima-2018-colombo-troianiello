@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
+import 'package:dima2018_colombo_troianiello/view/book-list/book-list-appbar.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
-import 'package:dima2018_colombo_troianiello/view/library/add-book.dart';
+import 'package:dima2018_colombo_troianiello/view/book-list/add-book.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -31,18 +32,8 @@ class _BookListState extends State<BookList> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_library.name),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () => null,
-          ),
-          IconButton(
-            icon: Icon(Icons.sort),
-            onPressed: () => null,
-          ),
-        ],
+      appBar: BookListAppbar(
+        title: _library.name,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,

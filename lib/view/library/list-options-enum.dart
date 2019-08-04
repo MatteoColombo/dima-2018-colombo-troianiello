@@ -1,1 +1,0 @@
-enum LibraryOption { Delete, Edit }
