@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/home/home.dart';
 import 'package:dima2018_colombo_troianiello/splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './view/common/localization.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './firebase/auth.dart';
 import './login.dart';
-import 'main-activity.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         const Locale('en', ''),
         const Locale('it', ''),
       ],
-      title: 'Flutter Demo',
+      title: 'NonSoloLibri',
       theme: ThemeData(
         primaryColor: Color.fromRGBO(140, 0, 50, 1),
         accentColor: Color.fromRGBO(140, 0, 50, 1),
@@ -41,7 +41,7 @@ class MainWidgetManager extends StatelessWidget {
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return MainActivity();
+            return Home();
           } else {
             return LoginPage();
           }
