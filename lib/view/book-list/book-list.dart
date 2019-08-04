@@ -92,7 +92,6 @@ class _BookListState extends State<BookList> {
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => BookPage(
                 isbn: book.isbn,
-                addBook: false,
               ))),
       child: Card(
         elevation: 8,
