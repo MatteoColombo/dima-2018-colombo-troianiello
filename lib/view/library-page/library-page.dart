@@ -8,7 +8,10 @@ import 'package:dima2018_colombo_troianiello/view/library-page/book-list.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/lbrary-image.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/library-page-appbar.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/move-book-dialog.dart';
+import 'package:dima2018_colombo_troianiello/view/library-page/sort-books-enum.dart';
+import 'package:dima2018_colombo_troianiello/view/library-page/sort-dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LibraryPage extends StatefulWidget {
   LibraryPage({Key key, this.library}) : super(key: key);
@@ -22,10 +25,17 @@ class _LibraryPageState extends State<LibraryPage> {
   Stream<List<Book>> _bookStream;
   List<Book> _books;
   List<String> _selected = [];
+  SortMethods _sort = SortMethods.Title;
 
   _LibraryPageState(this._library) {
     _bookStream = libManager.getBooksStream(_library.id);
     _bookStream.listen((data) => _saveBook(data));
+    _loadPreferences();
+  }
+
+  _loadPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _sort = SortMethods.values[prefs.getInt("sort") ?? 0];
   }
 
   _saveBook(List<Book> data) async {
@@ -51,6 +61,7 @@ class _LibraryPageState extends State<LibraryPage> {
           ),
           Expanded(
             child: BookList(
+              sort: _sort,
               library: _library.id,
               books: _books,
               onSelect: _onRowSelect,
@@ -92,6 +103,9 @@ class _LibraryPageState extends State<LibraryPage> {
       case AppBarBtn.Move:
         _moveSelected(newContext);
         break;
+      case AppBarBtn.Sort:
+        _showSortDialog();
+        break;
       default:
         break;
     }
@@ -124,5 +138,18 @@ class _LibraryPageState extends State<LibraryPage> {
       content: Text("Books moved!"),
     );
     Scaffold.of(newContext).showSnackBar(snackbar);
+  }
+
+  _showSortDialog() async {
+    SortMethods choice = await showDialog(
+        context: context,
+        builder: (context) => SortDialog(
+              sort: _sort,
+            ));
+    if (choice != null) {
+      setState(() {
+        _sort = choice;
+      });
+    }
   }
 }

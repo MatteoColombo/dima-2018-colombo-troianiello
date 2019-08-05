@@ -1,1 +1,1 @@
-enum SortMethods { Title, TitleReverse, Newest, Oldest, LowPrice, HighPrice }
+enum SortMethods { Title, TitleReverse, Newest, Oldest }
