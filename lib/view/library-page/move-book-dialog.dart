@@ -18,7 +18,9 @@ class MoveBookDialog extends StatelessWidget {
               title: Text(Localization.of(context).selectLibrary),
               children: _generateDialogItems(snapshot.data, context));
         } else {
-          return LoadingSpinner(Localization.of(context).loadingData);
+          return Dialog(
+            child: LoadingSpinner(Localization.of(context).loadingData),
+          );
         }
       },
     );

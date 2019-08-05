@@ -125,7 +125,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
   _moveSelected(BuildContext newContext) async {
     String newLib = await showDialog(
-      context: context,
+      context: newContext,
       builder: (context) => MoveBookDialog(
         currentLib: _library.id,
       ),
