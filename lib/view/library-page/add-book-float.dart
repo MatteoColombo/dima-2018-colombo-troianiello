@@ -22,7 +22,8 @@ class AddBookFloat extends StatelessWidget {
     String isbn = await FlutterBarcodeScanner.scanBarcode(
         "#ffffff", Localization.of(context).cancel, true);
     SnackBar snackbar;
-    if (isbn != null) {
+    print(isbn);
+    if (isbn != null && isbn != "") {
       RegExp regexp = RegExp("^[0-9]{13,13}");
       if (regexp.hasMatch(isbn)) {
         bool isIn = await libManager.getIfBookAlreadyThere(isbn, libraryId);
@@ -61,8 +62,8 @@ class AddBookFloat extends StatelessWidget {
           content: Text(Localization.of(context).invalidISBN),
         );
       }
+      Scaffold.of(context).showSnackBar(snackbar);
     }
-    Scaffold.of(context).showSnackBar(snackbar);
   }
 
   Widget _snackBarAction(BuildContext context, String book) {
