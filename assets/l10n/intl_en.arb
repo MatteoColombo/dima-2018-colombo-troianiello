@@ -1,6 +1,5 @@
 {
-  "@@locale": "en",
-  "@@last_modified": "2019-06-13T11:25:31.208545",
+  "@@last_modified": "2019-08-05T22:07:11.920779",
   "title": "Title",
   "@title": {
     "type": "text",
@@ -32,7 +31,7 @@
     "placeholders": {}
   },
   "edition": "Edition",
-  "@formats": {
+  "@edition": {
     "type": "text",
     "placeholders": {}
   },
@@ -121,7 +120,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "hintReview": "Write a review (optional)",
+  "hintReview": "Write a review",
   "@hintReview": {
     "type": "text",
     "placeholders": {}
@@ -148,6 +147,163 @@
   },
   "addNewBook": "Add new book",
   "@addNewBook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginWithGoogle": "Login with Google",
+  "@loginWithGoogle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Log out",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortingOptions": "Sorting options",
+  "@sortingOptions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortAZ": "Title A-Z",
+  "@sortAZ": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortZA": "Title Z-A",
+  "@sortZA": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortNewest": "Newest First",
+  "@sortNewest": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortOldest": "Oldest First",
+  "@sortOldest": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteBook": "Delete Book",
+  "@deleteBook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "changeLibrary": "Change Library",
+  "@changeLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectLibrary": "Select Library",
+  "@selectLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingData": "Loading data",
+  "@loadingData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookMoved": "Book moved!",
+  "@bookMoved": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteBooksQuestion": "Delete books?",
+  "@deleteBooksQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteBookQuestion": "Delete book?",
+  "@deleteBookQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "view": "View",
+  "@view": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookAddedConfirm": "Book added to the library!",
+  "@bookAddedConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidISBN": "A valid ISBN should have 13 digits",
+  "@invalidISBN": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookAlreadyPresent": "This book is already in the library",
+  "@bookAlreadyPresent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Save",
+  "@save": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "Yes",
+  "@confirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingLibrary": "Saving library",
+  "@savingLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "libraryName": "Library name",
+  "@libraryName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "favouriteLibrary": "Favourite library",
+  "@favouriteLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "areYouSure": "Are you sure?",
+  "@areYouSure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editLibrary": "Edit library",
+  "@editLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteLibrary": "Delete library",
+  "@deleteLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookCount": "{n,plural, =0{This library is empty}=1{Contains one book}other{Contains {n} books}}",
+  "@bookCount": {
+    "type": "text",
+    "placeholders": {
+      "n": {}
+    }
+  },
+  "deleteSelectedLibsConfirm": "Delete selected libraries?",
+  "@deleteSelectedLibsConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Settings",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wait": "Please wait...",
+  "@wait": {
     "type": "text",
     "placeholders": {}
   }

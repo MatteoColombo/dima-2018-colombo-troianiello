@@ -349,10 +349,12 @@ class Localization {
   }
 
   bookCount(n) {
-    if (n == 0)
-      return Intl.message("This library is empty", name: "bookCountZero");
-    if (n == 1) return Intl.message("Contains one book", name: "bookCountOne");
-    return Intl.message("Contains $n books", name: "bookCountMore");
+    return Intl.plural(n,
+        zero: "This library is empty",
+        one: "Contains one book",
+        other: "Contains $n books",
+        name: "bookCount",
+        args: [n]);
   }
 
   String get deleteSelectedLibsConfirm {
