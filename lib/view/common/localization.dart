@@ -117,80 +117,115 @@ class Localization {
     );
   }
 
-  String get fieldError{
+  String get fieldError {
     return Intl.message(
       'This field cannot be empty',
       name: 'fieldError',
     );
   }
 
-  String get priceError{
+  String get priceError {
     return Intl.message(
       'Pages must be a number',
       name: 'priceError',
     );
   }
 
-  String get done{
+  String get done {
     return Intl.message(
       'Done',
       name: 'done',
     );
   }
 
-  String get suggestChanges{
+  String get suggestChanges {
     return Intl.message(
       'Suggest changes',
       name: 'suggestChanges',
     );
   }
 
-  String get labelTakePhoto{
+  String get labelTakePhoto {
     return Intl.message(
       'Take a photo',
       name: 'labelTakePhoto',
     );
   }
 
-  String get labelLoadImg{
+  String get labelLoadImg {
     return Intl.message(
       'Load a image',
       name: 'labelLoadImg',
     );
   }
 
-  String get review{
+  String get review {
     return Intl.message(
       'Your review',
       name: 'review',
     );
   }
 
-  String get otherReviews{
+  String get otherReviews {
     return Intl.message(
       'Other reviews',
       name: 'otherReviews',
     );
   }
 
-  String get publish{
+  String get publish {
     return Intl.message(
       'Publish',
       name: 'publish',
     );
   }
 
-  String get allReviews{
+  String get allReviews {
     return Intl.message(
       'All',
       name: 'allReviews',
     );
   }
 
-  String get hintReview{
+  String get hintReview {
     return Intl.message(
       'Write a review',
       name: 'hintReview',
+    );
+  }
+
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+    );
+  }
+
+  String get close {
+    return Intl.message(
+      'Close',
+      name: 'close',
+    );
+  }
+
+  String get insertImage {
+    return Intl.message(
+      'Insert image',
+      name: 'insertImage',
+    );
+  }
+
+  String get savingInformations {
+    return Intl.message(
+      'Saving the informations',
+      name: 'savingInformations',
+    );
+  }
+
+  String get addNewBook {
+    return Intl.message(
+      'Add new book',
+      name: 'addNewBook',
     );
   }
 }

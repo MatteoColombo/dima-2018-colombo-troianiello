@@ -12,7 +12,6 @@ class AuthorsSectionWidget extends StatefulWidget {
 
 class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
   Map<Author, Widget> mapForms;
-
   _AuthorsSectionWidgetState() {
     mapForms = Map<Author, Widget>();
   }
@@ -22,25 +21,32 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
     super.initState();
     _addForms();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         ListTile(
+          contentPadding: EdgeInsets.only(
+            top: 10.0,
+            right: 16,
+          ),
           title: Text(
             Localization.of(context).authors,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 15.0,
+              color: Colors.black54,
+            ),
           ),
           trailing: IconButton(
             icon: Icon(Icons.add_circle),
             onPressed: () => setState(() {
-                  Author newAuthor = Author();
-                  newAuthor.name = Localization.of(context).name;
-                  newAuthor.surname = Localization.of(context).surname;
-                  widget.authors.add(newAuthor);
-                  _addForms();
-                }),
+              Author newAuthor = Author();
+              newAuthor.name = Localization.of(context).name;
+              newAuthor.surname = Localization.of(context).surname;
+              widget.authors.add(newAuthor);
+              _addForms();
+            }),
           ),
         ),
         ...mapForms.values,
@@ -49,38 +55,40 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
   }
 
   void _addForms() {
-    for(Author author in widget.authors)
-    mapForms.putIfAbsent(
-      author,
-      () => ListTile(
-            key: Key(DateTime.now().toString()),
-            leading: Icon(Icons.person),
-            title: TextFormField(
-              initialValue: author.toString(),
-              validator: (text) {
-                RegExp regExp =
-                    RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
-                if (!text.contains(' ') || !regExp.hasMatch(text))
-                  return Localization.of(context).authorErrorMessage;
-                else
-                  return null;
-              },
-              onSaved: (text) {
-                List<String> strings = text.split(' ');
-                author.clear();
-                author.name = strings.removeAt(0);
-                author.surname = strings.removeLast();
-              },
+    for (Author author in widget.authors)
+      mapForms.putIfAbsent(
+        author,
+        () => ListTile(
+          key: Key(DateTime.now().toString()),
+          leading: Icon(Icons.person),
+          title: TextFormField(
+            decoration: InputDecoration(
+              hintText: author.isEmpty? author.toString():"",
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => setState(() {
-                    widget.authors.remove(author);
-                    mapForms.remove(author);
-                    print(widget.authors.toString());
-                  }),
-            ),
+            initialValue: author.isEmpty? "" : author.toString(),
+            validator: (text) {
+              RegExp regExp =
+                  RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+              if (!text.contains(' ') || !regExp.hasMatch(text))
+                return Localization.of(context).authorErrorMessage;
+              else
+                return null;
+            },
+            onSaved: (text) {
+              List<String> strings = text.split(' ');
+              author.clear();
+              author.name = strings.removeAt(0);
+              author.surname = strings.removeLast();
+            },
           ),
-    );
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => setState(() {
+              widget.authors.remove(author);
+              mapForms.remove(author);
+            }),
+          ),
+        ),
+      );
   }
 }

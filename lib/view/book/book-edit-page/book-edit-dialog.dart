@@ -43,7 +43,7 @@ class BookEditDialogState extends State<BookEditDialog> {
     return new Scaffold(
       appBar: new AppBar(
         title: addBook
-            ? Text("Add new book")
+            ? Text(Localization.of(context).addNewBook)
             : Text(Localization.of(context).suggestChanges),
         actions: [
           IconButton(
@@ -60,10 +60,10 @@ class BookEditDialogState extends State<BookEditDialog> {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.only(bottom: 16.0),
+        padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
         children: <Widget>[
           isSaving
-              ? LoadingSpinner('Saving informations')
+              ? LoadingSpinner(Localization.of(context).savingInformations)
               : Form(
                   key: _formKey,
                   child: _buildBody(context),
@@ -79,11 +79,22 @@ class BookEditDialogState extends State<BookEditDialog> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text("Errore"),
-            content: new Text("Inserire immagine"),
+            title: Text(
+              Localization.of(context).error.toUpperCase(),
+              style: TextStyle(
+                color: Color.fromRGBO(140, 0, 50, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: Text(Localization.of(context).insertImage),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text("Chiudi"),
+              FlatButton(
+                child: Text(
+                  Localization.of(context).close.toUpperCase(),
+                  style: TextStyle(
+                    color: Color.fromRGBO(140, 0, 50, 1),
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -94,7 +105,11 @@ class BookEditDialogState extends State<BookEditDialog> {
       );
       return;
     }
-    if (image != null) book.image = await bookManager.uploadFile(image);
+    if (image != null)
+      book.image = await bookManager.uploadFile(image, !addBook);
+    setState(() {
+      isSaving = true;
+    });
     if (addBook)
       await bookManager.saveBook(book);
     else
@@ -116,49 +131,39 @@ class BookEditDialogState extends State<BookEditDialog> {
                 }),
           ],
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).title,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: TextFormField(
-            initialValue: book.title != null ? book.title : "",
-            validator: (text) => _validator(text),
-            onSaved: (text) => book.title = text,
-          ),
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: Localization.of(context).title),
+          initialValue: book.title != null ? book.title : "",
+          validator: (text) => _validator(text),
+          onSaved: (text) => book.title = text,
         ),
         AuthorsSectionWidget(
           authors: book.authors,
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).description,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: TextFormField(
-            maxLines: 5,
-            keyboardType: TextInputType.multiline,
-            initialValue: book.description != null ? book.description : "",
-            validator: (text) => _validator(text),
-            onSaved: (text) => book.description = text,
-          ),
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: Localization.of(context).description),
+          maxLines: 5,
+          keyboardType: TextInputType.multiline,
+          initialValue: book.description != null ? book.description : "",
+          validator: (text) => _validator(text),
+          onSaved: (text) => book.description = text,
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).publisher,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: TextFormField(
-            initialValue: book.publisher != null ? book.publisher : "",
-            validator: (text) => _validator(text),
-            onSaved: (text) => book.publisher = text,
-          ),
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: Localization.of(context).publisher),
+          initialValue: book.publisher != null ? book.publisher : "",
+          validator: (text) => _validator(text),
+          onSaved: (text) => book.publisher = text,
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).releaseDate,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+        Padding(
+          padding: EdgeInsets.only(top: 16.0),
+          child: Text(Localization.of(context).releaseDate,
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.black54,
+              )),
         ),
         ListTile(
           leading: Icon(Icons.today, color: Colors.grey[500]),
@@ -168,44 +173,32 @@ class BookEditDialogState extends State<BookEditDialog> {
                 setState(() => book.releaseDate = dateTime),
           ),
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).pages,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: TextFormField(
-            initialValue: book.pages != null ? book.pages.toString() : "",
-            validator: (text) {
-              if (int.tryParse(text).isNaN)
-                return Localization.of(context).priceError;
-              else
-                return null;
-            },
-            keyboardType: TextInputType.number,
-            onSaved: (text) => book.pages = int.tryParse(text),
-          ),
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: Localization.of(context).pages),
+          initialValue: book.pages != null ? book.pages.toString() : "",
+          validator: (text) {
+            if (int.tryParse(text).isNaN)
+              return Localization.of(context).priceError;
+            else
+              return null;
+          },
+          keyboardType: TextInputType.number,
+          onSaved: (text) => book.pages = int.tryParse(text),
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).edition,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: TextFormField(
-            initialValue: book.edition != null ? book.edition : "",
-            validator: (text) => _validator(text),
-            onSaved: (text) => book.edition = text,
-          ),
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: Localization.of(context).edition),
+          initialValue: book.edition != null ? book.edition : "",
+          validator: (text) => _validator(text),
+          onSaved: (text) => book.edition = text,
         ),
-        ListTile(
-          title: Text(
-            Localization.of(context).price,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: TextFormField(
-            initialValue: book.price != null ? book.price : "",
-            validator: (text) => _validator(text),
-            onSaved: (text) => book.price = text,
-          ),
+        TextFormField(
+          decoration:
+              InputDecoration(labelText: Localization.of(context).price),
+          initialValue: book.price != null ? book.price : "",
+          validator: (text) => _validator(text),
+          onSaved: (text) => book.price = text,
         ),
       ],
     );
