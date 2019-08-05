@@ -68,17 +68,23 @@ class _LibraryControl {
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
 
-  Future<List<Book>> getBooks(Library library) async {
-    QuerySnapshot snap =
-        await _db.document(library.id).collection("owned_books").getDocuments();
+  Stream<List<Book>> getBooksStream(String library) async* {
+    Stream<QuerySnapshot> source =
+        _db.document(library).collection("owned_books").snapshots();
 
-    List<Book> books = [];
-    for (DocumentSnapshot doc in snap.documents) {
-      Book b = Book();
-      b.assimilate(doc);
-      books.add(b);
+    await for (QuerySnapshot data in source) {
+      List<Book> list = List<Book>();
+      data.documents.forEach((DocumentSnapshot doc) {
+        Book book = Book();
+        book.assimilate(doc);
+        list.add(book);
+      });
+      list.sort((a, b) {
+        return a.title.toLowerCase().compareTo(b.title.toLowerCase());
+      });
+
+      yield list;
     }
-    return books;
   }
 
   Future<bool> addBookToUserLibrary(String isbn, String libraryId) async {

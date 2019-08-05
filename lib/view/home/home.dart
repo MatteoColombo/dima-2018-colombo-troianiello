@@ -1,5 +1,6 @@
 import 'package:dima2018_colombo_troianiello/firebase/auth.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/home/home-appbar.dart';
@@ -17,10 +18,20 @@ class _HomeState extends State<Home> {
   FirebaseUser _user;
   String _initials;
   List<String> _selectedLibs;
+  Stream<List<Library>> _libstream;
+  List<Library> _libraries;
 
   _HomeState() {
     _getUser();
     _selectedLibs = [];
+    _libstream = libManager.getLibraryStream();
+    _libstream.listen((data) => _setLibraries(data));
+  }
+
+  _setLibraries(List<Library> libs) {
+    setState(() {
+      _libraries = libs;
+    });
   }
 
   _getUser() {
@@ -45,6 +56,7 @@ class _HomeState extends State<Home> {
       body: LibraryList(
         selected: _selectedLibs,
         onSelect: _itemSelection,
+        libraries: _libraries,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
@@ -76,6 +88,11 @@ class _HomeState extends State<Home> {
         break;
       case AppBarBtn.Search:
         break;
+      case AppBarBtn.SelectAll:
+        _selectedLibs = [..._libraries.map((l) => l.id)];
+        print(_selectedLibs);
+        setState(() {});
+        break;
       default:
         break;
     }
@@ -86,8 +103,8 @@ class _HomeState extends State<Home> {
         await ConfirmDialog().instance(context, "Delete selected libraries?");
     if (res) {
       libManager.deleteSelectedLibraries(_selectedLibs);
-        _selectedLibs = [];
-        setState(() {});
+      _selectedLibs = [];
+      setState(() {});
     }
   }
 }

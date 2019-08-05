@@ -1,0 +1,1 @@
+enum PopUpOpt { Delete, Move }

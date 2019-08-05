@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/view/library-page/library-page.dart';
 import 'package:dima2018_colombo_troianiello/view/home/row-popup-menu.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
-import 'package:dima2018_colombo_troianiello/view/book-list/book-list.dart';
 import "package:flutter/material.dart";
 
 class LibraryListRow extends StatelessWidget {
@@ -65,7 +65,7 @@ class LibraryListRow extends StatelessWidget {
   _openLibrary(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => BookList(
+        builder: (context) => LibraryPage(
           library: library,
         ),
       ),

@@ -20,6 +20,10 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
         title: Text("$selectedCount"),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.select_all),
+            onPressed: () => callback(AppBarBtn.SelectAll),
+          ),
+          IconButton(
             icon: Icon(Icons.delete_sweep),
             onPressed: () => callback(AppBarBtn.DeleteAll),
           )

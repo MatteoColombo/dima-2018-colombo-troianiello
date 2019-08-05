@@ -4,27 +4,26 @@ import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:flutter/material.dart';
 
 class LibraryList extends StatelessWidget {
-  LibraryList({@required this.onSelect, @required this.selected});
+  LibraryList(
+      {@required this.onSelect,
+      @required this.selected,
+      @required this.libraries});
 
   final List<String> selected;
   final Function onSelect;
+  final List<Library> libraries;
+
   @override
   Widget build(BuildContext context) {
-    print(selected);
-    return StreamBuilder(
-      stream: libManager.getLibraryStream(),
-      builder: (BuildContext context, AsyncSnapshot<List<Library>> snapshot) {
-        if (!snapshot.hasData) {
-          return _showLoader(context);
-        } else {
-          if (snapshot.data.length == 0) {
-            return _showNoLibsImg(context);
-          } else {
-            return _showList(context, snapshot.data);
-          }
-        }
-      },
-    );
+    if (libraries == null) {
+      return _showLoader(context);
+    } else {
+      if (libraries.length == 0) {
+        return _showNoLibsImg(context);
+      } else {
+        return _showList(context, libraries);
+      }
+    }
   }
 
   _showLoader(BuildContext context) {
@@ -53,7 +52,7 @@ class LibraryList extends StatelessWidget {
   }
 
   _showNoLibsImg(BuildContext context) {
-    Center(
+    return Center(
       child: Image.asset(
         "assets/images/stack.png",
         width: 150,
