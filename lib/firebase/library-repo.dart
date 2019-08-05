@@ -33,6 +33,22 @@ class _LibraryControl {
     }
   }
 
+  Future<List<Library>> getUserLibs(String filter) async {
+    String userId = authService.getUserId();
+    QuerySnapshot source =
+        await _db.where("uid", isEqualTo: userId).getDocuments();
+    List<Library> libs = [];
+    if (source.documents.length > 0) {
+      source.documents.forEach((DocumentSnapshot d) {
+        Library l = Library();
+        l.assimilate(d);
+        libs.add(l);
+      });
+    }
+    libs = libs.where((Library l) => l.id != filter).toList();
+    return libs;
+  }
+
   void updateFavouritePreference(String id, bool preference) {
     _db.document(id).updateData({'isFavourite': preference});
   }
@@ -123,6 +139,17 @@ class _LibraryControl {
 
   deleteSelectedLibraries(List<String> libs) async {
     libs.forEach((id) => _db.document(id).delete());
+  }
+
+  moveBooks(List<String> books, String currentLib, String newLib) {
+    deleteBooksFromLibrary(books, currentLib);
+    books.forEach((String book) {
+      addBookToUserLibrary(book, newLib);
+    });
+  }
+
+  deleteBooksFromLibrary(List<String> books, String library) {
+    books.forEach((book) => deleteBookFromLibrary(book, library));
   }
 }
 

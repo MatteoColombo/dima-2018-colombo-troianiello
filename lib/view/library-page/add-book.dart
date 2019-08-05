@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class AddBook extends StatelessWidget {
-  const AddBook({Key key, this.libraryId, this.done}) : super(key: key);
+  AddBook({Key key, this.libraryId, this.done}) : super(key: key);
   final String libraryId;
   final Function done;
 

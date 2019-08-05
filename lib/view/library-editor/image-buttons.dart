@@ -2,7 +2,7 @@ import 'package:dima2018_colombo_troianiello/view/library-editor/image-buttons-e
 import 'package:flutter/material.dart';
 
 class ImageButtons extends StatelessWidget {
-  const ImageButtons(
+  ImageButtons(
       {Key key, @required this.hasImage, @required this.callback})
       : super(key: key);
   final bool hasImage;

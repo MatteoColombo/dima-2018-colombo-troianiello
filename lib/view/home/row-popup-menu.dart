@@ -5,7 +5,7 @@ import 'package:dima2018_colombo_troianiello/view/library-editor/edit-library.da
 import 'package:flutter/material.dart';
 
 class RowPopupMenu extends StatelessWidget {
-  const RowPopupMenu({Key key, this.library, this.enabled}) : super(key: key);
+  RowPopupMenu({Key key, this.library, this.enabled}) : super(key: key);
   final Library library;
   final bool enabled;
   @override

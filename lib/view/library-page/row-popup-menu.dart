@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class RowPopUpMenu extends StatelessWidget {
-  const RowPopUpMenu(
+  RowPopUpMenu(
       {Key key,
-      @required this.book,
       @required this.callback,
       @required this.enabled})
       : super(key: key);
-  final String book;
   final Function callback;
   final bool enabled;
 
@@ -17,7 +15,7 @@ class RowPopUpMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       enabled: enabled,
-      onSelected: (val) => callback(val, book),
+      onSelected: (val) => callback(val, context),
       itemBuilder: (context) {
         return _getItems();
       },

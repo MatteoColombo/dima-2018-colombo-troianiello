@@ -34,7 +34,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
-          onPressed: null,
+          onPressed: () => callback(AppBarBtn.Search),
         )
       ],
     );

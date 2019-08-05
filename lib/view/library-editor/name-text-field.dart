@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NameTextField extends StatelessWidget {
-  const NameTextField({Key key, @required this.controller}) : super(key: key);
+  NameTextField({Key key, @required this.controller}) : super(key: key);
   final TextEditingController controller;
 
   @override
