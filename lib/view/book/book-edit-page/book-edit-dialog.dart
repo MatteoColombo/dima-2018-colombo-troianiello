@@ -111,7 +111,7 @@ class BookEditDialogState extends State<BookEditDialog> {
     if (image != null)
       book.image = await bookManager.uploadFile(image, !addBook);
     if (addBook)
-     bookManager.saveBook(book);
+     await bookManager.saveBook(book);
     else
       bookManager.saveRequest(book);
     Navigator.pop(context, book);
