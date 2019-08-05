@@ -2,12 +2,20 @@ import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dar
 import "package:flutter/material.dart";
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
-  HomeAppbar({Key key, this.selecting, this.callback, this.selectedCount})
+  HomeAppbar(
+      {Key key,
+      this.selecting,
+      this.callback,
+      this.selectedCount,
+      this.searchController,
+      this.searching})
       : super(key: key);
 
   final bool selecting;
   final Function callback;
   final int selectedCount;
+  final bool searching;
+  final TextEditingController searchController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +37,34 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           )
         ],
       );
+
+    if (searching)
+      return AppBar(
+        title: TextField(
+          controller: searchController,
+          autofocus: true,
+          style: new TextStyle(
+            color: Colors.white,
+          ),
+          decoration: new InputDecoration(
+            prefixIcon: new Icon(Icons.search, color: Colors.white),
+            hintText: "Search...",
+            hintStyle: new TextStyle(
+              color: Colors.white,
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () => callback(AppBarBtn.Clear),
+          ),
+        ],
+      );
+
     return AppBar(
       title: Text("NonSoloLibri"),
       actions: <Widget>[

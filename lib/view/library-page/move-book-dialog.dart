@@ -27,7 +27,10 @@ class MoveBookDialog extends StatelessWidget {
     List<SimpleDialogOption> options = [];
 
     libs.forEach((Library l) => options.add(SimpleDialogOption(
-          child: Text(l.name),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(l.name),
+          ),
           onPressed: () => Navigator.of(context).pop(l.id),
         )));
 

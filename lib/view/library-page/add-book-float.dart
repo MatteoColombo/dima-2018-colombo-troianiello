@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class AddBookFloat extends StatelessWidget {
- AddBookFloat({Key key, @required this.libraryId}) : super(key: key);
+  AddBookFloat({Key key, @required this.libraryId}) : super(key: key);
   final String libraryId;
 
   @override
@@ -46,7 +46,8 @@ class AddBookFloat extends StatelessWidget {
                 content: Text("Book added to the library!"),
                 action: _snackBarAction(context, isbn),
               );
-            }
+            } else
+              return;
           }
         } else {
           snackbar = SnackBar(
