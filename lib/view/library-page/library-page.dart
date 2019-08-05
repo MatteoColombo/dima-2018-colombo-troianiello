@@ -71,9 +71,11 @@ class _LibraryPageState extends State<LibraryPage> {
           )
         ],
       ),
-      floatingActionButton: AddBookFloat(
-        libraryId: _library.id,
-      ),
+      floatingActionButton: _selected.length > 0
+          ? null
+          : AddBookFloat(
+              libraryId: _library.id,
+            ),
     );
   }
 

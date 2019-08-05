@@ -89,13 +89,15 @@ class _HomeState extends State<Home> {
               onSelect: _itemSelection,
               libraries: _libraries,
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) => NewLibrary()),
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: _selectedLibs.length > 0 || _searching
+          ? null
+          : FloatingActionButton(
+              onPressed: () => showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => NewLibrary()),
+              child: Icon(Icons.add),
+            ),
     );
   }
 
