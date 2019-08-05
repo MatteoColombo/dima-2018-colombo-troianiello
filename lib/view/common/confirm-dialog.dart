@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDialog {
@@ -11,12 +12,12 @@ class ConfirmDialog {
               ButtonBar(
                 children: <Widget>[
                   FlatButton(
-                    child: Text("ANNULLA"),
+                    child: Text(Localization.of(context).cancel),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
-                    child: Text("SÌ"),
+                    child: Text(Localization.of(context).confirm),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],

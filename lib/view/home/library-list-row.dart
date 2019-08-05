@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/library-page.dart';
 import 'package:dima2018_colombo_troianiello/view/home/row-popup-menu.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
@@ -107,7 +108,7 @@ class LibraryListRow extends StatelessWidget {
   _getNameWidget(BuildContext context) {
     return ListTile(
       title: Text(library.name),
-      subtitle: Text('Contiene ${library.bookCount ?? 0} libri'),
+      subtitle: Text(Localization.of(context).bookCount(library.bookCount)),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[

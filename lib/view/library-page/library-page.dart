@@ -3,6 +3,7 @@ import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/add-book-float.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/book-list.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/lbrary-image.dart';
@@ -112,7 +113,8 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   _deleteSelected() async {
-    bool res = await ConfirmDialog().instance(context, "Delete books?");
+    bool res = await ConfirmDialog()
+        .instance(context, Localization.of(context).deleteBooksQuestion);
     if (res != null && res) {
       libManager.deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];
@@ -135,7 +137,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
   _showMovedSnackBar(BuildContext newContext) {
     SnackBar snackbar = SnackBar(
-      content: Text("Books moved!"),
+      content: Text(Localization.of(context).bookMoved),
     );
     Scaffold.of(newContext).showSnackBar(snackbar);
   }

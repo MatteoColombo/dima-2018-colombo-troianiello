@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/firebase/auth.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -45,12 +46,12 @@ class HomeDrawer extends StatelessWidget {
               MdiIcons.settings,
               color: Colors.black54,
             ),
-            title: Text('Settings'),
+            title: Text(Localization.of(context).settings),
             onTap: () {},
           ),
           ListTile(
             leading: Icon(MdiIcons.logout, color: Colors.black54),
-            title: Text('Log out'),
+            title: Text(Localization.of(context).logout),
             onTap: () {
               authService.signOut();
             },

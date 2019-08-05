@@ -23,17 +23,17 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       return AppBar(
         leading: IconButton(
           icon: Icon(Icons.clear),
-          onPressed: () => callback(AppBarBtn.Clear),
+          onPressed: () => callback(AppBarBtn.Clear, context),
         ),
         title: Text("$selectedCount"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.select_all),
-            onPressed: () => callback(AppBarBtn.SelectAll),
+            onPressed: () => callback(AppBarBtn.SelectAll, context),
           ),
           IconButton(
             icon: Icon(Icons.delete_sweep),
-            onPressed: () => callback(AppBarBtn.DeleteAll),
+            onPressed: () => callback(AppBarBtn.DeleteAll, context),
           )
         ],
       );
@@ -60,7 +60,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.clear),
-            onPressed: () => callback(AppBarBtn.Clear),
+            onPressed: () => callback(AppBarBtn.Clear, context),
           ),
         ],
       );
@@ -70,7 +70,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),
-          onPressed: () => callback(AppBarBtn.Search),
+          onPressed: () => callback(AppBarBtn.Search, context),
         )
       ],
     );

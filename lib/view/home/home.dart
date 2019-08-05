@@ -3,6 +3,7 @@ import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/home/home-appbar.dart';
 import 'package:dima2018_colombo_troianiello/view/home/home-drawer.dart';
 import 'package:dima2018_colombo_troianiello/view/home/library-list.dart';
@@ -36,7 +37,7 @@ class _HomeState extends State<Home> {
     _searchController.addListener(() {
       if (_searchController.text.isEmpty) {
         setState(() {
-          _searchQuery="";
+          _searchQuery = "";
         });
       } else {
         setState(() {
@@ -107,7 +108,7 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  _appBarButtonCallback(AppBarBtn choice) {
+  _appBarButtonCallback(AppBarBtn choice, BuildContext context) {
     switch (choice) {
       case AppBarBtn.Clear:
         _selectedLibs = [];
@@ -116,7 +117,7 @@ class _HomeState extends State<Home> {
         setState(() {});
         break;
       case AppBarBtn.DeleteAll:
-        _deleteSelected();
+        _deleteSelected(context);
         break;
       case AppBarBtn.Search:
         _searching = true;
@@ -132,9 +133,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-  _deleteSelected() async {
-    bool res =
-        await ConfirmDialog().instance(context, "Delete selected libraries?");
+  _deleteSelected(BuildContext context) async {
+    bool res = await ConfirmDialog()
+        .instance(context, Localization.of(context).deleteSelectedLibsConfirm);
     if (res) {
       libManager.deleteSelectedLibraries(_selectedLibs);
       _selectedLibs = [];

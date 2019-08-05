@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 import './firebase/auth.dart';
 
@@ -23,7 +24,7 @@ class LoginPage extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(8),
                     child: Text(
-                      "Login with Google",
+                      Localization.of(context).loginWithGoogle,
                       style: TextStyle(fontSize: 18),
                     ),
                   )

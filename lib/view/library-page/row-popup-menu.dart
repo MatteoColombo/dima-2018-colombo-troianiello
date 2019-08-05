@@ -1,12 +1,10 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/popup-option-enum.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class RowPopUpMenu extends StatelessWidget {
-  RowPopUpMenu(
-      {Key key,
-      @required this.callback,
-      @required this.enabled})
+  RowPopUpMenu({Key key, @required this.callback, @required this.enabled})
       : super(key: key);
   final Function callback;
   final bool enabled;
@@ -17,12 +15,12 @@ class RowPopUpMenu extends StatelessWidget {
       enabled: enabled,
       onSelected: (val) => callback(val, context),
       itemBuilder: (context) {
-        return _getItems();
+        return _getItems(context);
       },
     );
   }
 
-  _getItems() {
+  _getItems(BuildContext context) {
     return [
       PopupMenuItem(
         value: PopUpOpt.Move,
@@ -32,7 +30,7 @@ class RowPopUpMenu extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16),
               child: Icon(MdiIcons.arrowRightBold),
             ),
-            Text("Change Library")
+            Text(Localization.of(context).changeLibrary)
           ],
         ),
       ),
@@ -44,7 +42,7 @@ class RowPopUpMenu extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16),
               child: Icon(Icons.delete),
             ),
-            Text("Delete Book")
+            Text(Localization.of(context).deleteBook)
           ],
         ),
       )

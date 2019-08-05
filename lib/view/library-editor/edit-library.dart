@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-background.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-buttons-enum.dart';
@@ -40,7 +41,7 @@ class _EditLibraryState extends State<EditLibrary> {
   Widget build(BuildContext context) {
     Widget child;
     if (_saving)
-      child = LoadingSpinner("Saving library");
+      child = LoadingSpinner(Localization.of(context).savingLibrary);
     else
       child = _getDialog();
     return Dialog(

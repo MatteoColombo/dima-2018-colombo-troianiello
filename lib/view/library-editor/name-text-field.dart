@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class NameTextField extends StatelessWidget {
@@ -11,7 +12,8 @@ class NameTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         textCapitalization: TextCapitalization.sentences,
-        decoration: InputDecoration(labelText: 'Library name'),
+        decoration:
+            InputDecoration(labelText: Localization.of(context).libraryName),
       ),
     );
   }
