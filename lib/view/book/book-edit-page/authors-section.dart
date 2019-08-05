@@ -12,7 +12,6 @@ class AuthorsSectionWidget extends StatefulWidget {
 
 class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
   Map<Author, Widget> mapForms;
-
   _AuthorsSectionWidgetState() {
     mapForms = Map<Author, Widget>();
   }
@@ -28,7 +27,10 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
     return Column(
       children: <Widget>[
         ListTile(
-          contentPadding: EdgeInsets.only(top: 10.0,right: 16,),
+          contentPadding: EdgeInsets.only(
+            top: 10.0,
+            right: 16,
+          ),
           title: Text(
             Localization.of(context).authors,
             style: TextStyle(
@@ -60,7 +62,10 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
           key: Key(DateTime.now().toString()),
           leading: Icon(Icons.person),
           title: TextFormField(
-            initialValue: author.toString(),
+            decoration: InputDecoration(
+              hintText: author.isEmpty? author.toString():"",
+            ),
+            initialValue: author.isEmpty? "" : author.toString(),
             validator: (text) {
               RegExp regExp =
                   RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
@@ -81,7 +86,6 @@ class _AuthorsSectionWidgetState extends State<AuthorsSectionWidget> {
             onPressed: () => setState(() {
               widget.authors.remove(author);
               mapForms.remove(author);
-              print(widget.authors.toString());
             }),
           ),
         ),
