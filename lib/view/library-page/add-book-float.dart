@@ -2,6 +2,7 @@ import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book-edit-page/book-edit-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -18,8 +19,8 @@ class AddBookFloat extends StatelessWidget {
   }
 
   _addBook(context) async {
-    String isbn =
-        await FlutterBarcodeScanner.scanBarcode("#ffffff", "Cancel", true);
+    String isbn = await FlutterBarcodeScanner.scanBarcode(
+        "#ffffff", Localization.of(context).cancel, true);
     SnackBar snackbar;
     if (isbn != null) {
       RegExp regexp = RegExp("^[0-9]{13,13}");
@@ -29,7 +30,7 @@ class AddBookFloat extends StatelessWidget {
           bool added = await libManager.addBookToUserLibrary(isbn, libraryId);
           if (added) {
             snackbar = SnackBar(
-              content: Text("Book added to the library!"),
+              content: Text(Localization.of(context).bookAddedConfirm),
               action: _snackBarAction(context, isbn),
             );
           } else {
@@ -43,7 +44,7 @@ class AddBookFloat extends StatelessWidget {
             if (res != null) {
               await libManager.addBookToUserLibrary(isbn, libraryId);
               snackbar = SnackBar(
-                content: Text("Book added to the library!"),
+                content: Text(Localization.of(context).bookAddedConfirm),
                 action: _snackBarAction(context, isbn),
               );
             } else
@@ -51,13 +52,13 @@ class AddBookFloat extends StatelessWidget {
           }
         } else {
           snackbar = SnackBar(
-            content: Text("This book is already present in the library"),
+            content: Text(Localization.of(context).bookAlreadyPresent),
             action: _snackBarAction(context, isbn),
           );
         }
       } else {
         snackbar = SnackBar(
-          content: Text("A valid ISBN should have 13 digits."),
+          content: Text(Localization.of(context).invalidISBN),
         );
       }
     }
@@ -66,7 +67,7 @@ class AddBookFloat extends StatelessWidget {
 
   Widget _snackBarAction(BuildContext context, String book) {
     return SnackBarAction(
-      label: "View",
+      label: Localization.of(context).view,
       onPressed: () => Navigator.of(context).push(
         MaterialPageRoute(
             builder: (context) => BookPage(

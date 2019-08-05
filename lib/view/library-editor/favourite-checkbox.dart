@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class FavouriteCheckbox extends StatelessWidget {
@@ -10,7 +11,7 @@ class FavouriteCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return CheckboxListTile(
       controlAffinity: ListTileControlAffinity.leading,
-      title: Text("Favourite library"),
+      title: Text(Localization.of(context).favouriteLibrary),
       onChanged: (val) => onChange(val),
       value: favourite,
     );

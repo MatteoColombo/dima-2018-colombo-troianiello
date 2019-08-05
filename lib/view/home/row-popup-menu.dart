@@ -1,6 +1,7 @@
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/edit-library.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class RowPopupMenu extends StatelessWidget {
       enabled: enabled,
       onSelected: (val) => _handleCardMenu(val, library, context),
       itemBuilder: (context) {
-        return _getMenuItems();
+        return _getMenuItems(context);
       },
     );
   }
@@ -30,14 +31,15 @@ class RowPopupMenu extends StatelessWidget {
         ),
       );
     } else if (val == 1) {
-      bool confirm = await ConfirmDialog().instance(context, "Are you sure?");
+      bool confirm = await ConfirmDialog()
+          .instance(context, Localization.of(context).areYouSure);
       if (confirm ?? false) {
         libManager.deleteLibrary(lib);
       }
     }
   }
 
-  _getMenuItems() {
+  _getMenuItems(BuildContext context) {
     return [
       PopupMenuItem(
         value: 0,
@@ -47,7 +49,7 @@ class RowPopupMenu extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16),
               child: Icon(Icons.edit),
             ),
-            Text("Edit Library")
+            Text(Localization.of(context).editLibrary)
           ],
         ),
       ),
@@ -59,7 +61,7 @@ class RowPopupMenu extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16),
               child: Icon(Icons.delete),
             ),
-            Text("Delete Library")
+            Text(Localization.of(context).deleteLibrary)
           ],
         ),
       )

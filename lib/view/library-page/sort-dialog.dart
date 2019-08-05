@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/sort-books-enum.dart';
 import 'package:flutter/material.dart';
 
@@ -5,17 +6,11 @@ class SortDialog extends StatelessWidget {
   const SortDialog({Key key, this.sort}) : super(key: key);
 
   final SortMethods sort;
-  final List<String> _messages = const [
-    "Title A-Z",
-    "Title Z-A",
-    "Newest first",
-    "Oldest first"
-  ];
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text("Sorting options"),
+      title: Text(Localization.of(context).sortingOptions),
       contentPadding: EdgeInsets.all(8),
       children: _generateOptions(context),
     );
@@ -23,7 +18,8 @@ class SortDialog extends StatelessWidget {
 
   _generateOptions(BuildContext context) {
     List<SimpleDialogOption> options = [];
-    for (int i = 0; i < _messages.length; i++) {
+    List<String> messages = _generateMessages(context);
+    for (int i = 0; i < messages.length; i++) {
       options.add(
         SimpleDialogOption(
           child: Padding(
@@ -39,7 +35,7 @@ class SortDialog extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                 ),
-                Text(_messages[i]),
+                Text(messages[i]),
               ],
             ),
           ),
@@ -48,5 +44,14 @@ class SortDialog extends StatelessWidget {
       );
     }
     return options;
+  }
+
+  _generateMessages(BuildContext context) {
+    return [
+      Localization.of(context).sortAZ,
+      Localization.of(context).sortZA,
+      Localization.of(context).sortNewest,
+      Localization.of(context).sortOldest,
+    ];
   }
 }

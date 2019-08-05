@@ -3,6 +3,7 @@ import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/move-book-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/popup-option-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/row-popup-menu.dart';
@@ -107,7 +108,8 @@ class BookListRow extends StatelessWidget {
   }
 
   _deleteBook(BuildContext context) async {
-    bool res = await ConfirmDialog().instance(context, "Delete book?");
+    bool res = await ConfirmDialog()
+        .instance(context, Localization.of(context).deleteBookQuestion);
     if (res != null && res) {
       libManager.deleteBookFromLibrary(book.isbn, library);
     }
@@ -138,7 +140,7 @@ class BookListRow extends StatelessWidget {
 
   _showMovedSnackBar(BuildContext context) {
     SnackBar snackbar = SnackBar(
-      content: Text("Book moved!"),
+      content: Text(Localization.of(context).bookMoved),
     );
     Scaffold.of(context).showSnackBar(snackbar);
   }

@@ -228,6 +228,147 @@ class Localization {
       name: 'addNewBook',
     );
   }
+
+  String get loginWithGoogle {
+    return Intl.message(
+      "Login with Google",
+      name: "loginWithGoogle",
+    );
+  }
+
+  String get logout {
+    return Intl.message(
+      "Log out",
+      name: "logout",
+    );
+  }
+
+  String get sortingOptions {
+    return Intl.message(
+      "Sorting options",
+      name: "sortingOptions",
+    );
+  }
+
+  String get sortAZ {
+    return Intl.message("Title A-Z", name: "sortAZ");
+  }
+
+  String get sortZA {
+    return Intl.message("Title Z-A", name: "sortZA");
+  }
+
+  String get sortNewest {
+    return Intl.message("Newest First", name: "sortNewest");
+  }
+
+  String get sortOldest {
+    return Intl.message("Oldest First", name: "sortOldest");
+  }
+
+  String get deleteBook {
+    return Intl.message("Delete Book", name: "deleteBook");
+  }
+
+  String get changeLibrary {
+    return Intl.message("Change Library", name: "changeLibrary");
+  }
+
+  String get selectLibrary {
+    return Intl.message("Select Library", name: "selectLibrary");
+  }
+
+  String get loadingData {
+    return Intl.message("Loading data", name: "loadingData");
+  }
+
+  String get bookMoved {
+    return Intl.message("Book moved!", name: "bookMoved");
+  }
+
+  String get deleteBooksQuestion {
+    return Intl.message("Delete books?", name: "deleteBooksQuestion");
+  }
+
+  String get deleteBookQuestion {
+    return Intl.message("Delete book?", name: "deleteBookQuestion");
+  }
+
+  String get view {
+    return Intl.message("View", name: "view");
+  }
+
+  String get bookAddedConfirm {
+    return Intl.message("Book added to the library!", name: "bookAddedConfirm");
+  }
+
+  String get invalidISBN {
+    return Intl.message("A valid ISBN should have 13 digits",
+        name: "invalidISBN");
+  }
+
+  String get bookAlreadyPresent {
+    return Intl.message("This book is already in the library",
+        name: "bookAlreadyPresent");
+  }
+
+  String get save {
+    return Intl.message("Save", name: "save");
+  }
+
+  String get cancel {
+    return Intl.message("Cancel", name: "cancel");
+  }
+
+  String get confirm {
+    return Intl.message("Yes", name: "confirm");
+  }
+
+  String get savingLibrary {
+    return Intl.message("Saving library", name: "savingLibrary");
+  }
+
+  String get libraryName {
+    return Intl.message("Library name", name: "libraryName");
+  }
+
+  String get favouriteLibrary {
+    return Intl.message("Favourite library", name: "favouriteLibrary");
+  }
+
+  String get areYouSure {
+    return Intl.message("Are you sure?", name: "areYouSure");
+  }
+
+  String get editLibrary {
+    return Intl.message("Edit library", name: "editLibrary");
+  }
+
+  String get deleteLibrary {
+    return Intl.message("Delete library", name: "deleteLibrary");
+  }
+
+  bookCount(n) {
+    return Intl.plural(n,
+        zero: "This library is empty",
+        one: "Contains one book",
+        other: "Contains $n books",
+        name: "bookCount",
+        args: [n]);
+  }
+
+  String get deleteSelectedLibsConfirm {
+    return Intl.message("Delete selected libraries?",
+        name: "deleteSelectedLibsConfirm");
+  }
+
+  String get settings {
+    return Intl.message("Settings", name: "settings");
+  }
+
+  String get wait {
+    return Intl.message("Please wait...", name: "wait");
+  }
 }
 
 class LocalizationDelegate extends LocalizationsDelegate<Localization> {

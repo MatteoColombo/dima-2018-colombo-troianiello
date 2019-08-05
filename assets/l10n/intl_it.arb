@@ -150,5 +150,162 @@
   "@addNewBook": {
     "type": "text",
     "placeholders": {}
+  },
+ "loginWithGoogle": "Accedi con Google",
+  "@loginWithGoogle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Esci",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortingOptions": "Ordina per",
+  "@sortingOptions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortAZ": "Titolo A-Z",
+  "@sortAZ": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortZA": "Titolo Z-A",
+  "@sortZA": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortNewest": "Più nuovi prima",
+  "@sortNewest": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sortOldest": "Più vecchi prima",
+  "@sortOldest": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteBook": "Cancella libro",
+  "@deleteBook": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "changeLibrary": "Cambia libreria",
+  "@changeLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectLibrary": "Seleziona libreria",
+  "@selectLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "loadingData": "Caricamento dati",
+  "@loadingData": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookMoved": "Libro spostato!",
+  "@bookMoved": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteBooksQuestion": "Vuoi cancellare i libri?",
+  "@deleteBooksQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteBookQuestion": "Vuoi cancellare il libro?",
+  "@deleteBookQuestion": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "view": "Visualizza",
+  "@view": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookAddedConfirm": "Libro aggiunto alla libreria!",
+  "@bookAddedConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidISBN": "Un ISBN valido è composto da 13 cifre!",
+  "@invalidISBN": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookAlreadyPresent": "Il libro è già presente nella libreria!",
+  "@bookAlreadyPresent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "save": "Salva",
+  "@save": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Annulla",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirm": "Sì",
+  "@confirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "savingLibrary": "Salvataggio libreria",
+  "@savingLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "libraryName": "Nome libreria",
+  "@libraryName": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "favouriteLibrary": "Libreria preferita",
+  "@favouriteLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "areYouSure": "Sei sicuro di voler procedere?",
+  "@areYouSure": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "editLibrary": "Modifica libreria",
+  "@editLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteLibrary": "Cancella libreria",
+  "@deleteLibrary": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "bookCount": "{n,plural, =0{Questa libreria è vuota}=1{Contiene un libro}other{Contiene {n} libri}}",
+  "@bookCount": {
+    "type": "text",
+    "placeholders": {
+      "n": {}
+    }
+  },
+  "deleteSelectedLibsConfirm": "Cancellare librerie selezionate?",
+  "@deleteSelectedLibsConfirm": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "settings": "Impostazioni",
+  "@settings": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "wait": "Attendere...",
+  "@wait": {
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -1,8 +1,8 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class SaveButtonBar extends StatelessWidget {
-  SaveButtonBar({Key key, this.textController, this.onSave})
-      : super(key: key);
+  SaveButtonBar({Key key, this.textController, this.onSave}) : super(key: key);
   final Function onSave;
   final TextEditingController textController;
 
@@ -13,11 +13,11 @@ class SaveButtonBar extends StatelessWidget {
         children: <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text("CANCEL"),
+            child: Text(Localization.of(context).cancel.toUpperCase()),
           ),
           FlatButton(
             onPressed: textController.text.length == 0 ? null : () => onSave(),
-            child: Text("SAVE"),
+            child: Text(Localization.of(context).save.toUpperCase()),
           )
         ],
       ),

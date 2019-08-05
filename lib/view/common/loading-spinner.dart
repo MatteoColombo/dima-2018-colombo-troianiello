@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class LoadingSpinner extends StatelessWidget {
@@ -18,7 +19,7 @@ class LoadingSpinner extends StatelessWidget {
           ),
           ListTile(
             leading: CircularProgressIndicator(),
-            title: Text("please wait..."),
+            title: Text(Localization.of(context).wait),
           )
         ],
       ),

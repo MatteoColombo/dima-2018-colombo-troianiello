@@ -1,6 +1,7 @@
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/loading-spinner.dart';
+import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class MoveBookDialog extends StatelessWidget {
@@ -14,10 +15,10 @@ class MoveBookDialog extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return SimpleDialog(
-              title: Text("Select new library"),
+              title: Text(Localization.of(context).selectLibrary),
               children: _generateDialogItems(snapshot.data, context));
         } else {
-          return LoadingSpinner("Loading data");
+          return LoadingSpinner(Localization.of(context).loadingData);
         }
       },
     );
