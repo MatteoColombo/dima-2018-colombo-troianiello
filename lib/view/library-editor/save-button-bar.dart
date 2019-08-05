@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SaveButtonBar extends StatelessWidget {
-  const SaveButtonBar({Key key, this.textController, this.onSave})
+  SaveButtonBar({Key key, this.textController, this.onSave})
       : super(key: key);
   final Function onSave;
   final TextEditingController textController;

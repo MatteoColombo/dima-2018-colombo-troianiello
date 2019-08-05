@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/view/library-page/library-page.dart';
 import 'package:dima2018_colombo_troianiello/view/home/row-popup-menu.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
-import 'package:dima2018_colombo_troianiello/view/book-list/book-list.dart';
 import "package:flutter/material.dart";
 
 class LibraryListRow extends StatelessWidget {
-  const LibraryListRow(
+  LibraryListRow(
       {Key key, this.library, this.selecting, this.isSelected, this.onSelect})
       : super(key: key);
   final Library library;
@@ -21,10 +21,9 @@ class LibraryListRow extends StatelessWidget {
       child: Material(
         elevation: 8,
         type: MaterialType.canvas,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(5),
         animationDuration: Duration(milliseconds: 100),
         child: InkWell(
-          focusColor: Colors.red,
           splashColor: Colors.black12,
           highlightColor: Colors.transparent,
           onTap: !isSelected && !selecting
@@ -38,7 +37,7 @@ class LibraryListRow extends StatelessWidget {
             color: isSelected ? Colors.lightBlue[50] : null,
             child: Row(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 _getLibraryImage(context),
                 Expanded(
@@ -46,7 +45,6 @@ class LibraryListRow extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       _getNameWidget(context),
-                      _getButtonBar(context),
                     ],
                   ),
                 ),
@@ -65,7 +63,7 @@ class LibraryListRow extends StatelessWidget {
   _openLibrary(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => BookList(
+        builder: (context) => LibraryPage(
           library: library,
         ),
       ),
@@ -74,19 +72,19 @@ class LibraryListRow extends StatelessWidget {
 
   _getLibraryImage(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, top: 16, right: 0),
+      padding: const EdgeInsets.all(8.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: Hero(
           child: library.image != null
               ? CachedNetworkImage(
-                  width: 90,
-                  height: 90,
+                  width: 70,
+                  height: 70,
                   fit: BoxFit.cover,
                   imageUrl: library.image,
                   placeholder: (context, _) => Container(
-                    width: 90,
-                    height: 90,
+                    width: 70,
+                    height: 70,
                     alignment: Alignment.center,
                     child: SizedBox(
                         width: 40,
@@ -96,8 +94,8 @@ class LibraryListRow extends StatelessWidget {
                 )
               : Image.asset(
                   "assets/images/library.jpeg",
-                  width: 90,
-                  height: 90,
+                  width: 70,
+                  height: 70,
                   fit: BoxFit.cover,
                 ),
           tag: library.id,
@@ -110,28 +108,17 @@ class LibraryListRow extends StatelessWidget {
     return ListTile(
       title: Text(library.name),
       subtitle: Text('Contiene ${library.bookCount ?? 0} libri'),
-      trailing: IconButton(
-        onPressed: isSelected ? null : () => _changeFavouriteState(library),
-        iconSize: 32,
-        icon: Icon(
-          library.isFavourite ? Icons.star : Icons.star_border,
-        ),
-      ),
-    );
-  }
-
-  _getButtonBar(BuildContext context) {
-    return ButtonTheme.bar(
-      padding: EdgeInsets.zero,
-      child: ButtonBar(
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          IconTheme(
-            data: IconThemeData(color: Colors.grey[500]),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16, bottom: 2),
-              child: RowPopupMenu(enabled: !isSelected, library: library),
+          IconButton(
+            onPressed: isSelected ? null : () => _changeFavouriteState(library),
+            iconSize: 32,
+            icon: Icon(
+              library.isFavourite ? Icons.star : Icons.star_border,
             ),
-          )
+          ),
+          RowPopupMenu(enabled: !isSelected, library: library),
         ],
       ),
     );

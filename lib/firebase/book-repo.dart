@@ -130,7 +130,7 @@ class _BookControl {
       "releaseDate": book.releaseDate,
       "pending": true,
     });
-    for (int i=0;i<book.authors.length;i++) {
+    for (int i = 0; i < book.authors.length; i++) {
       _collectionRequests
           .document('${book.isbn}_$userId')
           .collection('authors')
@@ -167,6 +167,25 @@ class _BookControl {
         .child("books/requests/${basename(image.path)}");
     StorageUploadTask uploadTask = ref.putFile(image);
     return await (await uploadTask.onComplete).ref.getDownloadURL();
+  }
+
+  Future<List<Book>> searchBooks(String query) async {
+    query = query.toLowerCase();
+    QuerySnapshot res = await _collectionBook
+        .orderBy("title_low")
+        .where("title_low", isGreaterThanOrEqualTo: query)
+        .where("title_low", isLessThanOrEqualTo: query + "z")
+        .getDocuments();
+    if (res.documents.length > 0) {
+      List<Book> books = [];
+      res.documents.forEach((doc) {
+        Book b = Book();
+        b.assimilate(doc);
+        books.add(b);
+      });
+      return books;
+    }
+    return [];
   }
 }
 

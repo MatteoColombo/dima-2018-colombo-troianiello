@@ -33,6 +33,22 @@ class _LibraryControl {
     }
   }
 
+  Future<List<Library>> getUserLibs(String filter) async {
+    String userId = authService.getUserId();
+    QuerySnapshot source =
+        await _db.where("uid", isEqualTo: userId).getDocuments();
+    List<Library> libs = [];
+    if (source.documents.length > 0) {
+      source.documents.forEach((DocumentSnapshot d) {
+        Library l = Library();
+        l.assimilate(d);
+        libs.add(l);
+      });
+    }
+    libs = libs.where((Library l) => l.id != filter).toList();
+    return libs;
+  }
+
   void updateFavouritePreference(String id, bool preference) {
     _db.document(id).updateData({'isFavourite': preference});
   }
@@ -68,17 +84,23 @@ class _LibraryControl {
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
 
-  Future<List<Book>> getBooks(Library library) async {
-    QuerySnapshot snap =
-        await _db.document(library.id).collection("owned_books").getDocuments();
+  Stream<List<Book>> getBooksStream(String library) async* {
+    Stream<QuerySnapshot> source =
+        _db.document(library).collection("owned_books").snapshots();
 
-    List<Book> books = [];
-    for (DocumentSnapshot doc in snap.documents) {
-      Book b = Book();
-      b.assimilate(doc);
-      books.add(b);
+    await for (QuerySnapshot data in source) {
+      List<Book> list = List<Book>();
+      data.documents.forEach((DocumentSnapshot doc) {
+        Book book = Book();
+        book.assimilate(doc);
+        list.add(book);
+      });
+      list.sort((a, b) {
+        return a.title.toLowerCase().compareTo(b.title.toLowerCase());
+      });
+
+      yield list;
     }
-    return books;
   }
 
   Future<bool> addBookToUserLibrary(String isbn, String libraryId) async {
@@ -117,6 +139,17 @@ class _LibraryControl {
 
   deleteSelectedLibraries(List<String> libs) async {
     libs.forEach((id) => _db.document(id).delete());
+  }
+
+  moveBooks(List<String> books, String currentLib, String newLib) {
+    deleteBooksFromLibrary(books, currentLib);
+    books.forEach((String book) {
+      addBookToUserLibrary(book, newLib);
+    });
+  }
+
+  deleteBooksFromLibrary(List<String> books, String library) {
+    books.forEach((book) => deleteBookFromLibrary(book, library));
   }
 }
 
