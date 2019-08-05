@@ -20,16 +20,20 @@ class BookEditDialog extends StatefulWidget {
 }
 
 class BookEditDialogState extends State<BookEditDialog> {
-  bool isSaving;
   bool addBook;
   Book book;
   File image;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final FocusNode descriptionFocus=FocusNode();
+  final FocusNode publisherFocus=FocusNode();
+  final FocusNode priceFocus=FocusNode();
+  final FocusNode pagesFocus=FocusNode();
+  final FocusNode editionFocus=FocusNode();
+
 
   @override
   void initState() {
     super.initState();
-    isSaving = false;
     addBook = widget.book == null;
     if (addBook) {
       this.book = Book();
@@ -62,9 +66,7 @@ class BookEditDialogState extends State<BookEditDialog> {
       body: ListView(
         padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
         children: <Widget>[
-          isSaving
-              ? LoadingSpinner(Localization.of(context).savingInformations)
-              : Form(
+              Form(
                   key: _formKey,
                   child: _buildBody(context),
                 ),
@@ -75,45 +77,17 @@ class BookEditDialogState extends State<BookEditDialog> {
 
   Future<void> _saveBook(BuildContext context) async {
     if (book.image == null && image == null) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              Localization.of(context).error.toUpperCase(),
-              style: TextStyle(
-                color: Color.fromRGBO(140, 0, 50, 1),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            content: Text(Localization.of(context).insertImage),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                  Localization.of(context).close.toUpperCase(),
-                  style: TextStyle(
-                    color: Color.fromRGBO(140, 0, 50, 1),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      _showDialogErrorImage(context);
       return;
     }
-    setState(() {
-      isSaving = true;
-    });
+    _showDialogSaving(context);
     if (image != null)
       book.image = await bookManager.uploadFile(image, !addBook);
     if (addBook)
      await bookManager.saveBook(book);
     else
       bookManager.saveRequest(book);
+    Navigator.pop(context);
     Navigator.pop(context, book);
   }
 
@@ -132,6 +106,10 @@ class BookEditDialogState extends State<BookEditDialog> {
           ],
         ),
         TextFormField(
+          autofocus: true,
+          onFieldSubmitted: (v){
+                FocusScope.of(context).requestFocus(descriptionFocus);
+          },
           decoration:
               InputDecoration(labelText: Localization.of(context).title),
           initialValue: book.title != null ? book.title : "",
@@ -142,6 +120,7 @@ class BookEditDialogState extends State<BookEditDialog> {
           authors: book.authors,
         ),
         TextFormField(
+          focusNode: descriptionFocus,
           decoration:
               InputDecoration(labelText: Localization.of(context).description),
           maxLines: 5,
@@ -149,13 +128,20 @@ class BookEditDialogState extends State<BookEditDialog> {
           initialValue: book.description != null ? book.description : "",
           validator: (text) => _validator(text),
           onSaved: (text) => book.description = text,
+          onEditingComplete: (){
+                FocusScope.of(context).requestFocus(publisherFocus);
+          },
         ),
         TextFormField(
+          focusNode: publisherFocus,
           decoration:
               InputDecoration(labelText: Localization.of(context).publisher),
           initialValue: book.publisher != null ? book.publisher : "",
           validator: (text) => _validator(text),
           onSaved: (text) => book.publisher = text,
+          onFieldSubmitted: (v){
+                FocusScope.of(context).requestFocus(pagesFocus);
+          },
         ),
         Padding(
           padding: EdgeInsets.only(top: 16.0),
@@ -174,6 +160,7 @@ class BookEditDialogState extends State<BookEditDialog> {
           ),
         ),
         TextFormField(
+          focusNode: pagesFocus,
           decoration:
               InputDecoration(labelText: Localization.of(context).pages),
           initialValue: book.pages != null ? book.pages.toString() : "",
@@ -185,15 +172,23 @@ class BookEditDialogState extends State<BookEditDialog> {
           },
           keyboardType: TextInputType.number,
           onSaved: (text) => book.pages = int.tryParse(text),
+          onFieldSubmitted: (v){
+                FocusScope.of(context).requestFocus(editionFocus);
+          },
         ),
         TextFormField(
+          focusNode: editionFocus,
           decoration:
               InputDecoration(labelText: Localization.of(context).edition),
           initialValue: book.edition != null ? book.edition : "",
           validator: (text) => _validator(text),
           onSaved: (text) => book.edition = text,
+          onFieldSubmitted: (v){
+                FocusScope.of(context).requestFocus(priceFocus);
+          },
         ),
         TextFormField(
+          focusNode: priceFocus,
           decoration:
               InputDecoration(labelText: Localization.of(context).price),
           initialValue: book.price != null ? book.price : "",
@@ -211,3 +206,46 @@ class BookEditDialogState extends State<BookEditDialog> {
       return null;
   }
 }
+
+ void _showDialogSaving(BuildContext context){
+  showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: LoadingSpinner(Localization.of(context).savingInformations),
+          );
+        },
+      );
+  }
+
+  void _showDialogErrorImage(BuildContext context){
+  showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              Localization.of(context).error.toUpperCase(),
+              style: TextStyle(
+                color: Color.fromRGBO(140, 0, 50, 1),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: Text(Localization.of(context).insertImage),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                Localization.of(context).close.toUpperCase(),
+                  style: TextStyle(
+                    color: Color.fromRGBO(140, 0, 50, 1),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+  }
