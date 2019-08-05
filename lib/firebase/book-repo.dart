@@ -93,6 +93,7 @@ class _BookControl {
 
     await _collectionBook.document('${book.isbn}').setData({
       "title": book.title,
+      "title_low": book.title.toLowerCase(),
       "image": book.image,
       "description": book.description,
       "edition": book.edition,
@@ -121,6 +122,7 @@ class _BookControl {
       "isbn": book.isbn,
       "requestDate": DateTime.now(),
       "title": book.title,
+      "title_low": book.title.toLowerCase(),
       "image": book.image,
       "description": book.description,
       "edition": book.edition,
