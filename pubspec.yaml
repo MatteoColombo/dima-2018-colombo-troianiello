@@ -45,6 +45,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intl_translation: ^0.17.3
+  mockito: ^4.1.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
