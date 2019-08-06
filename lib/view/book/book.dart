@@ -8,10 +8,14 @@ import './book-edit-page/book-edit-dialog.dart';
 import '../../firebase/book-repo.dart';
 import '../common/localization.dart';
 
+///Creates the page of a given [Book], that allows to view and edit the informations.
 class BookPage extends StatelessWidget {
+  ///The identifier of the book.
   final String isbn;
 
+  ///Constructor of BookPage
   BookPage({@required this.isbn});
+ 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -47,6 +51,9 @@ class BookPage extends StatelessWidget {
     );
   }
 
+  ///Describes the part of the user interface represented by this widget and is called by [build(context)]
+  ///
+  ///Given a [BuildContext] and a [Book], creates a page that shows all the informations of this book.
   Widget _build(BuildContext context, Book _book) {
     return DefaultTabController(
         length: 2,
@@ -62,7 +69,7 @@ class BookPage extends StatelessWidget {
       ),
     ),);
   }
-
+  ///Creates the [AppBar] of this page.
   AppBar _buildAppBar(BuildContext context, Book _book) {
     List<Widget> actions;
     actions = [
@@ -92,6 +99,9 @@ class BookPage extends StatelessWidget {
     );
   }
 
+  ///Opens the dialog that allows to edit the informations of this [Book].
+  ///
+  ///This dialog opened is a [FullScreenDialog] type.
   void _requestModifyDialog(BuildContext context, Book _book) {
     Navigator.of(context).push(MaterialPageRoute<Book>(
         builder: (BuildContext context) {
