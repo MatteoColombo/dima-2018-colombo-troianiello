@@ -48,9 +48,11 @@ class BookPage extends StatelessWidget {
   }
 
   Widget _build(BuildContext context, Book _book) {
-    return Scaffold(
+    return DefaultTabController(
+        length: 2,
+        child:Scaffold(
       appBar: _buildAppBar(context, _book),
-      body: PageView(
+      body: TabBarView(
         children: <Widget>[
           BookInformations(book: _book),
           ReviewsWidget(
@@ -58,7 +60,7 @@ class BookPage extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ),);
   }
 
   AppBar _buildAppBar(BuildContext context, Book _book) {
@@ -82,6 +84,11 @@ class BookPage extends StatelessWidget {
       actions: <Widget>[
         ...actions,
       ],
+      bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.book,)),
+                Tab(icon: Icon(Icons.comment,)),
+              ],),
     );
   }
 
