@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/home/library-list-row.dart';
