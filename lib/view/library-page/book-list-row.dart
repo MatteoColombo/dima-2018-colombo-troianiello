@@ -108,8 +108,12 @@ class BookListRow extends StatelessWidget {
   }
 
   _deleteBook(BuildContext context) async {
-    bool res = await ConfirmDialog()
-        .instance(context, Localization.of(context).deleteBookQuestion);
+    bool res = await showDialog(
+      context: context,
+      builder: (context) => ConfirmDialog(
+        question: Localization.of(context).deleteBookQuestion,
+      ),
+    );
     if (res != null && res) {
       libManager.deleteBookFromLibrary(book.isbn, library);
     }
