@@ -22,7 +22,6 @@ class AddBookFloat extends StatelessWidget {
     String isbn = await FlutterBarcodeScanner.scanBarcode(
         "#ffffff", Localization.of(context).cancel, true);
     SnackBar snackbar;
-    print(isbn);
     if (isbn != null && isbn != "") {
       RegExp regexp = RegExp("^[0-9]{13,13}");
       if (regexp.hasMatch(isbn)) {

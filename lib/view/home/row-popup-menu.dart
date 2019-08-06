@@ -21,7 +21,6 @@ class RowPopupMenu extends StatelessWidget {
   }
 
   _handleCardMenu(int val, Library lib, BuildContext context) async {
-    print(lib);
     if (val == 0) {
       showDialog(
         context: context,

@@ -102,7 +102,6 @@ class _HomeState extends State<Home> {
   }
 
   _itemSelection(String id) {
-    print(id);
     if (_selectedLibs.contains(id))
       _selectedLibs = _selectedLibs.where((s) => s != id).toList();
     else
@@ -127,7 +126,6 @@ class _HomeState extends State<Home> {
         break;
       case AppBarBtn.SelectAll:
         _selectedLibs = [..._libraries.map((l) => l.id)];
-        print(_selectedLibs);
         setState(() {});
         break;
       default:
