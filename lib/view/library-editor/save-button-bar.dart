@@ -1,17 +1,10 @@
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
-/// Shows a bar with a save and cancel button.
-///
-/// It is used in the New and Edit Library widgets.
 class SaveButtonBar extends StatelessWidget {
-  SaveButtonBar({Key key, this.canSave, this.onSave}) : super(key: key);
-
-  /// The callback method called when the saving button is tapped.
+  SaveButtonBar({Key key, this.textController, this.onSave}) : super(key: key);
   final Function onSave;
-
-  /// If true the save button is enabled.
-  final bool canSave;
+  final TextEditingController textController;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +16,7 @@ class SaveButtonBar extends StatelessWidget {
             child: Text(Localization.of(context).cancel.toUpperCase()),
           ),
           FlatButton(
-            onPressed: canSave ? () => onSave() : null,
+            onPressed: textController.text.length == 0 ? null : () => onSave(),
             child: Text(Localization.of(context).save.toUpperCase()),
           )
         ],

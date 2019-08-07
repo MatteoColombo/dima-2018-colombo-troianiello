@@ -12,7 +12,6 @@ import 'dart:io';
 import '../../firebase/library-repo.dart';
 import '../common/loading-spinner.dart';
 
-/// A dialog used to edit a library.
 class EditLibrary extends StatefulWidget {
   EditLibrary({Key key, this.library}) : super(key: key);
   final Library library;
@@ -21,19 +20,10 @@ class EditLibrary extends StatefulWidget {
 }
 
 class _EditLibraryState extends State<EditLibrary> {
-  /// Whether the library is favourite or not.
   bool _favourite = false;
-
-  /// The file used to store the image loaded from memory or from camera.
   File _image;
-
-  /// The text controller used to manage the library name text field.
   TextEditingController _controller;
-
-  /// True if saving operation is on going.
   bool _saving = false;
-
-  /// The library that is being edited.
   Library _library;
 
   _EditLibraryState(this._library) {
@@ -41,17 +31,12 @@ class _EditLibraryState extends State<EditLibrary> {
     _favourite = _library.isFavourite;
   }
 
-  /// Disposes the text controller.
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  /// Method used to build the widget.
-  ///
-  /// If it is saving, show a [LoadingSpinner] dialog.
-  /// Otherwise show the edit page.
   @override
   Widget build(BuildContext context) {
     Widget child;
@@ -64,11 +49,7 @@ class _EditLibraryState extends State<EditLibrary> {
     );
   }
 
-  /// Returns the main widget of the class.
-  ///
-  /// It is the widget rendered in the normal state and allows to edit the library information.
-
-  Widget _getDialog() {
+  _getDialog() {
     double width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -102,17 +83,14 @@ class _EditLibraryState extends State<EditLibrary> {
           },
         ),
         SaveButtonBar(
-          canSave: _controller.text.length > 0,
+          textController: _controller,
           onSave: _handleSave,
         ),
       ],
     );
   }
 
-  /// Handles the tap of the buttons over the image.
-  ///
-  /// It receives a [ImgBtnEnum] as a parameter which represents the choice.
-  void _handleImgButtons(ImgBtnEnum choice) {
+  _handleImgButtons(ImgBtnEnum choice) {
     switch (choice) {
       case ImgBtnEnum.Delete:
         _deletePhoto();
@@ -126,20 +104,14 @@ class _EditLibraryState extends State<EditLibrary> {
     }
   }
 
-  /// Deletes the photo.
-  ///
-  /// If both a file and network image are set, the first eliminated is the one stored in the file
-  void _deletePhoto() {
+  _deletePhoto() {
     if (_image != null)
       _image = null;
     else if (_library.image != null) _library.image = null;
     setState(() {});
   }
 
-  /// Adds an image as library photo.
-  ///
-  /// It uses an image picker to pick an image either from gallery or from camera.
-  Future<void> _addPhoto(bool camera) async {
+  _addPhoto(bool camera) async {
     try {
       var image = await ImagePicker.pickImage(
           source: camera ? ImageSource.camera : ImageSource.gallery,
@@ -155,11 +127,6 @@ class _EditLibraryState extends State<EditLibrary> {
     }
   }
 
-  /// Saves the library.
-  ///
-  /// Set the state to saving so that the progress indicator is shown.
-  /// If there is an image, it is uploaded to firestore.
-  /// Then the method to save the library is called.
   Future _handleSave() async {
     setState(() {
       _saving = true;
@@ -172,9 +139,6 @@ class _EditLibraryState extends State<EditLibrary> {
     }
   }
 
-  /// Saves the library to the database.
-  ///
-  /// It receives a [String] parameter which represents the URL of the new image, if it has to be saved.
   Future _saveLibrary(String imageUrl) async {
     Library lib = new Library();
     lib.id = _library.id;
