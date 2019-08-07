@@ -10,7 +10,9 @@ class LibraryList extends StatelessWidget {
   LibraryList(
       {@required this.onSelect,
       @required this.selected,
-      @required this.libraries});
+      @required this.libraries})
+      : assert(selected != null),
+        assert(selected.length == 0 || onSelect != null);
 
   /// A list of IDs that represent selected libraries.
   final List<String> selected;

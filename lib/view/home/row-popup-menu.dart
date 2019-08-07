@@ -44,8 +44,12 @@ class RowPopupMenu extends StatelessWidget {
         ),
       );
     } else if (val == 1) {
-      bool confirm = await ConfirmDialog()
-          .instance(context, Localization.of(context).areYouSure);
+      bool confirm = await showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(
+          question: Localization.of(context).areYouSure,
+        ),
+      );
       if (confirm ?? false) {
         libManager.deleteLibrary(library);
       }

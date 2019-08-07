@@ -35,6 +35,6 @@ class Review {
 
   ///Indicates that this object is empty.
   bool isEmpty(){
-    return this.user==null;
+    return this.user==null || this.date==null;
   }
 }

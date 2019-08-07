@@ -8,12 +8,15 @@ import "package:flutter/material.dart";
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   HomeAppbar(
       {Key key,
-      this.selecting,
+      this.selecting = false,
       this.callback,
       this.selectedCount,
       this.searchController,
-      this.searching})
-      : super(key: key);
+      this.searching = false})
+      : assert(!(selecting && searching)),
+        assert(!selecting || (selecting && selectedCount > 0)),
+        assert(!searching || (searching && searchController != null)),
+        super(key: key);
 
   /// True if the AppBar is in selection mode.
   final bool selecting;
