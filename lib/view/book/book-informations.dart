@@ -6,8 +6,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import '../common/localization.dart';
 
+///Shows all informations of the given [Book].
+///
+///Creates a [ListView], containing a [CachedNetworkImage] and all textual informations.
 class BookInformations extends StatelessWidget {
+  ///The given [Book]
   final Book book;
+
+  ///Constructor of BookInformations
+  ///
+  ///Requires a [book], whose informations will be shown.
   BookInformations({@required this.book});
 
   @override
@@ -27,6 +35,9 @@ class BookInformations extends StatelessWidget {
     );
   }
 
+  ///Returns the image section of this page.
+  ///
+  ///Creates a [Widget], containing a [CachedNetworkImage] associated to the URL of this [book].
   Widget _buildImageSection(BuildContext context, Book book) {
     MediaQueryData data = MediaQuery.of(context);
     double _width = data.size.width * 2 / 5;
@@ -56,6 +67,9 @@ class BookInformations extends StatelessWidget {
     );
   }
 
+  ///Returns a section containg the title and authors of this book.
+  ///
+  ///The main section is a [Column], containing several [Text] widgets.
   Widget _buildMainInfoSection(BuildContext context, Book book) {
     return Container(
       width: MediaQuery.of(context).size.width*3/5,
@@ -81,10 +95,19 @@ class BookInformations extends StatelessWidget {
     );
   }
 
+  ///Returns a section containing the description of this book.
+  ///
+  ///Returns a [DescriptionTextWidget], that show the [text] 
+  ///in a contracted form or a extended form.
   Widget _buildDescSection(BuildContext context, Book book) {
     return new DescriptionTextWidget(text: book.description);
   }
 
+  ///Returns a section containing the description and other secondary informations of this book.
+  ///
+  ///Returns a [Column], containig the [Text] of [book.descripton], 
+  ///[book.publisher], [book.releaseDate], [book.edition], [book.price], 
+  ///[book.pages], [book.isbn].
   Widget _buildSecondSection(BuildContext context, Book book) {
     return Container(
         padding: const EdgeInsets.all(8),
@@ -95,15 +118,17 @@ class BookInformations extends StatelessWidget {
             Text(Localization.of(context).description,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0)),
             _buildDescSection(context, book),
-            _buildSecondaryInformation(context, book),
+            ..._buildSecondaryInformation(context, book),
           ],
         ));
   }
 
-  Widget _buildSecondaryInformation(BuildContext context, Book book) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+  ///Returns a list of widgets associated to the secondary informations of this book.
+  ///
+  ///Returns a [List] of [Widget], containig the [Text] of [book.publisher], 
+  ///[book.releaseDate], [book.edition], [book.price], [book.pages], [book.isbn].
+  List<Widget> _buildSecondaryInformation(BuildContext context, Book book) {
+    return <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -179,10 +204,10 @@ class BookInformations extends StatelessWidget {
             Text(book.isbn),
           ],
         ),
-      ],
-    );
+      ];
   }
 
+  ///Shows a dialog that contains a large sized version of the cover.
   void _showImage(BuildContext context, CachedNetworkImage _image) {
     showDialog(
       context: context,
@@ -202,6 +227,9 @@ class BookInformations extends StatelessWidget {
     );
   }
 
+  ///Returns a list of widgets associated to authors of this book.
+  ///
+  ///Returns a [List] of [Text].
   List<Widget> _buildAuthorsSection(List<Author> authors) {
     List<Widget> authorsWidgets = List<Widget>();
     for (Author author in authors) {
