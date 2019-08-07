@@ -1,6 +1,9 @@
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
+/// Shows a loading dialog with a custom message.
+///
+/// Receives a [String] msg containing the message that is used as title of the dialog.
 class LoadingSpinner extends StatelessWidget {
   LoadingSpinner(this.msg);
   final String msg;
