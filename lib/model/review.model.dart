@@ -24,6 +24,6 @@ class Review {
   }
 
   bool isEmpty(){
-    return this.user==null;
+    return this.user==null || this.date==null;
   }
 }
