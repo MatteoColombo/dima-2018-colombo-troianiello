@@ -1,64 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../../model/review.model.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../common/localization.dart';
+import './review-widget.dart';
 
+///Shows all reviews made by other users.
 class ReviewsSection extends StatefulWidget {
+  ///List of [Review] to show.
   final List<Review> reviews;
+
+  ///Constructor of ReviewsSection.
+  ///
+  ///[reviews] is required and is the list of [Review] to show.
   ReviewsSection({@required this.reviews});
+
+  //Creates the state of [ReviewsSection].
   @override
   _ReviewsSectionState createState() => new _ReviewsSectionState();
 }
 
 class _ReviewsSectionState extends State<ReviewsSection> {
-  final List<Color> colors = [
+  ///The backgound colors of the user informations section.
+  final List<Color> _colors = const [
     Color.fromRGBO(140, 100, 50, 1),
     Color.fromRGBO(100, 100, 100, 1),
   ];
-  Function _functionSelected;
-  List<Function> functions;
 
+  ///The filter funtion selected.
+  Function _functionSelected;
+
+  ///The filter functions available.
+  List<Function> _functions;
+
+  //Initializes [_functionSelected] with a default funtions and fills [_functions].
   @override
   void initState() {
     super.initState();
-    functions = new List<Function>();
-    functions.add((Review review) => true);
+    _functions = new List<Function>();
+    _functions.add((Review review) => true);
     for (int i = 1; i < 6; i++)
-      functions.add((Review review) => review.score == i);
-    _functionSelected = functions.first;
+      _functions.add((Review review) => review.score == i);
+    _functionSelected = _functions.first;
   }
 
+  //Returns a [Columns], containing a [ListView], that controls the filters,
+  //and a [List] of generated widgets, each associated to a specific [Review].
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(bottom: 16.0),
-      child:Column(
-      children: <Widget>[
-        ListTile(
-          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
-          title: Text(
-            Localization.of(context).otherReviews,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 17.0,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
+            title: Text(
+              Localization.of(context).otherReviews,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17.0,
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 50.0,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              ..._buildFilterSection(),
-            ],
+          SizedBox(
+            height: 50.0,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                ..._buildFilterSection(),
+              ],
+            ),
           ),
-        ),
-        ..._buildListReviews(widget.reviews.where(_functionSelected).toList()),
-      ],
-    ),);
+          //Filters the [widget.reviews] with [_functionSelected].
+          ..._buildListReviews(
+              widget.reviews.where(_functionSelected).toList()),
+        ],
+      ),
+    );
   }
 
+  ///Returns a [List] of [Widget] associated to [reviews].
+  ///
+  ///Sorts the [reviews] and creates the widgets.
   List<Widget> _buildListReviews(List<Review> reviews) {
     reviews.sort((a, b) {
       return (b.date.compareTo(a.date));
@@ -66,54 +88,20 @@ class _ReviewsSectionState extends State<ReviewsSection> {
     List<Widget> reviewsBlock = new List<Widget>();
     for (Review review in reviews) {
       reviewsBlock.add(Divider());
-      reviewsBlock.add(Padding(
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.all(0.0),
-              leading: Stack(
-                children: [
-                  CircleAvatar(
-                    child: Text(
-                      review.user,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    backgroundColor:
-                        colors.elementAt(reviews.indexOf(review) % 2),
-                    radius: 25,
-                  ),
-                ],
-              ),
-              title: FlutterRatingBar(
-                allowHalfRating: false,
-                itemCount: 5,
-                initialRating: review.score.toDouble(),
-                fillColor: Colors.grey,
-                borderColor: Colors.grey,
-                itemSize: 15.0,
-                ignoreGestures: true,
-                onRatingUpdate: (v) {},
-              ),
-              subtitle: Text(DateFormat(' d MMMM y').format(review.date)),
-            ),
-            if (review.text.length != 0)
-              Text(
-                '"' + review.text + '"',
-                style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16.0),
-              ),
-          ],
+      reviewsBlock.add(
+        ReviewWidget(
+          review: review,
+          color: _colors.elementAt(reviews.indexOf(review) % 2),
         ),
-      ));
+      );
     }
     return reviewsBlock;
   }
 
+  ///Returns the chips associated to the filter functions, [_functions].
   List<Widget> _buildFilterSection() {
     List<Widget> _filters = new List<Widget>();
+    //Filter 'ALL'.
     _filters.add(
       Container(
         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
@@ -130,15 +118,16 @@ class _ReviewsSectionState extends State<ReviewsSection> {
           ),
           backgroundColor: Colors.white,
           selectedColor: Colors.grey,
-          selected: _functionSelected == functions.elementAt(0),
+          selected: _functionSelected == _functions.elementAt(0),
           onSelected: (selected) {
             setState(() {
-              _functionSelected = functions.elementAt(0);
+              _functionSelected = _functions.elementAt(0);
             });
           },
         ),
       ),
     );
+    //Filter 'n Star'.
     for (int i = 5; i > 0; i--)
       _filters.add(
         Container(
@@ -164,10 +153,10 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             ),
             backgroundColor: Colors.white,
             selectedColor: Colors.grey,
-            selected: _functionSelected == functions.elementAt(i),
+            selected: _functionSelected == _functions.elementAt(i),
             onSelected: (selected) {
               setState(() {
-                _functionSelected = functions.elementAt(i);
+                _functionSelected = _functions.elementAt(i);
               });
             },
           ),
