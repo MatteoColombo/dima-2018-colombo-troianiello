@@ -1,6 +1,10 @@
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
 import "package:flutter/material.dart";
 
+/// The AppBar of the main page.
+///
+/// It supports three modes: normal, search and select.
+/// Depending on the mode, different [IconButton] are shown.
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   HomeAppbar(
       {Key key,
@@ -14,6 +18,7 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
         assert(!searching || (searching && searchController != null)),
         super(key: key);
 
+  /// True if the AppBar is in selection mode.
   final bool selecting;
   final Function callback;
   final int selectedCount;
