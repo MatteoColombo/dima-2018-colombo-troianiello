@@ -95,3 +95,5 @@ Documents/**/*.pdf
 *.lot
 
 pubspec.lock
+
+coverage

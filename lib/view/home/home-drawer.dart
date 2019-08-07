@@ -5,10 +5,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+/// Main application drawer.
+///
+/// It shows a Box with user's profile picture, name and email.
+/// It shows a list with some options.
 class HomeDrawer extends StatelessWidget {
   HomeDrawer({Key key, this.user, this.initials}) : super(key: key);
+
+  /// Represents the current user.
   final FirebaseUser user;
+
+  /// Represents the initials of the current user.
   final String initials;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -28,6 +37,7 @@ class HomeDrawer extends StatelessWidget {
                     width: 40,
                     height: 40,
                     alignment: Alignment.center,
+                    //While loading user profile picuter, show his name initials.
                     child: Text(
                       initials,
                       style: const TextStyle(
@@ -36,25 +46,26 @@ class HomeDrawer extends StatelessWidget {
                           color: Colors.white),
                     ),
                   ),
+                  // If user has a photo and if user has loaded, show its profile picture.
                   imageUrl: user != null && user.photoUrl != null
                       ? user.photoUrl
                       : "",
                 ),
               )),
+          // Shows the settings page.
           ListTile(
             leading: Icon(
               MdiIcons.settings,
               color: Colors.black54,
             ),
             title: Text(Localization.of(context).settings),
-            onTap: () {},
+            onTap: null,
           ),
+          // Calls the method to sign out.
           ListTile(
             leading: Icon(MdiIcons.logout, color: Colors.black54),
             title: Text(Localization.of(context).logout),
-            onTap: () {
-              authService.signOut();
-            },
+            onTap: () => authService.signOut(),
           ),
         ],
       ),
