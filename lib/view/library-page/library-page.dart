@@ -115,8 +115,12 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   _deleteSelected() async {
-    bool res = await ConfirmDialog()
-        .instance(context, Localization.of(context).deleteBooksQuestion);
+    bool res = await showDialog(
+      context: context,
+      builder: (context) => ConfirmDialog(
+        question: Localization.of(context).deleteBooksQuestion,
+      ),
+    );
     if (res != null && res) {
       libManager.deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];

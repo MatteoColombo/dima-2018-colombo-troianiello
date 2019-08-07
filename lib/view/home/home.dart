@@ -134,8 +134,13 @@ class _HomeState extends State<Home> {
   }
 
   _deleteSelected(BuildContext context) async {
-    bool res = await ConfirmDialog()
-        .instance(context, Localization.of(context).deleteSelectedLibsConfirm);
+    bool res = await showDialog(
+      context: context,
+      builder: (context) => ConfirmDialog(
+        question: Localization.of(context).deleteSelectedLibsConfirm,
+      ),
+    );
+
     if (res) {
       libManager.deleteSelectedLibraries(_selectedLibs);
       _selectedLibs = [];
