@@ -14,6 +14,9 @@ class Library {
   int bookCount;
   String id;
 
+  /// Populate the library.
+  ///
+  /// Takes a [DocumentSnapshot] and populates the fields of the library.
   assimilate(DocumentSnapshot snap) {
     name = snap['name'];
     isFavourite = snap['isFavourite'] ?? false;

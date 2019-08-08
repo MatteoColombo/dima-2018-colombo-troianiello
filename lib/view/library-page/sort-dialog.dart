@@ -2,9 +2,11 @@ import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/sort-books-enum.dart';
 import 'package:flutter/material.dart';
 
+/// Shows a dialog with some options to sort the book list.
 class SortDialog extends StatelessWidget {
   const SortDialog({Key key, this.sort}) : super(key: key);
 
+  /// The current sort method.
   final SortMethods sort;
 
   @override
@@ -16,8 +18,12 @@ class SortDialog extends StatelessWidget {
     );
   }
 
-  _generateOptions(BuildContext context) {
+  /// Returns the list of possible sorting methods.
+  ///
+  /// For each possible sorting option a [SimpleDialogOption] is created.
+  List<SimpleDialogOption> _generateOptions(BuildContext context) {
     List<SimpleDialogOption> options = [];
+    // Get the sorting options text.
     List<String> messages = _generateMessages(context);
     for (int i = 0; i < messages.length; i++) {
       options.add(
@@ -46,7 +52,10 @@ class SortDialog extends StatelessWidget {
     return options;
   }
 
-  _generateMessages(BuildContext context) {
+  /// Returns a list of sorting options text.
+  ///
+  /// We need this method and we can't declare this as a costant because of Localization.
+  List<String> _generateMessages(BuildContext context) {
     return [
       Localization.of(context).sortAZ,
       Localization.of(context).sortZA,

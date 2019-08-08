@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Splash screen displayed when the main page is loading.
 class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
