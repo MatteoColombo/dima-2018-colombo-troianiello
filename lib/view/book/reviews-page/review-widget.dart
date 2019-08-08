@@ -19,10 +19,10 @@ class ReviewWidget extends StatelessWidget {
     @required this.color,
   });
 
-  ///Builds a widget, that shows [review].
-  ///
-  ///This widget contains a [FlutterRatingBar], that shows the score given by the [User], 
-  ///and a [Text], that shows user's comment.
+  //Builds a widget, that shows [review].
+  //
+  //This widget contains a [FlutterRatingBar], that shows the score given by the user, 
+  //and a [Text], that shows user's comment.
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),

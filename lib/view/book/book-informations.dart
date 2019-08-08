@@ -16,7 +16,7 @@ class BookInformations extends StatelessWidget {
   ///Constructor of BookInformations
   ///
   ///Requires a [book], whose informations will be shown.
-  BookInformations({@required this.book});
+  BookInformations({@required this.book}) : assert(book != null);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class BookInformations extends StatelessWidget {
   ///The main section is a [Column], containing several [Text] widgets.
   Widget _buildMainInfoSection(BuildContext context, Book book) {
     return Container(
-      width: MediaQuery.of(context).size.width*3/5,
+      width: MediaQuery.of(context).size.width * 3 / 5,
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +81,9 @@ class BookInformations extends StatelessWidget {
             Localization.of(context).title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
-          Text(book.title,),
+          Text(
+            book.title,
+          ),
           Divider(
             color: Colors.transparent,
           ),
@@ -89,7 +91,7 @@ class BookInformations extends StatelessWidget {
             Localization.of(context).authors,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
           ),
-           ..._buildAuthorsSection(book.authors),
+          ..._buildAuthorsSection(book.authors),
         ],
       ),
     );
@@ -97,7 +99,7 @@ class BookInformations extends StatelessWidget {
 
   ///Returns a section containing the description of this book.
   ///
-  ///Returns a [DescriptionTextWidget], that show the [text] 
+  ///Returns a [DescriptionTextWidget], that show the [text]
   ///in a contracted form or a extended form.
   Widget _buildDescSection(BuildContext context, Book book) {
     return new DescriptionTextWidget(text: book.description);
@@ -105,8 +107,8 @@ class BookInformations extends StatelessWidget {
 
   ///Returns a section containing the description and other secondary informations of this book.
   ///
-  ///Returns a [Column], containig the [Text] of [book.descripton], 
-  ///[book.publisher], [book.releaseDate], [book.edition], [book.price], 
+  ///Returns a [Column], containig the [Text] of [book.descripton],
+  ///[book.publisher], [book.releaseDate], [book.edition], [book.price],
   ///[book.pages], [book.isbn].
   Widget _buildSecondSection(BuildContext context, Book book) {
     return Container(
@@ -125,86 +127,86 @@ class BookInformations extends StatelessWidget {
 
   ///Returns a list of widgets associated to the secondary informations of this book.
   ///
-  ///Returns a [List] of [Widget], containig the [Text] of [book.publisher], 
+  ///Returns a [List] of [Widget], containig the [Text] of [book.publisher],
   ///[book.releaseDate], [book.edition], [book.price], [book.pages], [book.isbn].
   List<Widget> _buildSecondaryInformation(BuildContext context, Book book) {
     return <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              Localization.of(context).publisher + ':',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            ),
-            Text(book.publisher),
-          ],
-        ),
-        Divider(
-          color: Colors.transparent,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              Localization.of(context).releaseDate + ': ',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            ),
-            Text(DateFormat('EEEE, d MMMM y').format(book.releaseDate)),
-          ],
-        ),
-        Divider(
-          color: Colors.transparent,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              Localization.of(context).pages + ':',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            ),
-            Text(book.pages.toString()),
-          ],
-        ),
-        Divider(
-          color: Colors.transparent,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              Localization.of(context).edition + ':',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            ),
-            Text(book.edition),
-          ],
-        ),
-        Divider(
-          color: Colors.transparent,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              Localization.of(context).price + ':',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            ),
-            Text(book.price),
-          ],
-        ),
-        Divider(
-          color: Colors.transparent,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              Localization.of(context).isbn + ':',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
-            ),
-            Text(book.isbn),
-          ],
-        ),
-      ];
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Localization.of(context).publisher + ':',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+          Text(book.publisher),
+        ],
+      ),
+      Divider(
+        color: Colors.transparent,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Localization.of(context).releaseDate + ': ',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+          Text(DateFormat('EEEE, d MMMM y').format(book.releaseDate)),
+        ],
+      ),
+      Divider(
+        color: Colors.transparent,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Localization.of(context).pages + ':',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+          Text(book.pages.toString()),
+        ],
+      ),
+      Divider(
+        color: Colors.transparent,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Localization.of(context).edition + ':',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+          Text(book.edition),
+        ],
+      ),
+      Divider(
+        color: Colors.transparent,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Localization.of(context).price + ':',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+          Text(book.price),
+        ],
+      ),
+      Divider(
+        color: Colors.transparent,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            Localization.of(context).isbn + ':',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+          ),
+          Text(book.isbn),
+        ],
+      ),
+    ];
   }
 
   ///Shows a dialog that contains a large sized version of the cover.

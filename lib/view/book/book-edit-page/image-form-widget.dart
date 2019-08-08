@@ -18,10 +18,11 @@ class ImageFormSectionWidget extends StatefulWidget {
   ///Constructor of ImageFormSectionWidget.
   ///
   ///Receives a [Book] and a [Function], all required variabiles.
-  ///[book] is the book associated to the cover and 
+  ///[book] is the book associated to the cover and
   ///[saveImage] allows to retrive the image saved with the form.
-  ImageFormSectionWidget({@required this.book, @required this.saveImage});
-  
+  ImageFormSectionWidget({@required this.book, @required this.saveImage})
+      : assert(book != null && saveImage != null);
+
   //Creates the state of this widget.
   _ImageFormSectionWidgetState createState() =>
       new _ImageFormSectionWidgetState(book);
@@ -84,7 +85,7 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
 
   ///Creates a widget that displays an [Image] or a [CachedNetworkImage].
   ///
-  ///Displays a saved image through a file or a image on internet using a URL, 
+  ///Displays a saved image through a file or a image on internet using a URL,
   ///if the image is not available, this widget displays a defaul image.
   Widget _getImgWidget(BuildContext context) {
     if (_book.image == null && _image == null)

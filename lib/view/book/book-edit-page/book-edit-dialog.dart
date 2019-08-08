@@ -230,7 +230,7 @@ class _BookEditDialogState extends State<BookEditDialog> {
           initialValue: _book.pages != null ? _book.pages.toString() : "",
           validator: (text) {
             if (int.tryParse(text).isNaN)
-              return Localization.of(context).priceError;
+              return Localization.of(context).numberError;
             else
               return null;
           },

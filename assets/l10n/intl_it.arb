@@ -76,8 +76,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "priceError": "Deve essere un numero",
-  "@priceError": {
+  "numberError": "Questo valore deve essere un numero",
+  "@numberError": {
     "type": "text",
     "placeholders": {}
   },

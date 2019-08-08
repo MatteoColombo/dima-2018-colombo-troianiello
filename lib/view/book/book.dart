@@ -9,7 +9,7 @@ import '../common/localization.dart';
 
 ///Generates the page of a given [Book], that allows to view and edit the informations.
 ///
-///Connectes to Firestore DB to retrive this [Book] and creates a [TabBarView], containg the main information of this book, 
+///Connectes to Firestore DB to retrive this [Book] and creates a [TabBarView], containg the main information of this book,
 ///and a [BookEditDialog], that allows to edit these informations.
 class BookPage extends StatelessWidget {
   ///The identifier of the book.
@@ -18,7 +18,7 @@ class BookPage extends StatelessWidget {
   ///Constructor of BookPage
   ///
   ///Requires a [isbn], the identifier of this book.
-  BookPage({@required this.isbn});
+  BookPage({@required this.isbn}) : assert(isbn != null);
 
   //Retreives the [Book] using a [FutureBuilder].
   @override

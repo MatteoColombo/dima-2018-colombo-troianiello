@@ -1,6 +1,4 @@
 import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
-
-import '../../../firebase/book-repo.dart';
 import '../../../model/review.model.dart';
 import 'package:flutter/material.dart';
 import './other-reviews.dart';
