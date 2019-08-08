@@ -132,16 +132,16 @@ class _BookEditDialogState extends State<BookEditDialog> {
       _showDialogErrorImage(context);
       return;
     }
-    _showDialogSaving(context);
-    if (image != null)
-      book.image =
-          await FireProvider.of(context).book.uploadFile(image, !addBook);
-    if (addBook)
-      await FireProvider.of(context).book.saveBook(book);
+    _showSavingDialog(context);
+    if (_image != null)
+      _book.image =
+          await FireProvider.of(context).book.uploadFile(_image, !_addBook);
+    if (_addBook)
+      await FireProvider.of(context).book.saveBook(_book);
     else
       FireProvider.of(context)
           .book
-          .saveRequest(book, FireProvider.of(context).auth.getUserId());
+          .saveRequest(_book, FireProvider.of(context).auth.getUserId());
     //Pop of SavingDialog.
     Navigator.pop(context);
     //Pop of this widget.
