@@ -1,5 +1,4 @@
 import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/loading-spinner.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';

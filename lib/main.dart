@@ -1,3 +1,5 @@
+import 'package:dima2018_colombo_troianiello/camera/barcode-scanner.dart';
+import 'package:dima2018_colombo_troianiello/camera/image-picker.dart';
 import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/firebase/book-repo.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
@@ -21,8 +23,8 @@ class MyApp extends StatelessWidget {
       auth: Auth(),
       book: BookRepo(),
       library: LibraryRepo(),
-      picker: null,
-      scanner: null,
+      picker: ImgPicker(),
+      scanner: BarcodeScanner(),
       child: MaterialApp(
         localizationsDelegates: [
           const LocalizationDelegate(),

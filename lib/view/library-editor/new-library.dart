@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import '../../model/library.model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '../../firebase/library-repo.dart';
 import '../common/loading-spinner.dart';
 
 class NewLibrary extends StatefulWidget {
@@ -108,10 +107,8 @@ class _NewLibraryState extends State<NewLibrary> {
 
   _addPhoto(bool camera) async {
     try {
-      var image = await ImagePicker.pickImage(
-          source: camera ? ImageSource.camera : ImageSource.gallery,
-          maxHeight: 500,
-          maxWidth: 500);
+      var image = await FireProvider.of(context).picker.getImage(
+          500, 500, camera ? ImageSource.camera : ImageSource.gallery);
       if (image != null) {
         setState(() {
           _image = image;

@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/camera/image-picker.dart';
 import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
@@ -113,10 +114,8 @@ class _EditLibraryState extends State<EditLibrary> {
 
   _addPhoto(bool camera) async {
     try {
-      var image = await ImagePicker.pickImage(
-          source: camera ? ImageSource.camera : ImageSource.gallery,
-          maxHeight: 500,
-          maxWidth: 500);
+      var image = await FireProvider.of(context).picker.getImage(
+          500, 500, camera ? ImageSource.camera : ImageSource.gallery);
       if (image != null) {
         setState(() {
           _image = image;

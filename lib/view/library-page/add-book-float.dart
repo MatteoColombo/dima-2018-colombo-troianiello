@@ -30,8 +30,7 @@ class AddBookFloat extends StatelessWidget {
   /// If the book doesn't exist, a page to manually insert book data in shown,
   /// A [SnackBar] is shown to notify the user of the result of the operation.
   _addBook(context) async {
-    String isbn = await FlutterBarcodeScanner.scanBarcode(
-        "#ffffff", Localization.of(context).cancel, true);
+    String isbn = await FireProvider.of(context).scanner.getISBN(context);
     SnackBar snackbar;
     // If the user cancelled the operation or if the ISBN in null, do nothing.
     if (isbn != null && isbn != "") {

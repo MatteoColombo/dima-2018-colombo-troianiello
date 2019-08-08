@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-auth.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-auth.dart';
 import 'package:dima2018_colombo_troianiello/model/user.model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';

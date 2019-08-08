@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
-import 'package:dima2018_colombo_troianiello/firebase/book-repo.dart';
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-library.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-library.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:firebase_storage/firebase_storage.dart';

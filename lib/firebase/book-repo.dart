@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-book.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-book.dart';
 import 'package:dima2018_colombo_troianiello/model/user.model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';

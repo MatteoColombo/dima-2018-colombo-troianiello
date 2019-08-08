@@ -1,8 +1,8 @@
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-auth.dart';
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-book.dart';
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-library.dart';
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-picker.dart';
-import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-scanner.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-auth.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-book.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-library.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-picker.dart';
+import 'package:dima2018_colombo_troianiello/interfaces/base-scanner.dart';
 import 'package:flutter/widgets.dart';
 
 class FireProvider extends InheritedWidget {

@@ -16,9 +16,9 @@ import 'package:flutter/material.dart';
 /// It shows the list of the libraries and gives the possibility to add, select and delete them.
 /// It also allows the user to search within the list of all the books in the database.
 class Home extends StatefulWidget {
-  Home(this.oldContext);
-  final BuildContext oldContext;
-  _HomeState createState() => _HomeState(oldContext);
+  Home(this.context);
+  final BuildContext context;
+  _HomeState createState() => _HomeState(context);
 }
 
 class _HomeState extends State<Home> {
@@ -43,15 +43,15 @@ class _HomeState extends State<Home> {
   /// The current search query.
   String _searchQuery;
 
-  _HomeState(BuildContext oldContext)
+  _HomeState(BuildContext context)
       : _searching = false,
         _searchQuery = "",
         _selectedLibs = [],
         _searchController = TextEditingController(text: "") {
-    _getUser(oldContext);
+    _getUser(context);
 
     // Gets libraries and adds listener so that each time the list updates the UI is updated.
-    _libstream = FireProvider.of(oldContext).library.getLibraryStream(_user.id);
+    _libstream = FireProvider.of(context).library.getLibraryStream(_user.id);
     _libstream.listen((data) => _setLibraries(data));
 
     // Adds a listener to the search text input controller so that we can update the search query.
@@ -81,9 +81,8 @@ class _HomeState extends State<Home> {
   ///
   /// Asks to the Authentication repository for the current user and stores it as a [FirebaseUser].
   /// Saves the users initials so that they can be showed in the Drawer.
-  void _getUser(BuildContext oldcontext) {
-    _user = FireProvider.of(oldcontext).auth.getUser();
-    List<String> name = _user.name.split(" ");
+  void _getUser(BuildContext context) {
+    _user = FireProvider.of(context).auth.getUser();
   }
 
   /// Dispose of the search controller when this widget is terminated.

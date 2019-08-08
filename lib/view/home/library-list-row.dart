@@ -91,7 +91,7 @@ class LibraryListRow extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => LibraryPage(
           library: library,
-          oldcontext: context,
+          context: context,
         ),
       ),
     );
