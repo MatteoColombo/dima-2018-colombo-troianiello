@@ -1,10 +1,11 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+
 import './image-form-widget.dart';
 import '../../common/localization.dart';
 import 'package:flutter/material.dart';
 import '../../common/date-picker.dart';
 import '../../../model/book.model.dart';
 import './authors-section.dart';
-import './../../../firebase/book-repo.dart';
 import '../../common/loading-spinner.dart';
 import 'dart:io';
 
@@ -59,6 +60,7 @@ class _BookEditDialogState extends State<BookEditDialog> {
 
   ///[FocusNode] of [TextFormField] of [_book.description].
   final FocusNode _descriptionFocus = FocusNode();
+
 
   ///[FocusNode] of [TextFormField] of [_book.publisher].
   final FocusNode _publisherFocus = FocusNode();
@@ -130,13 +132,16 @@ class _BookEditDialogState extends State<BookEditDialog> {
       _showDialogErrorImage(context);
       return;
     }
-    _showSavingDialog(context);
-    if (_image != null)
-      _book.image = await bookManager.uploadFile(_image, !_addBook);
-    if (_addBook)
-      await bookManager.saveBook(_book);
+    _showDialogSaving(context);
+    if (image != null)
+      book.image =
+          await FireProvider.of(context).book.uploadFile(image, !addBook);
+    if (addBook)
+      await FireProvider.of(context).book.saveBook(book);
     else
-      bookManager.saveRequest(_book);
+      FireProvider.of(context)
+          .book
+          .saveRequest(book, FireProvider.of(context).auth.getUserId());
     //Pop of SavingDialog.
     Navigator.pop(context);
     //Pop of this widget.
@@ -166,6 +171,7 @@ class _BookEditDialogState extends State<BookEditDialog> {
           autofocus: true,
           onFieldSubmitted: (v) {
             FocusScope.of(context).requestFocus(_descriptionFocus);
+
           },
           decoration:
               InputDecoration(labelText: Localization.of(context).title),
@@ -187,6 +193,7 @@ class _BookEditDialogState extends State<BookEditDialog> {
           onSaved: (text) => _book.description = text,
           onEditingComplete: () {
             FocusScope.of(context).requestFocus(_publisherFocus);
+
           },
         ),
         TextFormField(
@@ -308,4 +315,5 @@ class _BookEditDialogState extends State<BookEditDialog> {
       },
     );
   }
+
 }

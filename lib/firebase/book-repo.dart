@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dima2018_colombo_troianiello/firebase/interfaces/base-book.dart';
+import 'package:dima2018_colombo_troianiello/model/user.model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import '../model/book.model.dart';
 import '../model/author.model.dart';
 import '../model/review.model.dart';
-import './auth.dart';
 
-class _BookControl {
+class BookRepo extends BaseBook {
   CollectionReference _collectionBook = Firestore.instance.collection("books");
   CollectionReference _collectionAuthors =
       Firestore.instance.collection("authors");
@@ -35,18 +36,18 @@ class _BookControl {
     }
   }
 
-  Future<Review> getUserReview(String isbn) async {
+  Future<Review> getUserReview(String isbn, String uid) async {
     DocumentSnapshot document = await _collectionBook
         .document(isbn)
         .collection("reviews")
-        .document('review_${authService.getUserId()}')
+        .document('review_$uid')
         .get();
     Review review = new Review();
     if (document.exists) review.assimilate(document);
     return review;
   }
 
-  Future<List<Review>> getOtherReviews(String isbn) async {
+  Future<List<Review>> getOtherReviews(String isbn, String uid) async {
     List<Review> reviews = new List<Review>();
     QuerySnapshot reviewsSnapshot = await _collectionBook
         .document(isbn)
@@ -57,9 +58,7 @@ class _BookControl {
       review.assimilate(document);
       reviews.add(review);
     }
-    reviews = reviews
-        .where((review) => review.userId != authService.getUserId())
-        .toList();
+    reviews = reviews.where((review) => review.userId != uid).toList();
     return reviews;
   }
 
@@ -115,10 +114,9 @@ class _BookControl {
     }
   }
 
-  Future<void> saveRequest(Book book) async {
-    String userId = authService.getUserId();
-    _collectionRequests.document('${book.isbn}_$userId').setData({
-      "user": userId,
+  Future<void> saveRequest(Book book, String uid) async {
+    _collectionRequests.document('${book.isbn}_$uid').setData({
+      "user": uid,
       "isbn": book.isbn,
       "requestDate": DateTime.now(),
       "title": book.title,
@@ -134,7 +132,7 @@ class _BookControl {
     });
     for (int i = 0; i < book.authors.length; i++) {
       _collectionRequests
-          .document('${book.isbn}_$userId')
+          .document('${book.isbn}_$uid')
           .collection('authors')
           .document('author$i')
           .setData({
@@ -144,23 +142,19 @@ class _BookControl {
     }
   }
 
-  Future<Review> saveReview(Review review, String isbn) async {
-    String userId = authService.getUserId();
-    String userName = authService.getUserName();
-    List<String> strings = userName.split(' ');
-    String initials = strings.removeAt(0)[0] + strings.removeLast()[0];
+  Future<Review> saveReview(Review review, String isbn, User user) async {
     await _collectionBook
         .document(isbn)
         .collection('reviews')
-        .document('review_$userId')
+        .document('review_${user.id}')
         .setData({
       "date": DateTime.now(),
       "score": review.score,
       "text": review.text,
-      "user": initials,
-      "userId": userId,
+      "user": user.initials,
+      "userId": user.id,
     });
-    return this.getUserReview(isbn);
+    return this.getUserReview(isbn, user.id);
   }
 
   Future<String> uploadFile(File image, bool request) async {
@@ -190,5 +184,3 @@ class _BookControl {
     return [];
   }
 }
-
-final _BookControl bookManager = _BookControl();

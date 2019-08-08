@@ -1,3 +1,5 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+
 import '../../../firebase/book-repo.dart';
 import '../../../model/review.model.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,9 @@ class ReviewsWidget extends StatelessWidget {
           isbn: isbn,
         ),
         FutureBuilder(
-          future: bookManager.getOtherReviews(isbn),
+          future: FireProvider.of(context)
+              .book
+              .getOtherReviews(isbn, FireProvider.of(context).auth.getUserId()),
           builder:
               (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
             if (!snapshot.hasData)

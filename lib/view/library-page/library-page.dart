@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
@@ -14,31 +14,47 @@ import 'package:dima2018_colombo_troianiello/view/library-page/sort-dialog.dart'
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Shows the books that belong to a given library.
 class LibraryPage extends StatefulWidget {
-  LibraryPage({Key key, this.library}) : super(key: key);
-  final Library library;
+  LibraryPage({Key key, this.library, this.oldcontext}) : super(key: key);
 
-  _LibraryPageState createState() => _LibraryPageState(library);
+  /// The library that we want to display.
+  final Library library;
+  final BuildContext oldcontext;
+
+  _LibraryPageState createState() => _LibraryPageState(library, oldcontext);
 }
 
 class _LibraryPageState extends State<LibraryPage> {
+  /// The library that is displayed.
   final Library _library;
+
+  /// A stream that listens for changes on the book list.
   Stream<List<Book>> _bookStream;
+
+  /// The list of books that is currently displayed.
   List<Book> _books;
+
+  /// The list of ISBN codes of book that are currently selected.
   List<String> _selected = [];
+
+  /// The sorting method.
   SortMethods _sort = SortMethods.Title;
 
-  _LibraryPageState(this._library) {
-    _bookStream = libManager.getBooksStream(_library.id);
+  _LibraryPageState(this._library, BuildContext oldContext) {
+    _bookStream =
+        FireProvider.of(oldContext).library.getBooksStream(_library.id);
     _bookStream.listen((data) => _saveBook(data));
     _loadPreferences();
   }
 
+  /// Loads the shared preferences with the preferred sorting method.
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _sort = SortMethods.values[prefs.getInt("sort") ?? 0];
   }
 
+  /// Updates the state when the stream receives a new book list.
   _saveBook(List<Book> data) async {
     _books = data;
     setState(() {});
@@ -71,6 +87,7 @@ class _LibraryPageState extends State<LibraryPage> {
           )
         ],
       ),
+      // Hide the floating button is selection mode is active.
       floatingActionButton: _selected.length > 0
           ? null
           : AddBookFloat(
@@ -79,7 +96,11 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  _onRowSelect(String isbn) {
+  /// Callback function called when a row is selected.
+  ///
+  /// Receives a [String] that represents the ISBN of the book that triggered the callback.
+  /// If the book is already selected, it is removed. Otherwise it is added to the list.
+  void _onRowSelect(String isbn) {
     if (_selected.contains(isbn)) {
       _selected = _selected.where((s) => s != isbn).toList();
     } else {
@@ -88,7 +109,11 @@ class _LibraryPageState extends State<LibraryPage> {
     setState(() {});
   }
 
-  _appBarCallback(AppBarBtn choice, BuildContext newContext) {
+  /// Callback function called when a button in the AppBar is pressed.
+  ///
+  /// Its parameters are a [AppBarBtn] representing the user choice and a new [BuildContext].
+  /// The [BuildContext] is required because the callback may need to respond with some widgets that require a context containin a Scaffold.
+  void _appBarCallback(AppBarBtn choice, BuildContext newContext) {
     switch (choice) {
       case AppBarBtn.Clear:
         setState(() {
@@ -114,7 +139,10 @@ class _LibraryPageState extends State<LibraryPage> {
     }
   }
 
-  _deleteSelected() async {
+  /// Delete selected books and clear the selected list.
+  ///
+  /// Before deleting a [ConfirmDialog] is shown.
+  void _deleteSelected() async {
     bool res = await showDialog(
       context: context,
       builder: (context) => ConfirmDialog(
@@ -122,12 +150,17 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (res != null && res) {
-      libManager.deleteBooksFromLibrary(_selected, _library.id);
+      FireProvider.of(context)
+          .library
+          .deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];
     }
   }
 
-  _moveSelected(BuildContext newContext) async {
+  /// Moves selected books to another library.
+  ///
+  /// Shows a [MoveBookDialog] to ask the user to which library they want to move the books.
+  void _moveSelected(BuildContext newContext) async {
     String newLib = await showDialog(
       context: newContext,
       builder: (context) => MoveBookDialog(
@@ -135,20 +168,29 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (newLib != null) {
-      libManager.moveBooks(_selected, _library.id, newLib);
+      FireProvider.of(context)
+          .library
+          .moveBooks(_selected, _library.id, newLib, context);
       _showMovedSnackBar(newContext);
       _selected = [];
     }
   }
 
-  _showMovedSnackBar(BuildContext newContext) {
+  /// Shows a snackbar with a feedback message.
+  ///
+  /// It is shown when book are moved to confirm the action to the user.
+  void _showMovedSnackBar(BuildContext newContext) {
     SnackBar snackbar = SnackBar(
       content: Text(Localization.of(context).bookMoved),
     );
     Scaffold.of(newContext).showSnackBar(snackbar);
   }
 
-  _showSortDialog() async {
+  /// Shows a dialog that asks to the user to choose the sorting method.
+  ///
+  /// It shows a [SortDialog].
+  /// If the user changes its choice, the [SharedPreferences] are updated.
+  void _showSortDialog() async {
     SortMethods choice = await showDialog(
         context: context,
         builder: (context) => SortDialog(
@@ -158,6 +200,8 @@ class _LibraryPageState extends State<LibraryPage> {
       setState(() {
         _sort = choice;
       });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setInt("sort", choice.index);
     }
   }
 }

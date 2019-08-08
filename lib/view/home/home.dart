@@ -1,5 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/auth.dart';
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
@@ -9,7 +8,7 @@ import 'package:dima2018_colombo_troianiello/view/home/home-drawer.dart';
 import 'package:dima2018_colombo_troianiello/view/home/library-list.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/new-library.dart';
 import 'package:dima2018_colombo_troianiello/view/search/search.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dima2018_colombo_troianiello/model/user.model.dart';
 import 'package:flutter/material.dart';
 
 /// The main page of the application.
@@ -17,15 +16,14 @@ import 'package:flutter/material.dart';
 /// It shows the list of the libraries and gives the possibility to add, select and delete them.
 /// It also allows the user to search within the list of all the books in the database.
 class Home extends StatefulWidget {
-  _HomeState createState() => _HomeState();
+  Home(this.oldContext);
+  final BuildContext oldContext;
+  _HomeState createState() => _HomeState(oldContext);
 }
 
 class _HomeState extends State<Home> {
   /// It represents the user.
-  FirebaseUser _user;
-
-  /// The initials of the user.
-  String _initials;
+  User _user;
 
   /// A list constaing the IDs of selected libraries.
   List<String> _selectedLibs;
@@ -45,15 +43,15 @@ class _HomeState extends State<Home> {
   /// The current search query.
   String _searchQuery;
 
-  _HomeState()
+  _HomeState(BuildContext oldContext)
       : _searching = false,
         _searchQuery = "",
         _selectedLibs = [],
         _searchController = TextEditingController(text: "") {
-    _getUser();
+    _getUser(oldContext);
 
     // Gets libraries and adds listener so that each time the list updates the UI is updated.
-    _libstream = libManager.getLibraryStream();
+    _libstream = FireProvider.of(oldContext).library.getLibraryStream(_user.id);
     _libstream.listen((data) => _setLibraries(data));
 
     // Adds a listener to the search text input controller so that we can update the search query.
@@ -83,11 +81,9 @@ class _HomeState extends State<Home> {
   ///
   /// Asks to the Authentication repository for the current user and stores it as a [FirebaseUser].
   /// Saves the users initials so that they can be showed in the Drawer.
-  void _getUser() {
-    _user = authService.getUser();
-    List<String> name = _user.displayName.split(" ");
-    _initials = name.first.substring(0, 1).toUpperCase() +
-        name.last.substring(0, 1).toUpperCase();
+  void _getUser(BuildContext oldcontext) {
+    _user = FireProvider.of(oldcontext).auth.getUser();
+    List<String> name = _user.name.split(" ");
   }
 
   /// Dispose of the search controller when this widget is terminated.
@@ -108,7 +104,6 @@ class _HomeState extends State<Home> {
         searching: _searching,
       ),
       drawer: HomeDrawer(
-        initials: _initials,
         user: _user,
       ),
       // If searching show the search list, otherwiser show the library list.
@@ -189,7 +184,7 @@ class _HomeState extends State<Home> {
     );
 
     if (res) {
-      libManager.deleteSelectedLibraries(_selectedLibs);
+      FireProvider.of(context).library.deleteSelectedLibraries(_selectedLibs);
       _selectedLibs = [];
       setState(() {});
     }

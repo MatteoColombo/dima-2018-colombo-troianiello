@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
@@ -9,6 +9,7 @@ import 'package:dima2018_colombo_troianiello/view/library-page/popup-option-enum
 import 'package:dima2018_colombo_troianiello/view/library-page/row-popup-menu.dart';
 import 'package:flutter/material.dart';
 
+/// The widget used to display a book in the book list in the library page.
 class BookListRow extends StatelessWidget {
   BookListRow(
       {Key key,
@@ -18,10 +19,22 @@ class BookListRow extends StatelessWidget {
       @required this.onSelect,
       @required this.selecting})
       : super(key: key);
+
+  /// The book to be displayed.
   final Book book;
+
+  /// Whether selecting mode is active or not.
+  ///
+  /// This is used to determine how to color the widget and how to respond to user actions.
   final bool selecting;
+
+  /// Whether this books is selected or not.
   final bool isSelected;
+
+  /// The ID of the library that the book is part of.
   final String library;
+
+  /// The callback function to be triggered when a selection gesture is performed.
   final Function onSelect;
 
   @override
@@ -55,7 +68,8 @@ class BookListRow extends StatelessWidget {
     );
   }
 
-  _generateImage() {
+  /// Returns a widget used to display the book image.s
+  Widget _generateImage() {
     return Padding(
       padding: EdgeInsets.all(8),
       child: ClipRRect(
@@ -83,7 +97,10 @@ class BookListRow extends StatelessWidget {
     );
   }
 
-  _generateListTile() {
+  /// Returns a widget with the book information.
+  ///
+  /// It also display a [RowPopUpMenu].
+  Widget _generateListTile() {
     return Expanded(
       child: ListTile(
         title: Text(book.title),
@@ -96,7 +113,10 @@ class BookListRow extends StatelessWidget {
     );
   }
 
-  _popupCallback(PopUpOpt choice, BuildContext context) {
+  /// Callback function called by the [RowPopUpMenu]
+  ///
+  /// It receives a [PopUpOpt] that represents the choice of the user and a [BuildContext]
+  void _popupCallback(PopUpOpt choice, BuildContext context) {
     switch (choice) {
       case PopUpOpt.Move:
         _moveBook(context);
@@ -107,7 +127,10 @@ class BookListRow extends StatelessWidget {
     }
   }
 
-  _deleteBook(BuildContext context) async {
+  /// Deletes the book.
+  ///
+  /// Before deleting the book a [ConfirmDialog] is shown.
+  void _deleteBook(BuildContext context) async {
     bool res = await showDialog(
       context: context,
       builder: (context) => ConfirmDialog(
@@ -115,11 +138,14 @@ class BookListRow extends StatelessWidget {
       ),
     );
     if (res != null && res) {
-      libManager.deleteBookFromLibrary(book.isbn, library);
+      FireProvider.of(context)
+          .library
+          .deleteBookFromLibrary(book.isbn, library);
     }
   }
 
-  _openBook(BuildContext context) {
+  /// Opens the book.
+  void _openBook(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BookPage(
@@ -129,7 +155,10 @@ class BookListRow extends StatelessWidget {
     );
   }
 
-  _moveBook(BuildContext context) async {
+  /// Moves the book to another library.
+  ///
+  /// It shows a [MoveBookDialog] to determine to which other library the book should be moved.
+  void _moveBook(BuildContext context) async {
     String newLib = await showDialog(
       context: context,
       builder: (context) => MoveBookDialog(
@@ -137,12 +166,15 @@ class BookListRow extends StatelessWidget {
       ),
     );
     if (newLib != null) {
-      libManager.moveBooks([book.isbn], library, newLib);
+      FireProvider.of(context)
+          .library
+          .moveBooks([book.isbn], library, newLib, context);
       _showMovedSnackBar(context);
     }
   }
 
-  _showMovedSnackBar(BuildContext context) {
+  /// Shows a [SnackBar] with a feedback message.
+  void _showMovedSnackBar(BuildContext context) {
     SnackBar snackbar = SnackBar(
       content: Text(Localization.of(context).bookMoved),
     );

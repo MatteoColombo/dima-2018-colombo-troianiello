@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-background.dart';
@@ -12,7 +13,6 @@ import 'dart:io';
 import '../../firebase/library-repo.dart';
 import '../common/loading-spinner.dart';
 
-/// A dialog used to create a new library.
 class NewLibrary extends StatefulWidget {
   NewLibrary({Key key}) : super(key: key);
 
@@ -20,33 +20,21 @@ class NewLibrary extends StatefulWidget {
 }
 
 class _NewLibraryState extends State<NewLibrary> {
-  /// Whether the library is favourite or not.
   bool _favourite = false;
-
-  /// The file used to store the image loaded from memory or from camera.
   File _image;
-
-  /// The text controller used to manage the library name text field.
   TextEditingController _controller;
-
-  /// True if saving operation is on going.
   bool _saving = false;
 
   _NewLibraryState() {
     _controller = TextEditingController(text: "");
   }
 
-  /// Disposes the text controller.
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  /// Method used to build the widget.
-  ///
-  /// If it is saving, show a [LoadingSpinner] dialog.
-  /// Otherwise show the edit page.
   @override
   Widget build(BuildContext context) {
     Widget child;
@@ -59,15 +47,11 @@ class _NewLibraryState extends State<NewLibrary> {
     );
   }
 
-  /// Returns the main widget of the class.
-  ///
-  /// It is the widget rendered in the normal state and allows to edit the library information.
-  Widget _getDialog() {
+  _getDialog() {
     double width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        // Shows an image with some action buttons in overlay.
         Stack(
           children: <Widget>[
             Container(
@@ -96,17 +80,14 @@ class _NewLibraryState extends State<NewLibrary> {
           },
         ),
         SaveButtonBar(
-          canSave: _controller.text.length > 0,
+          textController: _controller,
           onSave: _handleSave,
         ),
       ],
     );
   }
 
-  /// Handles the tap of the buttons over the image.
-  ///
-  /// It receives a [ImgBtnEnum] as a parameter which represents the choice.
-  void _handleImgButtons(ImgBtnEnum choice) {
+  _handleImgButtons(ImgBtnEnum choice) {
     switch (choice) {
       case ImgBtnEnum.Delete:
         _deletePhoto();
@@ -120,16 +101,12 @@ class _NewLibraryState extends State<NewLibrary> {
     }
   }
 
-  /// Deletes the photo.
-  void _deletePhoto() {
+  _deletePhoto() {
     if (_image != null) _image = null;
     setState(() {});
   }
 
-  /// Adds an image as library photo.
-  ///
-  /// It uses an image picker to pick an image either from gallery or from camera.
-  Future<void> _addPhoto(bool camera) async {
+  _addPhoto(bool camera) async {
     try {
       var image = await ImagePicker.pickImage(
           source: camera ? ImageSource.camera : ImageSource.gallery,
@@ -145,34 +122,32 @@ class _NewLibraryState extends State<NewLibrary> {
     }
   }
 
-  /// Saves the library.
-  ///
-  /// Set the state to saving so that the progress indicator is shown.
-  /// If there is an image, it is uploaded to firestore.
-  /// Then the method to save the library is called.
-  Future<void> _handleSave() async {
+  Future _handleSave() async {
     setState(() {
       _saving = true;
     });
     if (_image != null) {
-      String imageUrl = await libManager.uploadFile(_image);
+      String imageUrl = await FireProvider.of(context).library.uploadFile(
+            _image,
+            FireProvider.of(context).auth.getUserId(),
+          );
       _saveLibrary(imageUrl);
     } else {
       _saveLibrary(null);
     }
   }
 
-  /// Saves the library to the database.
-  ///
-  /// It receives a [String] parameter which represents the URL of the new image, if it has to be saved.
-  Future<void> _saveLibrary(String imageUrl) async {
+  Future _saveLibrary(String imageUrl) async {
     Library lib = new Library(
       image: imageUrl ?? null,
       name: _controller.text,
       isFavourite: _favourite,
       bookCount: 0,
     );
-    await libManager.saveLibrary(lib);
+    await FireProvider.of(context).library.saveLibrary(
+          lib,
+          FireProvider.of(context).auth.getUserId(),
+        );
     setState(() {
       _saving = false;
     });

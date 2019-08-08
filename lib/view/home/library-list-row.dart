@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/library-page.dart';
 import 'package:dima2018_colombo_troianiello/view/home/row-popup-menu.dart';
@@ -79,8 +79,10 @@ class LibraryListRow extends StatelessWidget {
   /// Callback method called when the "is Favourite" [IconButton] is tapped.
   ///
   /// It is used to update the library "is Favourite" state of the library.
-  void _changeFavouriteState() {
-    libManager.updateFavouritePreference(library.id, !library.isFavourite);
+  void _changeFavouriteState(BuildContext context) {
+    FireProvider.of(context)
+        .library
+        .updateUserFavouritePreference(library.id, !library.isFavourite);
   }
 
   /// Opens the library in a new page.
@@ -89,6 +91,7 @@ class LibraryListRow extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => LibraryPage(
           library: library,
+          oldcontext: context,
         ),
       ),
     );
@@ -146,7 +149,7 @@ class LibraryListRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           IconButton(
-            onPressed: isSelected ? null : () => _changeFavouriteState(),
+            onPressed: isSelected ? null : () => _changeFavouriteState(context),
             iconSize: 32,
             icon: Icon(
               library.isFavourite ? Icons.star : Icons.star_border,
