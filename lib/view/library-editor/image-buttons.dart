@@ -1,12 +1,19 @@
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-buttons-enum.dart';
 import 'package:flutter/material.dart';
 
+/// A set of button displayed in overlay to the library image.
+///
+/// They are used to upload or delete the picture.
 class ImageButtons extends StatelessWidget {
-  ImageButtons(
-      {Key key, @required this.hasImage, @required this.callback})
+  ImageButtons({Key key, @required this.hasImage, @required this.callback})
       : super(key: key);
+
+  /// True if the library has an image different to default one.
   final bool hasImage;
+
+  /// The callback function called when a button is pressed.
   final Function callback;
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -21,6 +28,7 @@ class ImageButtons extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
+              // Disabled if there is no image.
               if (hasImage)
                 IconButton(
                   icon: Icon(Icons.delete),
