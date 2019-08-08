@@ -1,10 +1,13 @@
-import 'package:dima2018_colombo_troianiello/view/home/home.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/firebase/book-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/model/user.model.dart';
 import 'package:dima2018_colombo_troianiello/splash.dart';
+import 'package:dima2018_colombo_troianiello/view/home/home.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import './view/common/localization.dart';
 
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import './firebase/auth.dart';
 import './login.dart';
 
@@ -14,22 +17,29 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        const LocalizationDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', ''),
-        const Locale('it', ''),
-      ],
-      title: 'NonSoloLibri',
-      theme: ThemeData(
-        primaryColor: Color.fromRGBO(140, 0, 50, 1),
-        accentColor: Color.fromRGBO(140, 0, 50, 1),
+    return FireProvider(
+      auth: Auth(),
+      book: BookRepo(),
+      library: LibraryRepo(),
+      picker: null,
+      scanner: null,
+      child: MaterialApp(
+        localizationsDelegates: [
+          const LocalizationDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('it', ''),
+        ],
+        title: 'NonSoloLibri',
+        theme: ThemeData(
+          primaryColor: Color.fromRGBO(140, 0, 50, 1),
+          accentColor: Color.fromRGBO(140, 0, 50, 1),
+        ),
+        home: MainWidgetManager(),
       ),
-      home: MainWidgetManager(),
     );
   }
 }
@@ -42,12 +52,13 @@ class MyApp extends StatelessWidget {
 class MainWidgetManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<FirebaseUser>(
-      stream: authService.getAuthStateChanges(),
+    return StreamBuilder<User>(
+      stream: FireProvider.of(context).auth.getAuthStateChange(),
       builder: (BuildContext context, snapshot) {
+        print(snapshot.data);
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return Home();
+            return Home(context);
           } else {
             return LoginPage();
           }

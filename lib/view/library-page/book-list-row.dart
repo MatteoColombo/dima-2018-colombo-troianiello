@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
@@ -138,7 +138,9 @@ class BookListRow extends StatelessWidget {
       ),
     );
     if (res != null && res) {
-      libManager.deleteBookFromLibrary(book.isbn, library);
+      FireProvider.of(context)
+          .library
+          .deleteBookFromLibrary(book.isbn, library);
     }
   }
 
@@ -164,7 +166,9 @@ class BookListRow extends StatelessWidget {
       ),
     );
     if (newLib != null) {
-      libManager.moveBooks([book.isbn], library, newLib);
+      FireProvider.of(context)
+          .library
+          .moveBooks([book.isbn], library, newLib, context);
       _showMovedSnackBar(context);
     }
   }

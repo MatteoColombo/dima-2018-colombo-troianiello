@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
@@ -51,7 +51,7 @@ class RowPopupMenu extends StatelessWidget {
         ),
       );
       if (confirm ?? false) {
-        libManager.deleteLibrary(library);
+        FireProvider.of(context).library.deleteLibrary(library);
       }
     }
   }

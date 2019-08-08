@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-background.dart';
@@ -126,7 +127,10 @@ class _NewLibraryState extends State<NewLibrary> {
       _saving = true;
     });
     if (_image != null) {
-      String imageUrl = await libManager.uploadFile(_image);
+      String imageUrl = await FireProvider.of(context).library.uploadFile(
+            _image,
+            FireProvider.of(context).auth.getUserId(),
+          );
       _saveLibrary(imageUrl);
     } else {
       _saveLibrary(null);
@@ -140,7 +144,10 @@ class _NewLibraryState extends State<NewLibrary> {
       isFavourite: _favourite,
       bookCount: 0,
     );
-    await libManager.saveLibrary(lib);
+    await FireProvider.of(context).library.saveLibrary(
+          lib,
+          FireProvider.of(context).auth.getUserId(),
+        );
     setState(() {
       _saving = false;
     });

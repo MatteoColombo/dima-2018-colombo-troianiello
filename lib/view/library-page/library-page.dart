@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
@@ -16,12 +16,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shows the books that belong to a given library.
 class LibraryPage extends StatefulWidget {
-  LibraryPage({Key key, this.library}) : super(key: key);
+  LibraryPage({Key key, this.library, this.oldcontext}) : super(key: key);
 
   /// The library that we want to display.
   final Library library;
+  final BuildContext oldcontext;
 
-  _LibraryPageState createState() => _LibraryPageState(library);
+  _LibraryPageState createState() => _LibraryPageState(library, oldcontext);
 }
 
 class _LibraryPageState extends State<LibraryPage> {
@@ -40,8 +41,9 @@ class _LibraryPageState extends State<LibraryPage> {
   /// The sorting method.
   SortMethods _sort = SortMethods.Title;
 
-  _LibraryPageState(this._library) {
-    _bookStream = libManager.getBooksStream(_library.id);
+  _LibraryPageState(this._library, BuildContext oldContext) {
+    _bookStream =
+        FireProvider.of(oldContext).library.getBooksStream(_library.id);
     _bookStream.listen((data) => _saveBook(data));
     _loadPreferences();
   }
@@ -148,7 +150,9 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (res != null && res) {
-      libManager.deleteBooksFromLibrary(_selected, _library.id);
+      FireProvider.of(context)
+          .library
+          .deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];
     }
   }
@@ -164,7 +168,9 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (newLib != null) {
-      libManager.moveBooks(_selected, _library.id, newLib);
+      FireProvider.of(context)
+          .library
+          .moveBooks(_selected, _library.id, newLib, context);
       _showMovedSnackBar(newContext);
       _selected = [];
     }

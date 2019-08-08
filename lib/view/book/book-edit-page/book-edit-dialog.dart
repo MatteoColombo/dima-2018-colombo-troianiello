@@ -1,10 +1,11 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+
 import './image-form-widget.dart';
 import '../../common/localization.dart';
 import 'package:flutter/material.dart';
 import '../../common/date-picker.dart';
 import '../../../model/book.model.dart';
 import './authors-section.dart';
-import './../../../firebase/book-repo.dart';
 import '../../common/loading-spinner.dart';
 import 'dart:io';
 
@@ -24,12 +25,11 @@ class BookEditDialogState extends State<BookEditDialog> {
   Book book;
   File image;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final FocusNode descriptionFocus=FocusNode();
-  final FocusNode publisherFocus=FocusNode();
-  final FocusNode priceFocus=FocusNode();
-  final FocusNode pagesFocus=FocusNode();
-  final FocusNode editionFocus=FocusNode();
-
+  final FocusNode descriptionFocus = FocusNode();
+  final FocusNode publisherFocus = FocusNode();
+  final FocusNode priceFocus = FocusNode();
+  final FocusNode pagesFocus = FocusNode();
+  final FocusNode editionFocus = FocusNode();
 
   @override
   void initState() {
@@ -66,10 +66,10 @@ class BookEditDialogState extends State<BookEditDialog> {
       body: ListView(
         padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
         children: <Widget>[
-              Form(
-                  key: _formKey,
-                  child: _buildBody(context),
-                ),
+          Form(
+            key: _formKey,
+            child: _buildBody(context),
+          ),
         ],
       ),
     );
@@ -82,11 +82,14 @@ class BookEditDialogState extends State<BookEditDialog> {
     }
     _showDialogSaving(context);
     if (image != null)
-      book.image = await bookManager.uploadFile(image, !addBook);
+      book.image =
+          await FireProvider.of(context).book.uploadFile(image, !addBook);
     if (addBook)
-     await bookManager.saveBook(book);
+      await FireProvider.of(context).book.saveBook(book);
     else
-      bookManager.saveRequest(book);
+      FireProvider.of(context)
+          .book
+          .saveRequest(book, FireProvider.of(context).auth.getUserId());
     Navigator.pop(context);
     Navigator.pop(context, book);
   }
@@ -107,8 +110,8 @@ class BookEditDialogState extends State<BookEditDialog> {
         ),
         TextFormField(
           autofocus: true,
-          onFieldSubmitted: (v){
-                FocusScope.of(context).requestFocus(descriptionFocus);
+          onFieldSubmitted: (v) {
+            FocusScope.of(context).requestFocus(descriptionFocus);
           },
           decoration:
               InputDecoration(labelText: Localization.of(context).title),
@@ -128,8 +131,8 @@ class BookEditDialogState extends State<BookEditDialog> {
           initialValue: book.description != null ? book.description : "",
           validator: (text) => _validator(text),
           onSaved: (text) => book.description = text,
-          onEditingComplete: (){
-                FocusScope.of(context).requestFocus(publisherFocus);
+          onEditingComplete: () {
+            FocusScope.of(context).requestFocus(publisherFocus);
           },
         ),
         TextFormField(
@@ -139,8 +142,8 @@ class BookEditDialogState extends State<BookEditDialog> {
           initialValue: book.publisher != null ? book.publisher : "",
           validator: (text) => _validator(text),
           onSaved: (text) => book.publisher = text,
-          onFieldSubmitted: (v){
-                FocusScope.of(context).requestFocus(pagesFocus);
+          onFieldSubmitted: (v) {
+            FocusScope.of(context).requestFocus(pagesFocus);
           },
         ),
         Padding(
@@ -172,8 +175,8 @@ class BookEditDialogState extends State<BookEditDialog> {
           },
           keyboardType: TextInputType.number,
           onSaved: (text) => book.pages = int.tryParse(text),
-          onFieldSubmitted: (v){
-                FocusScope.of(context).requestFocus(editionFocus);
+          onFieldSubmitted: (v) {
+            FocusScope.of(context).requestFocus(editionFocus);
           },
         ),
         TextFormField(
@@ -183,8 +186,8 @@ class BookEditDialogState extends State<BookEditDialog> {
           initialValue: book.edition != null ? book.edition : "",
           validator: (text) => _validator(text),
           onSaved: (text) => book.edition = text,
-          onFieldSubmitted: (v){
-                FocusScope.of(context).requestFocus(priceFocus);
+          onFieldSubmitted: (v) {
+            FocusScope.of(context).requestFocus(priceFocus);
           },
         ),
         TextFormField(
@@ -207,45 +210,45 @@ class BookEditDialogState extends State<BookEditDialog> {
   }
 }
 
- void _showDialogSaving(BuildContext context){
+void _showDialogSaving(BuildContext context) {
   showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: LoadingSpinner(Localization.of(context).savingInformations),
-          );
-        },
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: LoadingSpinner(Localization.of(context).savingInformations),
       );
-  }
+    },
+  );
+}
 
-  void _showDialogErrorImage(BuildContext context){
+void _showDialogErrorImage(BuildContext context) {
   showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              Localization.of(context).error.toUpperCase(),
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          Localization.of(context).error.toUpperCase(),
+          style: TextStyle(
+            color: Color.fromRGBO(140, 0, 50, 1),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(Localization.of(context).insertImage),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(
+              Localization.of(context).close.toUpperCase(),
               style: TextStyle(
                 color: Color.fromRGBO(140, 0, 50, 1),
-                fontWeight: FontWeight.bold,
               ),
             ),
-            content: Text(Localization.of(context).insertImage),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(
-                Localization.of(context).close.toUpperCase(),
-                  style: TextStyle(
-                    color: Color.fromRGBO(140, 0, 50, 1),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       );
-  }
+    },
+  );
+}

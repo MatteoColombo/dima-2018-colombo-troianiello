@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/loading-spinner.dart';
@@ -18,7 +19,10 @@ class MoveBookDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: libManager.getUserLibs(currentLib),
+      future: FireProvider.of(context).library.getUserLibraries(
+            currentLib,
+            FireProvider.of(context).auth.getUserId(),
+          ),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return SimpleDialog(

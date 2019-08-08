@@ -1,7 +1,7 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../model/review.model.dart';
-import '../../../firebase/book-repo.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../common/localization.dart';
 
@@ -14,7 +14,9 @@ class UserReviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: bookManager.getUserReview(isbn),
+        future: FireProvider.of(context)
+            .book
+            .getUserReview(isbn, FireProvider.of(context).auth.getUserId()),
         builder: (BuildContext context, AsyncSnapshot<Review> snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -69,7 +71,7 @@ class _UserReviewSectionState extends State<_UserReviewSection> {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(right: 16.0,left: 16.0,top: 16.0),
+          padding: const EdgeInsets.only(right: 16.0, left: 16.0, top: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -196,8 +198,10 @@ class _UserReviewSectionState extends State<_UserReviewSection> {
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  Review newReview =
-                      await bookManager.saveReview(review, widget.isbn);
+                  Review newReview = await FireProvider.of(context)
+                      .book
+                      .saveReview(review, widget.isbn,
+                          FireProvider.of(context).auth.getUser());
                   isModifyMode = false;
                   setState(() => review = newReview);
                 }

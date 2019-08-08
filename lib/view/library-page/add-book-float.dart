@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book-edit-page/book-edit-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
@@ -38,10 +38,14 @@ class AddBookFloat extends StatelessWidget {
       RegExp regexp = RegExp("^[0-9]{13,13}");
       // We use a regexp to check if the ISBN is valid.
       if (regexp.hasMatch(isbn)) {
-        bool isIn = await libManager.getIfBookAlreadyThere(isbn, libraryId);
+        bool isIn = await FireProvider.of(context)
+            .library
+            .getIfBookAlreadyThere(isbn, libraryId);
         // If the book is already in the library, show a message.
         if (!isIn) {
-          bool added = await libManager.addBookToUserLibrary(isbn, libraryId);
+          bool added = await FireProvider.of(context)
+              .library
+              .addBookToUserLibrary(isbn, libraryId, context);
           // Try to add a book, if it doesn't exist ask the user to insert data.
           if (added) {
             snackbar = SnackBar(
@@ -57,7 +61,9 @@ class AddBookFloat extends StatelessWidget {
                   fullscreenDialog: true),
             );
             if (res != null) {
-              await libManager.addBookToUserLibrary(isbn, libraryId);
+              await FireProvider.of(context)
+                  .library
+                  .addBookToUserLibrary(isbn, libraryId, context);
               snackbar = SnackBar(
                 content: Text(Localization.of(context).bookAddedConfirm),
                 action: _snackBarAction(context, isbn),
