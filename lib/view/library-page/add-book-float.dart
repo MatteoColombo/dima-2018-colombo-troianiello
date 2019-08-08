@@ -6,8 +6,11 @@ import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+/// A Floating Action Button used to add a book the the library.
 class AddBookFloat extends StatelessWidget {
   AddBookFloat({Key key, @required this.libraryId}) : super(key: key);
+
+  /// The library to which the user wants to add a book.
   final String libraryId;
 
   @override
@@ -18,16 +21,28 @@ class AddBookFloat extends StatelessWidget {
     );
   }
 
+  /// Handles the add of a new book to the library.
+  ///
+  /// It uses a [FlutterBarcodeScanner] to get the ISBN code.
+  /// The result is checked to verify that it is a valid 13 digits ISBN,
+  /// then if the book is not in the library and it exists in the database,
+  /// it is added to the library.
+  /// If the book doesn't exist, a page to manually insert book data in shown,
+  /// A [SnackBar] is shown to notify the user of the result of the operation.
   _addBook(context) async {
     String isbn = await FlutterBarcodeScanner.scanBarcode(
         "#ffffff", Localization.of(context).cancel, true);
     SnackBar snackbar;
+    // If the user cancelled the operation or if the ISBN in null, do nothing.
     if (isbn != null && isbn != "") {
       RegExp regexp = RegExp("^[0-9]{13,13}");
+      // We use a regexp to check if the ISBN is valid.
       if (regexp.hasMatch(isbn)) {
         bool isIn = await libManager.getIfBookAlreadyThere(isbn, libraryId);
+        // If the book is already in the library, show a message.
         if (!isIn) {
           bool added = await libManager.addBookToUserLibrary(isbn, libraryId);
+          // Try to add a book, if it doesn't exist ask the user to insert data.
           if (added) {
             snackbar = SnackBar(
               content: Text(Localization.of(context).bookAddedConfirm),
@@ -61,10 +76,14 @@ class AddBookFloat extends StatelessWidget {
           content: Text(Localization.of(context).invalidISBN),
         );
       }
+      // Show a SnackBar with a feedback message.
       Scaffold.of(context).showSnackBar(snackbar);
     }
   }
 
+  /// Shows a [SnackBar] with a feedback message.
+  ///
+  /// The [SkanckBar] requires a [BuildContext] with a Scaffold.
   Widget _snackBarAction(BuildContext context, String book) {
     return SnackBarAction(
       label: Localization.of(context).view,

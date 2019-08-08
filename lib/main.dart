@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './firebase/auth.dart';
 import './login.dart';
 
+/// The entry point of the application.
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// The main wdiget of the application.
+///
+/// Checks the status of the firebase connection and if the user is logged in.
+/// If firebase is loading, displays a splash screen.
+/// When firebase loaded, depending on the user status shows either the Homepage or the login page.
 class MainWidgetManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

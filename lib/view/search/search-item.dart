@@ -3,11 +3,14 @@ import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book.dart';
 import 'package:flutter/material.dart';
 
+/// Used to represent an item of the search page.
 class SearchItem extends StatelessWidget {
   SearchItem({
     Key key,
     @required this.book,
   }) : super(key: key);
+
+  /// The book to be displayed.
   final Book book;
 
   @override
@@ -38,7 +41,8 @@ class SearchItem extends StatelessWidget {
     );
   }
 
-  _generateImage() {
+  /// Returns a widget to display the picture of the book.
+  Widget _generateImage() {
     return Padding(
       padding: EdgeInsets.all(8),
       child: ClipRRect(
@@ -66,7 +70,8 @@ class SearchItem extends StatelessWidget {
     );
   }
 
-  _generateListTile() {
+  /// Returns a widget with the information of the book.
+  Widget _generateListTile() {
     return Expanded(
       child: ListTile(
         title: Text(book.title),
@@ -75,7 +80,8 @@ class SearchItem extends StatelessWidget {
     );
   }
 
-  _openBook(BuildContext context) {
+  /// Method used to show the book page with all the information.
+  void _openBook(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => BookPage(

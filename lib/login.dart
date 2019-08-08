@@ -2,6 +2,7 @@ import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 import './firebase/auth.dart';
 
+/// Shows the login page of the application.
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
