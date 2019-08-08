@@ -7,14 +7,20 @@ import 'package:flutter/material.dart';
 import './book-edit-page/book-edit-dialog.dart';
 import '../common/localization.dart';
 
-///Creates the page of a given [Book], that allows to view and edit the informations.
+///Generates the page of a given [Book], that allows to view and edit the informations.
+///
+///Connectes to Firestore DB to retrive this [Book] and creates a [TabBarView], containg the main information of this book, 
+///and a [BookEditDialog], that allows to edit these informations.
 class BookPage extends StatelessWidget {
   ///The identifier of the book.
   final String isbn;
 
   ///Constructor of BookPage
+  ///
+  ///Requires a [isbn], the identifier of this book.
   BookPage({@required this.isbn});
 
+  //Retreives the [Book] using a [FutureBuilder].
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -52,7 +58,7 @@ class BookPage extends StatelessWidget {
 
   ///Describes the part of the user interface represented by this widget and is called by [build(context)]
   ///
-  ///Given a [BuildContext] and a [Book], creates a page that shows all the informations of this book.
+  ///Given a [BuildContext] and a [Book], creates a [TabBarView] that shows all the informations and reviews of this book.
   Widget _build(BuildContext context, Book _book) {
     return DefaultTabController(
       length: 2,
