@@ -7,9 +7,11 @@ import 'dart:io';
 import 'package:path/path.dart';
 import './auth.dart';
 
+/// Service used to communicate with Firebase and to manage the library collection.
 class _LibraryControl {
   CollectionReference _db = Firestore.instance.collection("libraries");
 
+  ///Returns a stream that yields a [List<Library>] every time the libraty list changes.
   Stream<List<Library>> getLibraryStream() async* {
     String userId = authService.getUserId();
     Stream<QuerySnapshot> source =
@@ -33,6 +35,9 @@ class _LibraryControl {
     }
   }
 
+  /// Returns the libraries owned by the user.
+  ///
+  /// Filters the library with ID specified as parameter.
   Future<List<Library>> getUserLibs(String filter) async {
     String userId = authService.getUserId();
     QuerySnapshot source =
@@ -49,10 +54,15 @@ class _LibraryControl {
     return libs;
   }
 
+  /// Updates the favourite state of a library.
   void updateFavouritePreference(String id, bool preference) {
     _db.document(id).updateData({'isFavourite': preference});
   }
 
+  /// Saves a library.
+  ///
+  /// If the library ID is provided, the library is updated.
+  /// If there is no library ID, a new library is created.
   Future<void> saveLibrary(Library lib) async {
     if (lib.id == null) {
       return _db.document().setData({
@@ -71,10 +81,17 @@ class _LibraryControl {
     }
   }
 
+  /// Deletes the library received as parameter.
   void deleteLibrary(Library lib) {
     _db.document(lib.id).delete();
+    if (lib.image != null) {
+      FirebaseStorage.instance
+          .getReferenceFromUrl(lib.image)
+          .then((ref) => ref.delete());
+    }
   }
 
+  /// Uploads an image file to Firebase Storage.
   Future<String> uploadFile(File image) async {
     String uid = authService.getUserId();
     StorageReference ref = FirebaseStorage.instance
@@ -84,6 +101,9 @@ class _LibraryControl {
     return await (await uploadTask.onComplete).ref.getDownloadURL();
   }
 
+  /// Returns a stream that yields the books belonging to the library passed as parameter.
+  ///
+  /// The stream yields a [List<Book>] which is obtained by converting a QuerySnapshot.
   Stream<List<Book>> getBooksStream(String library) async* {
     Stream<QuerySnapshot> source =
         _db.document(library).collection("owned_books").snapshots();
@@ -103,6 +123,10 @@ class _LibraryControl {
     }
   }
 
+  /// Adds a book to a user library.
+  ///
+  /// Receives a [String] which is the ISBN of the book that needs to be added to the  library  represented by a [String] ID.
+  /// Returns a [bool], true if the book was added. False otherwise.
   Future<bool> addBookToUserLibrary(String isbn, String libraryId) async {
     Book book = await bookManager.getBook(isbn);
     if (book == null) return false;
@@ -120,6 +144,10 @@ class _LibraryControl {
     return true;
   }
 
+  /// Checks if a book is already present in a library.
+  ///
+  /// Receives a [String] which is a book ISBN and a [String] library ID.
+  /// Returns a [bool] true if the book is already in the library. False otherwise.
   Future<bool> getIfBookAlreadyThere(String isbn, String libraryId) async {
     DocumentSnapshot snap = await _db
         .document(libraryId)
@@ -129,6 +157,9 @@ class _LibraryControl {
     return snap.exists;
   }
 
+  /// Removes a single book from a library.
+  ///
+  /// Receives a [String] which is the ISBN of a book and a [String] that is the ID of the library from which is should be removed.
   deleteBookFromLibrary(String isbn, String libraryId) async {
     await _db
         .document(libraryId)
@@ -137,18 +168,29 @@ class _LibraryControl {
         .delete();
   }
 
-  deleteSelectedLibraries(List<String> libs) async {
+  /// Deletes the selected libraries.
+  ///
+  /// Libraries should be passed as a [List<String>] that represents an array of library IDs.
+  void deleteSelectedLibraries(List<String> libs) {
     libs.forEach((id) => _db.document(id).delete());
   }
 
-  moveBooks(List<String> books, String currentLib, String newLib) {
+  /// Moves book from a library to anohter.
+  ///
+  /// [List<String>] book is the list of the ISBNs of books that need to be moved.
+  /// [String] currentLib is the ID of the library in which books are currently located.
+  /// [String] newLib is the ID of the library in which books should be moved.
+  void moveBooks(List<String> books, String currentLib, String newLib) {
     deleteBooksFromLibrary(books, currentLib);
     books.forEach((String book) {
       addBookToUserLibrary(book, newLib);
     });
   }
 
-  deleteBooksFromLibrary(List<String> books, String library) {
+  /// Deletes books from a library.
+  ///
+  /// Receives a [List<Book>] which cotains ISBNs of books that need do be removed from a library and a [String] which is the ID of the library.
+  void deleteBooksFromLibrary(List<String> books, String library) {
     books.forEach((book) => deleteBookFromLibrary(book, library));
   }
 }

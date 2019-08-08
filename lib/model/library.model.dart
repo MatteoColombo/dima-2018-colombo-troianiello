@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Model class that represents libraries.
 class Library {
   Library({
     this.name,
