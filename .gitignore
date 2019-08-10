@@ -92,6 +92,10 @@ Documents/**/*.pdf
 #ignore all .lof files
 *.lof
 #ignore all .lot files
+*.blg
+#ignore all .lot files
+*.bbl
+#ignore all .lot files
 *.lot
 
 pubspec.lock
