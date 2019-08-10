@@ -60,7 +60,6 @@ void main() {
 
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
-    print(widget);
     expect(find.byType(LibraryListRow), findsOneWidget);
   });
 }

@@ -1,4 +1,3 @@
-import 'package:dima2018_colombo_troianiello/camera/image-picker.dart';
 import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';

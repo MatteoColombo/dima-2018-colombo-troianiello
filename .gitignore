@@ -97,3 +97,5 @@ Documents/**/*.pdf
 pubspec.lock
 
 coverage
+Documents/dd.fdb_latexmk
+Documents/dd.fls

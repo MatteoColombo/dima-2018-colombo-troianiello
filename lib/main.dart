@@ -57,7 +57,6 @@ class MainWidgetManager extends StatelessWidget {
     return StreamBuilder<User>(
       stream: FireProvider.of(context).auth.getAuthStateChange(),
       builder: (BuildContext context, snapshot) {
-        print(snapshot.data);
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
             return Home(context);
