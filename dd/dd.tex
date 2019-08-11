@@ -1,0 +1,43 @@
+\documentclass[a4paper,12pt,notitlepage]{report}
+\usepackage[T1]{fontenc}    % Codifica dei font latini
+\usepackage[utf8]{inputenc} % Lettere accentate da tastiera
+\usepackage[english]{babel} % Lingua del documento  
+\usepackage{graphicx}
+
+\graphicspath{{images/}}    % Specifica la cartella con le immagini
+
+\author{Matteo Colombo \and Andrea Troianiello}
+\title{NonSoloLibri}
+
+
+
+\usepackage{hyperref}       % Per collegamenti ipertestuali, 
+\hypersetup{hidelinks}      % Rimuove riquadri dai collegamenti                     
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    {\Large DESIGN AND IMPLEMENTATION OF MOBILE APPLICATIONS}\\[4em]
+    \includegraphics[width=7cm]{polimi.png}\\[8em]
+    {\Huge \ NonSoloLibri}\\[4em]
+    {\large MATTEO COLOMBO - ANDREA TROIANIELLO}\\[4em]
+    \today
+\end{titlepage}
+
+\begin{abstract}
+    \centering 
+    Never loose a book again.\\ 
+    Organize your book collection so that you always know where they are.\\
+
+\end{abstract}
+
+\tableofcontents{}
+\listoffigures
+\listoftables
+
+\input{files/example-chapter.tex}
+
+\input{files/bibliography.tex}
+
+\end{document}
