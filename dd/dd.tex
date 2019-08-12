@@ -16,7 +16,8 @@
 
 \begin{document}
 
-\begin{titlepage}
+
+\begin{titlepage}           % Compone la pagina iniziale
     \centering
     {\Large DESIGN AND IMPLEMENTATION OF MOBILE APPLICATIONS}\\[4em]
     \includegraphics[width=7cm]{polimi.png}\\[8em]
@@ -25,20 +26,23 @@
     \today
 \end{titlepage}
 
-\begin{abstract}
+\begin{abstract}            % Testo nella seconda pagina - riassunto
     \centering 
     Never loose a book again.\\ 
     Organize your book collection so that you always know where they are.\\
 
 \end{abstract}
 
-\tableofcontents{}
-\listoffigures
-\listoftables
+\tableofcontents            % Inserisce la tabella dei contenuti
+\listoffigures              % Inserisce la lista delle figure
+\listoftables               % Inserisce la lista delle tabelle
 
+% ------------------------- % Inizio del contenuto
 \input{files/introduction.tex}
+\input{files/overall-description.tex}
 
 \input{files/example-chapter.tex}
+% ------------------------- % Fine del contenuto
 
 \input{files/bibliography.tex}
 
