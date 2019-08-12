@@ -1,3 +1,4 @@
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-background.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/material.dart';
 import '../../model/library.model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '../../firebase/library-repo.dart';
 import '../common/loading-spinner.dart';
 
 class NewLibrary extends StatefulWidget {
@@ -107,10 +107,8 @@ class _NewLibraryState extends State<NewLibrary> {
 
   _addPhoto(bool camera) async {
     try {
-      var image = await ImagePicker.pickImage(
-          source: camera ? ImageSource.camera : ImageSource.gallery,
-          maxHeight: 500,
-          maxWidth: 500);
+      var image = await FireProvider.of(context).picker.getImage(
+          500, 500, camera ? ImageSource.camera : ImageSource.gallery);
       if (image != null) {
         setState(() {
           _image = image;
@@ -126,7 +124,10 @@ class _NewLibraryState extends State<NewLibrary> {
       _saving = true;
     });
     if (_image != null) {
-      String imageUrl = await libManager.uploadFile(_image);
+      String imageUrl = await FireProvider.of(context).library.uploadFile(
+            _image,
+            FireProvider.of(context).auth.getUserId(),
+          );
       _saveLibrary(imageUrl);
     } else {
       _saveLibrary(null);
@@ -140,7 +141,10 @@ class _NewLibraryState extends State<NewLibrary> {
       isFavourite: _favourite,
       bookCount: 0,
     );
-    await libManager.saveLibrary(lib);
+    await FireProvider.of(context).library.saveLibrary(
+          lib,
+          FireProvider.of(context).auth.getUserId(),
+        );
     setState(() {
       _saving = false;
     });

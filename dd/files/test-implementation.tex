@@ -1,0 +1,30 @@
+\chapter{Implementation and Test Planning}
+
+\section{Implementation}
+For the client, the application has been implemented using Flutter, an SDK that simplifies cross-platform development and allows to write Dart code
+that can be compiled into native languages without loss of performances. Thanks to flutter we were able to write in only one language but to support two,
+different, operative systems.
+
+For the backend it was decided to use Firebase to simplify the design and to take benefit of the infrastructure provided by Google,
+that offers both reliability and security.
+
+Before the development, the application was divided in various components - called Widgets, in Flutter - that could be developed independently and a bottom up approach was choosen.
+Furthemore, the design of the application was thought with flexibility in mind, and the core of the application is completely independent from external
+libraries such those to access to hardware of the device, or those that implement the database.
+
+At the moment of writing this document, all the features related to organizing a user library were implemented, while those related to the social network 
+aspect of the application and to the market-place are yet to be implemented.
+
+\section{Testing}
+The application has been testeed using the native tools provided by both Firebase and Flutter.
+
+For firebase, the testing tools provided by the Firebase console were used. In this way we were able to test users permissions and API calls, that were later used in the application.
+
+For Flutter the library \emph{flutter\_test}, which is provided by the Flutter SDK, was used, together with \emph{mockito}, an external library that simplifies mocking of dependences.
+
+\emph{Flutter\_test} was used to generate unit, widget and integration tests, that were used to test single functionalities and to test together the various widget that compose the pages.
+
+\emph{Mockito} was used to create mocks of external libraries that can not be tested within the application such as the photo camera, the barcode scanner and the Firebase implementation.
+With this approach we were able to test most of the implementation.
+
+In addition, extensive tests were made by real users, by testing the application in daily conditions with both physical devices and emulators.

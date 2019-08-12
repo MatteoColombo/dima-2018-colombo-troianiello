@@ -124,10 +124,10 @@ class Localization {
     );
   }
 
-  String get priceError {
+  String get numberError {
     return Intl.message(
-      'Pages must be a number',
-      name: 'priceError',
+      'This value must be a number',
+      name: 'numberError',
     );
   }
 

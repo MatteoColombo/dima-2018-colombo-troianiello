@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
@@ -16,12 +16,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shows the books that belong to a given library.
 class LibraryPage extends StatefulWidget {
-  LibraryPage({Key key, this.library}) : super(key: key);
+  LibraryPage({Key key, this.library, this.context}) : super(key: key);
 
   /// The library that we want to display.
   final Library library;
+  final BuildContext context;
 
-  _LibraryPageState createState() => _LibraryPageState(library);
+  _LibraryPageState createState() => _LibraryPageState(library, context);
 }
 
 class _LibraryPageState extends State<LibraryPage> {
@@ -40,8 +41,9 @@ class _LibraryPageState extends State<LibraryPage> {
   /// The sorting method.
   SortMethods _sort = SortMethods.Title;
 
-  _LibraryPageState(this._library) {
-    _bookStream = libManager.getBooksStream(_library.id);
+  _LibraryPageState(this._library, BuildContext context) {
+    _bookStream =
+        FireProvider.of(context).library.getBooksStream(_library.id);
     _bookStream.listen((data) => _saveBook(data));
     _loadPreferences();
   }
@@ -111,7 +113,7 @@ class _LibraryPageState extends State<LibraryPage> {
   ///
   /// Its parameters are a [AppBarBtn] representing the user choice and a new [BuildContext].
   /// The [BuildContext] is required because the callback may need to respond with some widgets that require a context containin a Scaffold.
-  void _appBarCallback(AppBarBtn choice, BuildContext newContext) {
+  void _appBarCallback(AppBarBtn choice, BuildContext context) {
     switch (choice) {
       case AppBarBtn.Clear:
         setState(() {
@@ -127,7 +129,7 @@ class _LibraryPageState extends State<LibraryPage> {
         _deleteSelected();
         break;
       case AppBarBtn.Move:
-        _moveSelected(newContext);
+        _moveSelected(context);
         break;
       case AppBarBtn.Sort:
         _showSortDialog();
@@ -148,7 +150,9 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (res != null && res) {
-      libManager.deleteBooksFromLibrary(_selected, _library.id);
+      FireProvider.of(context)
+          .library
+          .deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];
     }
   }
@@ -156,16 +160,18 @@ class _LibraryPageState extends State<LibraryPage> {
   /// Moves selected books to another library.
   ///
   /// Shows a [MoveBookDialog] to ask the user to which library they want to move the books.
-  void _moveSelected(BuildContext newContext) async {
+  void _moveSelected(BuildContext context) async {
     String newLib = await showDialog(
-      context: newContext,
+      context: context,
       builder: (context) => MoveBookDialog(
         currentLib: _library.id,
       ),
     );
     if (newLib != null) {
-      libManager.moveBooks(_selected, _library.id, newLib);
-      _showMovedSnackBar(newContext);
+      FireProvider.of(context)
+          .library
+          .moveBooks(_selected, _library.id, newLib, context);
+      _showMovedSnackBar(context);
       _selected = [];
     }
   }
@@ -173,11 +179,11 @@ class _LibraryPageState extends State<LibraryPage> {
   /// Shows a snackbar with a feedback message.
   ///
   /// It is shown when book are moved to confirm the action to the user.
-  void _showMovedSnackBar(BuildContext newContext) {
+  void _showMovedSnackBar(BuildContext context) {
     SnackBar snackbar = SnackBar(
       content: Text(Localization.of(context).bookMoved),
     );
-    Scaffold.of(newContext).showSnackBar(snackbar);
+    Scaffold.of(context).showSnackBar(snackbar);
   }
 
   /// Shows a dialog that asks to the user to choose the sorting method.

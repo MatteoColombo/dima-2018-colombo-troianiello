@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase/book-repo.dart';
+import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/view/search/search-item.dart';
 import "package:flutter/material.dart";
@@ -17,7 +17,7 @@ class Search extends StatelessWidget {
     // If the query is null return a white page.
     if (query == "") return Center();
     return FutureBuilder(
-      future: bookManager.searchBooks(query),
+      future: FireProvider.of(context).book.searchBooks(query),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           // When you get results return a list or an image if there is no match.
