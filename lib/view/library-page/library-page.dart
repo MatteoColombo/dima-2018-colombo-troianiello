@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
@@ -43,7 +43,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
   _LibraryPageState(this._library, BuildContext context) {
     _bookStream =
-        FireProvider.of(context).library.getBooksStream(_library.id);
+        LibProvider.of(context).library.getBooksStream(_library.id);
     _bookStream.listen((data) => _saveBook(data));
     _loadPreferences();
   }
@@ -150,7 +150,7 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (res != null && res) {
-      FireProvider.of(context)
+      LibProvider.of(context)
           .library
           .deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];
@@ -168,7 +168,7 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (newLib != null) {
-      FireProvider.of(context)
+      LibProvider.of(context)
           .library
           .moveBooks(_selected, _library.id, newLib, context);
       _showMovedSnackBar(context);

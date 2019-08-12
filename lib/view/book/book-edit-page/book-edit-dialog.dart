@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 
 import './image-form-widget.dart';
 import '../../common/localization.dart';
@@ -135,13 +135,13 @@ class _BookEditDialogState extends State<BookEditDialog> {
     _showSavingDialog(context);
     if (_image != null)
       _book.image =
-          await FireProvider.of(context).book.uploadFile(_image, !_addBook);
+          await LibProvider.of(context).book.uploadFile(_image, !_addBook);
     if (_addBook)
-      await FireProvider.of(context).book.saveBook(_book);
+      await LibProvider.of(context).book.saveBook(_book);
     else
-      FireProvider.of(context)
+      LibProvider.of(context)
           .book
-          .saveRequest(_book, FireProvider.of(context).auth.getUserId());
+          .saveRequest(_book, LibProvider.of(context).auth.getUserId());
     //Pop of SavingDialog.
     Navigator.pop(context);
     //Pop of this widget.

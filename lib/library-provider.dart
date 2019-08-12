@@ -5,8 +5,8 @@ import 'package:dima2018_colombo_troianiello/interfaces/base-picker.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-scanner.dart';
 import 'package:flutter/widgets.dart';
 
-class FireProvider extends InheritedWidget {
-  const FireProvider({
+class LibProvider extends InheritedWidget {
+  const LibProvider({
     Key key,
     @required this.auth,
     @required this.book,
@@ -26,7 +26,7 @@ class FireProvider extends InheritedWidget {
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
 
-  static FireProvider of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(FireProvider);
+  static LibProvider of(BuildContext context) {
+    return context.inheritFromWidgetOfExactType(LibProvider);
   }
 }

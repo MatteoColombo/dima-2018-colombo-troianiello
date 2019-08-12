@@ -1,6 +1,6 @@
 import 'package:dima2018_colombo_troianiello/camera/barcode-scanner.dart';
 import 'package:dima2018_colombo_troianiello/camera/image-picker.dart';
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/firebase/book-repo.dart';
 import 'package:dima2018_colombo_troianiello/firebase/library-repo.dart';
 import 'package:dima2018_colombo_troianiello/model/user.model.dart';
@@ -19,7 +19,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FireProvider(
+    return LibProvider(
       auth: Auth(),
       book: BookRepo(),
       library: LibraryRepo(),
@@ -55,7 +55,7 @@ class MainWidgetManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User>(
-      stream: FireProvider.of(context).auth.getAuthStateChange(),
+      stream: LibProvider.of(context).auth.getAuthStateChange(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {

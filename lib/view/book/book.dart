@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book-edit-page/book-edit-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/book/book-informations.dart';
 import './reviews-page/reviews-widget.dart';
@@ -24,7 +24,7 @@ class BookPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FireProvider.of(context).book.getBook(isbn),
+      future: LibProvider.of(context).book.getBook(isbn),
       builder: (BuildContext context, AsyncSnapshot<Book> snapshot) {
         if (!snapshot.hasData)
           return Scaffold(
