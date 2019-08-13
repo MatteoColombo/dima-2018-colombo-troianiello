@@ -81,12 +81,6 @@ class BookPage extends StatelessWidget {
     List<Widget> actions;
     actions = [
       IconButton(
-        icon: Icon(Icons.library_books),
-        tooltip: "",
-        color: Colors.white,
-        onPressed: () => null,
-      ),
-      IconButton(
         icon: Icon(Icons.help_outline),
         tooltip: Localization.of(context).suggestChanges,
         color: Colors.white,
