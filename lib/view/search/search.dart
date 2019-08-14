@@ -1,6 +1,5 @@
 import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
-import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/search/search-item.dart';
 import "package:flutter/material.dart";
 

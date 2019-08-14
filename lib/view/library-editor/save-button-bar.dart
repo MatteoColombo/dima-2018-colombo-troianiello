@@ -2,7 +2,7 @@ import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class SaveButtonBar extends StatelessWidget {
-  SaveButtonBar({Key key, this.textController, this.onSave}) : super(key: key);
+  SaveButtonBar({Key key, this.textController, @required this.onSave}) : super(key: key);
   final Function onSave;
   final TextEditingController textController;
 
@@ -16,7 +16,7 @@ class SaveButtonBar extends StatelessWidget {
             child: Text(Localization.of(context).cancel.toUpperCase()),
           ),
           FlatButton(
-            onPressed: textController.text.length == 0 ? null : () => onSave(),
+            onPressed: textController.text.length == 0 ? null : () => onSave(context),
             child: Text(Localization.of(context).save.toUpperCase()),
           )
         ],
