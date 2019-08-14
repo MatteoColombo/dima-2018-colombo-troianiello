@@ -16,7 +16,7 @@ class SaveButtonBar extends StatelessWidget {
             child: Text(Localization.of(context).cancel.toUpperCase()),
           ),
           FlatButton(
-            onPressed: textController.text.length == 0 ? null : () => onSave(context),
+            onPressed: textController.text.length == 0 ? null : () => onSave(),
             child: Text(Localization.of(context).save.toUpperCase()),
           )
         ],

@@ -125,7 +125,7 @@ class _EditLibraryState extends State<EditLibrary> {
     }
   }
 
-  Future _handleSave(BuildContext context) async {
+  Future _handleSave() async {
     setState(() {
       _saving = true;
     });
