@@ -100,5 +100,33 @@ The following there is the ER digram used to implements the database:
     \textbf{Messages:} The texts exchanged during a conversation.
 \end{itemize}
 During the implementation, we have opted for the introduction of data duplication. This allows to yield the main characteristics of the document-oriented database.
-
-
+\clearpage
+\subsection{Runtime View}
+This section provides examples of how the main functionalities are in implemented and their runtime behavior.
+\subsubsection{Login}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{images/login-sequence-diagram.png}
+    \caption{Login sequence diagram}
+    \label{ref:loginsequencediagram}
+\end{figure}
+The user taps the button on Login page, it retrives the auth object from LibProvider. 
+Auth handles the Google SignIn objects during the authentication phase and 
+uses them to retrives the user information (signInWithCredential.user).\\
+After, puts these information in a User object of the model using assimilate method and 
+uses its updateUserDate method to save the user on Firestore.
+\clearpage
+\subsubsection{Add new book}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.35]{images/add-new-book-sequence-diagram.png}
+    \caption{Add new book sequence diagram}
+    \label{ref:addnewbooksequencediagram}
+\end{figure}
+After the button of Library page is pressed, AddBookFloat is created that opens the camera using BarcodeScanner. 
+The camera reads the ISBN, written in barcode form, and returns it to AddBookFloat.\\ 
+AddBookFloat controls if the string returned is a ISBN using a regular expression and if the book already exists. 
+If it exists and is not present in the library, adds it. If the book does not exists, the BookEditDialog is opened. 
+This dialog contains a form and allows to insert the information of the book. 
+When the insertion is finished, the button "done" is tapped and the form is validared and the information are saved 
+Firestore using BookRepo. 
