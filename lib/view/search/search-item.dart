@@ -98,6 +98,10 @@ class SearchItem extends StatelessWidget {
     );
   }
 
+  /// Callback method called when the users want to add a book to a library
+  /// 
+  /// It shows a[MoveBookDialog] to ask the user to which library he wants to add the book.
+  /// When the user decides, adds the book and shows a [SnackBar] with a feedback message.
   void _addBook(BuildContext context) async {
     String library = await showDialog(
         context: context,
