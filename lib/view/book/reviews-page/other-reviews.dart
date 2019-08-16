@@ -136,7 +136,7 @@ class _ReviewsSectionState extends State<ReviewsSection> {
             elevation: 5.0,
             label: Row(
               children: <Widget>[
-                Text("$i".toUpperCase()),
+                Text("$i"),
                 Icon(
                   Icons.star,
                   color: Color.fromRGBO(140, 0, 50, 1),

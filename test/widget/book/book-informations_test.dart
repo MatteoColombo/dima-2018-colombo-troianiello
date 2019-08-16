@@ -8,6 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets("Test book informations", (WidgetTester tester) async {
+
+    //The book to display
     Book book = Book(
       title: 'title',
       description: 'desc',
@@ -30,6 +32,8 @@ void main() {
     await tester.pumpWidget(widget);
     await tester.idle();
     await tester.pump();
+
+    //Tests if all are displayed
     expect(find.text('title'), findsOneWidget);
     expect(find.text('desc'), findsOneWidget);
     expect(find.text('ed'), findsOneWidget);
