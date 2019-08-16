@@ -49,7 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "error" : MessageLookupByLibrary.simpleMessage("Error"),
     "favouriteLibrary" : MessageLookupByLibrary.simpleMessage("Favourite library"),
     "fieldError" : MessageLookupByLibrary.simpleMessage("This field cannot be empty"),
-    "hintReview" : MessageLookupByLibrary.simpleMessage("Write a review"),
+    "hintReview" : MessageLookupByLibrary.simpleMessage("Write a review (optional)"),
     "insertImage" : MessageLookupByLibrary.simpleMessage("Insert image"),
     "invalidISBN" : MessageLookupByLibrary.simpleMessage("A valid ISBN should have 13 digits"),
     "isbn" : MessageLookupByLibrary.simpleMessage("ISBN"),
