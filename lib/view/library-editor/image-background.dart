@@ -27,6 +27,7 @@ class ImageBackground extends StatelessWidget {
 
     return Image.asset(
       "assets/images/library.jpeg",
+      height: width,
       fit: BoxFit.cover,
     );
   }
