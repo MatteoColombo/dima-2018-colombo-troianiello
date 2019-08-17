@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
@@ -12,7 +12,6 @@ import 'package:dima2018_colombo_troianiello/view/library-page/move-book-dialog.
 import 'package:dima2018_colombo_troianiello/view/library-page/sort-books-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/sort-dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Shows the books that belong to a given library.
 class LibraryPage extends StatefulWidget {
@@ -41,18 +40,13 @@ class _LibraryPageState extends State<LibraryPage> {
   /// The sorting method.
   SortMethods _sort = SortMethods.Title;
 
-  _LibraryPageState(this._library, BuildContext context) {
-    _bookStream =
-        FireProvider.of(context).library.getBooksStream(_library.id);
+  _LibraryPageState(this._library, BuildContext context)
+      : _sort = SortMethods.Title {
+    _bookStream = LibProvider.of(context).library.getBooksStream(_library.id);
     _bookStream.listen((data) => _saveBook(data));
-    _loadPreferences();
   }
 
   /// Loads the shared preferences with the preferred sorting method.
-  _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _sort = SortMethods.values[prefs.getInt("sort") ?? 0];
-  }
 
   /// Updates the state when the stream receives a new book list.
   _saveBook(List<Book> data) async {
@@ -121,9 +115,8 @@ class _LibraryPageState extends State<LibraryPage> {
         });
         break;
       case AppBarBtn.SelectAll:
-        setState(() {
-          _selected = _books.map((b) => b.isbn);
-        });
+        _selected = _books.map((b) => b.isbn).toList();
+        setState(() {});
         break;
       case AppBarBtn.DeleteAll:
         _deleteSelected();
@@ -150,7 +143,7 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (res != null && res) {
-      FireProvider.of(context)
+      LibProvider.of(context)
           .library
           .deleteBooksFromLibrary(_selected, _library.id);
       _selected = [];
@@ -168,11 +161,13 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
     );
     if (newLib != null) {
-      FireProvider.of(context)
+      LibProvider.of(context)
           .library
           .moveBooks(_selected, _library.id, newLib, context);
       _showMovedSnackBar(context);
-      _selected = [];
+      setState(() {
+        _selected = [];
+      });
     }
   }
 
@@ -200,8 +195,6 @@ class _LibraryPageState extends State<LibraryPage> {
       setState(() {
         _sort = choice;
       });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setInt("sort", choice.index);
     }
   }
 }

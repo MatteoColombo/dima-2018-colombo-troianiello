@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import '../../common/localization.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../model/book.model.dart';
@@ -120,7 +120,7 @@ class _ImageFormSectionWidgetState extends State<ImageFormSectionWidget> {
   ///Otherwise, if [camera] is false, the gallery is opened.
   void _getImage(bool camera) async {
     try {
-      var image = await FireProvider.of(context).picker.getImage(
+      var image = await LibProvider.of(context).picker.getImage(
           720, 1280, camera ? ImageSource.camera : ImageSource.gallery);
       setState(() {
         _image = image;

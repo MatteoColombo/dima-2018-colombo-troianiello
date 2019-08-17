@@ -54,9 +54,14 @@ class LibraryList extends StatelessWidget {
   /// Builds the list of [LibraryListRow] items.
   Widget _showList(BuildContext context, List<Library> libs) {
     return ListView.builder(
-      itemCount: libs.length,
+      itemCount: libs.length + 1,
       padding: EdgeInsets.all(8),
       itemBuilder: (context, index) {
+        // Dummy element to avoid overlaps with the floating action button
+        if (index == libs.length)
+          return Container(
+            height: 80,
+          );
         return LibraryListRow(
           // We need to pass the ID so that we improve efficiency when rebuilding the list.
           key: Key(libs[index].id),

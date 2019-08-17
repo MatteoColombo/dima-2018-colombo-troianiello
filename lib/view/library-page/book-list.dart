@@ -46,8 +46,13 @@ class BookList extends StatelessWidget {
     }
     _sortBooks();
     return ListView.builder(
-      itemCount: books.length,
+      itemCount: books.length + 1,
       itemBuilder: (context, index) {
+        // Dummy element to avoid overlaps with the floating action button
+        if (index == books.length)
+          return Container(
+            height: 80,
+          );
         return BookListRow(
           key: Key(books[index].isbn),
           book: books[index],

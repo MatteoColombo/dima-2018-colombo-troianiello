@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-library.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
@@ -134,7 +134,7 @@ class LibraryRepo extends BaseLibrary {
   @override
   Future<bool> addBookToUserLibrary(
       String isbn, String libraryId, BuildContext context) async {
-    Book book = await FireProvider.of(context).book.getBook(isbn);
+    Book book = await LibProvider.of(context).book.getBook(isbn);
     if (book == null) return false;
     await _db
         .document(libraryId)

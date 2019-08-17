@@ -19,7 +19,11 @@ void main() {
     await tester.pumpWidget(widget);
     await tester.idle();
     await tester.pump();
+    
+    //Finds 'Show more' button
     expect(find.text('Show more'), findsOneWidget);
+
+    //Tests if the text is displayed in contract mode
     expect(
         find.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
             'Nullam nec elit ac nunc interdum fringilla. Sed semper volutpat felis. '
@@ -27,9 +31,15 @@ void main() {
         findsOneWidget);
     
     expect(find.byType(InkWell), findsOneWidget);
+
+    //Taps 'Show more' button
     await tester.tap(find.text('Show more'));
     await tester.pump();
+
+    //Finds 'Show less' button
     expect(find.text('Show less'), findsOneWidget);
+
+    //Tests if the text is displayed in full mode
     expect(
         find.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
             'Nullam nec elit ac nunc interdum fringilla. Sed semper volutpat felis. '

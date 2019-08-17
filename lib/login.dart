@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
                   )
                 ],
               ),
-              onPressed: () => FireProvider.of(context).auth.login(),
+              onPressed: () => LibProvider.of(context).auth.login(),
               color: Colors.white,
             ),
           ),

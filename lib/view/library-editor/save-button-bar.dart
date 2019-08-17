@@ -2,7 +2,7 @@ import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:flutter/material.dart';
 
 class SaveButtonBar extends StatelessWidget {
-  SaveButtonBar({Key key, this.textController, this.onSave}) : super(key: key);
+  SaveButtonBar({Key key, this.textController, @required this.onSave}) : super(key: key);
   final Function onSave;
   final TextEditingController textController;
 

@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/appbar-buttons-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
     _getUser(context);
 
     // Gets libraries and adds listener so that each time the list updates the UI is updated.
-    _libstream = FireProvider.of(context).library.getLibraryStream(_user.id);
+    _libstream = LibProvider.of(context).library.getLibraryStream(_user.id);
     _libstream.listen((data) => _setLibraries(data));
 
     // Adds a listener to the search text input controller so that we can update the search query.
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
   /// Asks to the Authentication repository for the current user and stores it as a [FirebaseUser].
   /// Saves the users initials so that they can be showed in the Drawer.
   void _getUser(BuildContext context) {
-    _user = FireProvider.of(context).auth.getUser();
+    _user = LibProvider.of(context).auth.getUser();
   }
 
   /// Dispose of the search controller when this widget is terminated.
@@ -183,7 +183,7 @@ class _HomeState extends State<Home> {
     );
 
     if (res) {
-      FireProvider.of(context).library.deleteSelectedLibraries(_selectedLibs);
+      LibProvider.of(context).library.deleteSelectedLibraries(_selectedLibs);
       _selectedLibs = [];
       setState(() {});
     }

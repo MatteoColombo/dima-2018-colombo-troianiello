@@ -1,4 +1,4 @@
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/image-background.dart';
@@ -113,7 +113,7 @@ class _EditLibraryState extends State<EditLibrary> {
 
   _addPhoto(bool camera) async {
     try {
-      var image = await FireProvider.of(context).picker.getImage(
+      var image = await LibProvider.of(context).picker.getImage(
           500, 500, camera ? ImageSource.camera : ImageSource.gallery);
       if (image != null) {
         setState(() {
@@ -125,14 +125,14 @@ class _EditLibraryState extends State<EditLibrary> {
     }
   }
 
-  Future _handleSave(BuildContext context) async {
+  Future _handleSave() async {
     setState(() {
       _saving = true;
     });
     if (_image != null) {
-      String imageUrl = await FireProvider.of(context).library.uploadFile(
+      String imageUrl = await LibProvider.of(context).library.uploadFile(
             _image,
-            FireProvider.of(context).auth.getUserId(),
+            LibProvider.of(context).auth.getUserId(),
           );
       _saveLibrary(imageUrl);
     } else {
@@ -147,9 +147,9 @@ class _EditLibraryState extends State<EditLibrary> {
     lib.name = _controller.text;
     lib.isFavourite = _favourite;
     lib.image = imageUrl ?? _library.image;
-    await FireProvider.of(context).library.saveLibrary(
+    await LibProvider.of(context).library.saveLibrary(
           lib,
-          FireProvider.of(context).auth.getUserId(),
+          LibProvider.of(context).auth.getUserId(),
         );
     setState(() {
       _saving = false;

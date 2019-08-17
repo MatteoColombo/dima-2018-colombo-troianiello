@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dima2018_colombo_troianiello/firebase-provider.dart';
+import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/library-page.dart';
 import 'package:dima2018_colombo_troianiello/view/home/row-popup-menu.dart';
@@ -80,7 +80,7 @@ class LibraryListRow extends StatelessWidget {
   ///
   /// It is used to update the library "is Favourite" state of the library.
   void _changeFavouriteState(BuildContext context) {
-    FireProvider.of(context)
+    LibProvider.of(context)
         .library
         .updateUserFavouritePreference(library.id, !library.isFavourite);
   }

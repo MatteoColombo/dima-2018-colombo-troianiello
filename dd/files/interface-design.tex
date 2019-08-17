@@ -1,0 +1,163 @@
+\chapter{Interface Design}
+\section{UX Diagram}
+This diagram describes in detail all the pages of the application, how the application can
+be navigated including the screens, the input forms and the possible errors.\\
+
+\begin{figure}[!ht]
+    \centering
+	\includegraphics[scale=0.39]{images/ux-diagram.png}
+	\caption{UX diagram}
+	\label{fig:uxdiagram}
+\end{figure}
+\clearpage
+
+\section{User Interfaces Design}
+The following images are the most important pages of the application.\\
+\begin{figure}[!htb]
+    \begin{minipage}[b]{0.3\textwidth}
+        \includegraphics[scale=1]{images/login-page.png}
+        \caption{Login}
+        \label{ref:loginpage}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.3\textwidth}
+        \includegraphics[scale=1]{images/libraries-page.png}
+        \caption{Libraries}
+        \label{ref:librariespage}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.3\textwidth}
+        \includegraphics[scale=1]{images/search-page.png}
+        \caption{Search}
+        \label{ref:search}
+    \end{minipage}
+\end{figure}
+The entry point of the application is login page (Figure \ref{ref:loginpage}), 
+where the user insert his Google credentials.\\ 
+After, the page with the list of libraries is displayed. 
+Each library can be edited or deleted.In this page there are a icon button, 
+that allows to search through all the books contained in the database (Figure \ref{ref:search}), 
+and a floating button, for the creation of a new library.\\
+\clearpage
+\begin{figure}[!htb]
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[scale=1]{images/menu.png}
+        \caption{Menu}
+        \label{ref:menu}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[scale=1]{images/library-page.png}
+        \caption{Library}
+        \label{ref:librarypage}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[scale=1]{images/add-new-book-dialog.png}
+        \caption{New book}
+        \label{ref:addnewbook}
+    \end{minipage}
+\end{figure}
+From the libraries page, can be opened a menù (Figure \ref{ref:menu}), which allows to reach the application settings, 
+account functionalities and to log out.\\ After opened a library, 
+all of the book contained are displayed (Figure \ref{ref:librarypage})and each of them moved to a another library or deleted.\\ 
+The floating buttton opens the camera that reads the ISBN of the book and automatically add it. 
+If it doesn’t exists, a dialog, that allows to insert a new book, is opened.
+\clearpage
+\begin{figure}[!htb]
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[scale=1]{images/book-info-page.png}
+        \caption{Book info}
+        \label{ref:bookinfo}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[scale=1]{images/no-review.png}
+        \caption{No review}
+        \label{ref:noreview}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[scale=1]{images/reviews-page.png}
+        \caption{Reviews}
+        \label{ref:reviewspage}
+    \end{minipage}
+\end{figure}
+The book page (Figure \ref{ref:bookinfo}) uses a tab bar to display all information releated to the book.\\ 
+The first one contains the specific information, like the title, image of the cover, list of author and description.\\ 
+The second one (Figures \ref{ref:noreview} and \ref{ref:reviewspage}) lists all reviews. This section is divided in two parts.\\
+The fist part shows the review wrote by the user, if no exists allows to write it, otherwise displays it and, using a button, allows to edit it.\\
+The second part shows a scrollable list of reviews wrote by other users and can be filtred based on the scores.
+\clearpage
+\section{Hardware Interfaces}
+This project doesn’t require any hardware interface.
+\section{Software Interfaces}
+\begin{itemize}
+    \item Database Management System (DBMS):
+    \begin{itemize}
+        \item 
+        Name: Cloud Firestore
+        \item 
+        Source: https://firebase.google.com/products/firestore/
+    \end{itemize}
+    \item Storage:
+    \begin{itemize}
+        \item 
+        Name: Cloud Storage
+        \item 
+        Source: https://firebase.google.com/products/storage
+    \end{itemize}
+    \item Server:
+    \begin{itemize}
+        \item 
+        Name: Cloud Functions
+        \item 
+        Source: https://firebase.google.com/products/functions/
+    \end{itemize}
+    \item
+    Operiting systems:
+    \begin{itemize}
+        \item 
+        Name: Android
+        \item 
+        Minimum version: 5.0 Lollipop 
+        \item 
+        API level: 21
+        \item 
+        Source: https://www.android.com/\\ 
+        \item 
+        Name: iOS
+        \item 
+        Minimum version: 10
+        \item 
+        Source: https://www.apple.com/ios
+    \end{itemize}
+\end{itemize}
+\section{API Interfaces}
+The application communicates with the database on Firebase using:
+\begin{itemize}
+    \item
+    firebase\_core (version 0.4.0+8), a Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
+    \item
+    firebase\_analytics (version 4.0.2), allows to use the Google Analytics for Firebase API, a free app measurement solution that provides insight on app usage and user engagement.
+    \item
+    firebase\_auth (version 0.14.0), a plugin to use the Firebase Authentication API, that aims to make building secure authentication systems easy, while improving the sign-in and onboarding experience for end users. It provides an end-to-end identity solution, supporting email and password accounts, phone auth, and Google, Twitter, Facebook, and GitHub login, and more.
+    \item
+    cloud\_firestore (version 0.12.9), a library that allows to communicates with the NoSQL cloud database of Google (Firestore).
+    \item
+    firebase\_storage (version 3.0.5), a Flutter plugin to use the Cloud Storage API. Cloud Storage is used to upload images or other files on Firebase.
+\end{itemize}
+During the adding new book phase, the ISBN is read using the barcode, that allowed by flutter\_barcode\_scanner (version 0.1.5+1).
+\\
+\\
+For the user's login, the system uses the Google Sign In API. This API provides the authentication of the user and retrives his main information (name and email).
+The used libraries are google\_sign\_in (version 4.0.6) and firebase\_auth.
+\\
+\\
+The plugins intl (version 0.15.8) and intl\_translation (version 0.17.3) are used to generate and manage the language of the application, according to the language of the OS.

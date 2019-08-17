@@ -44,6 +44,8 @@ class Auth extends BaseAuth {
       if (u != null) {
         _user = new User();
         _user.assimilate(u);
+      }else {
+        _user=null;
       }
       yield _user;
     }
