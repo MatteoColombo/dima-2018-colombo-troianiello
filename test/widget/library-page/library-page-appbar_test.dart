@@ -6,7 +6,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 void main() {
   testWidgets("Test appbar in normal mode", (WidgetTester tester) async {
-    AppBarBtn choice = null;
+    AppBarBtn choice;
 
     Widget w = MaterialApp(
       home: Scaffold(
@@ -31,7 +31,7 @@ void main() {
   });
 
   testWidgets("Test appbar in select mode", (WidgetTester tester) async {
-    AppBarBtn choice = null;
+    AppBarBtn choice;
 
     Widget w = MaterialApp(
       home: Scaffold(

@@ -4,19 +4,19 @@
 NonSoloLibri will be developed from scratch and will be a mobile application that runs on
 both iOS and Android. 
 
-Data will be stored online so that they can retrieved from every device and to provide a sort of back-up option.
+Data will be stored online so that they can be retrieved from every device and to provide a sort of back-up option.
 Thus, users will be required to have a smartphone or tablet and a Google account to sign in.
 
 In the application the users will be able to make use of their device hardware to capture pictures of books and libraries or to scan the book barcodes.
 
-Verifying users will be mandatory in order to let them access to the market place, to security layer and discourage bad behaviours.
+Verifying users will be mandatory in order to let them access to the market place, to add a security layer and to discourage bad behaviours.
 
 \section{Actors}
 
-We individuated three main actors for the application:
+We identified three main actors for the application:
 
 \begin{description}
-    \item[Visitor] A person who has yet to login to the application and can only see the login page.
+    \item[Visitor] A person who has yet to login into the application and can only see the login page.
     \item[User] A visitor who successfully logged in into the application and can access to all the main feature of the aplication.
     \item[Verified User] An user who successfully verified himself and can access to the market place.
 \end{description} 
@@ -24,9 +24,11 @@ We individuated three main actors for the application:
 \newpage
 
 \section{Use Cases Diagram}
-The main actors have different functionalities, according to the previous definitions. \\
+The main actors have different functionalities, according to the previous definitions.
+
 The visitior can only perform the login, the user can also make other things, like to manage the library or review a book.
-Verified user can interact with the market functions.\\
+Verified users can interact with the market functions.
+
 All the functions are shown using the following use case diagram:
 \begin{figure}[!ht]
     \centering
@@ -64,7 +66,7 @@ All the functions are shown using the following use case diagram:
 
 \subsection{Hardware  and Software Constraints}
 \begin{enumerate}
-    \item To use the application, users are required to have a smartphone or a table. The device can have either Android or iOS 
+    \item To use the application, users are required to have a smartphone or a tablet. The device can have either Android or iOS 
         \begin{itemize}
             \item For Android the minimum supported versione is Android 5.0 Lollipop.
             \item For iOS the minimium supported version is iOS 10.
@@ -89,7 +91,7 @@ All the functions are shown using the following use case diagram:
     \item A library is composed by: a name, a picture or an image and can be favourite or not.    
     \item A library can contain only one copy of a book.
     \item Multiple books with the same ISBN code can be located in different libraries.
-    \item A book is characterized by: title, authors, publisher, release date, length, edition number, price and a ISBN code.
+    \item A book is characterized by: title, authors, publisher, release date, length, format, price and a ISBN code.
     \item The application will work as an intermediary between users for book trading, but transactions and shipment will happen outside of the application context.
 \end{enumerate}
 

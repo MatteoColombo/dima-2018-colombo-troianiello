@@ -4,10 +4,8 @@ import 'package:dima2018_colombo_troianiello/interfaces/base-auth.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-library.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-picker.dart';
 import 'package:dima2018_colombo_troianiello/library-provider.dart';
-import 'package:dima2018_colombo_troianiello/model/library.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/loading-spinner.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
-import 'package:dima2018_colombo_troianiello/view/library-editor/edit-library.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/favourite-checkbox.dart';
 import 'package:dima2018_colombo_troianiello/view/library-editor/new-library.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,12 +21,6 @@ class MockPicker extends Mock implements BasePicker {}
 
 void main() {
   testWidgets("Test the edit library widget", (WidgetTester tester) async {
-    Library l = Library(
-      id: "lib1",
-      name: "Lib 1",
-      image: null,
-      isFavourite: false,
-    );
     MockAuth auth = MockAuth();
     MockLibrary library = MockLibrary();
     MockPicker picker = MockPicker();

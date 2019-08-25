@@ -1,10 +1,8 @@
 import 'package:dima2018_colombo_troianiello/interfaces/base-book.dart';
 import 'package:dima2018_colombo_troianiello/library-provider.dart';
 import 'package:dima2018_colombo_troianiello/model/book.model.dart';
-import 'package:dima2018_colombo_troianiello/view/common/confirm-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/book-list-row.dart';
-import 'package:dima2018_colombo_troianiello/view/library-page/move-book-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/row-popup-menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -3,7 +3,6 @@ import 'package:dima2018_colombo_troianiello/interfaces/base-book.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-library.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-scanner.dart';
 import 'package:dima2018_colombo_troianiello/library-provider.dart';
-import 'package:dima2018_colombo_troianiello/view/book/book-edit-page/book-edit-dialog.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/add-book-float.dart';
 import 'package:flutter/material.dart';

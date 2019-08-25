@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets("Test the image widget buttons when there is no image", (WidgetTester tester) async {
-    ImgBtnEnum choice = null;
+    ImgBtnEnum choice;
     bool hasImage = false;
     final Widget w = MaterialApp(
       home: Scaffold(
@@ -36,7 +36,7 @@ void main() {
   });
 
     testWidgets("Test the image widget buttons when there is an image", (WidgetTester tester) async {
-    ImgBtnEnum choice = null;
+    ImgBtnEnum choice;
     bool hasImage = true;
     final Widget w = MaterialApp(
       home: Scaffold(

@@ -1,9 +1,7 @@
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
-import 'package:dima2018_colombo_troianiello/view/library-page/popup-option-enum.dart';
 import 'package:dima2018_colombo_troianiello/view/library-page/row-popup-menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 void main() {
   testWidgets("Test a disabled row popup menu", (WidgetTester tester) async {

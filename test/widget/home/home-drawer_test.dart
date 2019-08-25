@@ -4,7 +4,6 @@ import 'package:dima2018_colombo_troianiello/model/user.model.dart';
 import 'package:dima2018_colombo_troianiello/view/common/localization.dart';
 import 'package:dima2018_colombo_troianiello/view/home/home-appbar.dart';
 import 'package:dima2018_colombo_troianiello/view/home/home-drawer.dart';
-import 'package:dima2018_colombo_troianiello/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

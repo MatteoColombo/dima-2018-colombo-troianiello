@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-book.dart';
 import 'package:dima2018_colombo_troianiello/interfaces/base-picker.dart';
 import 'package:dima2018_colombo_troianiello/library-provider.dart';
