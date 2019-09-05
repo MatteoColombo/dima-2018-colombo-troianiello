@@ -1,20 +1,21 @@
 # dima2018_colombo_troianiello
 
-A new Flutter project.
+## Members of the team
+Colombo Matteo     - 883114 - 10459278
+Troianiello Andrea - 898113 - 10455250
 
-## Getting Started
+## Description of the application
 
-This project is a starting point for a Flutter application.
+NonSoloLibri is a small social network application designed for book enthusiast that allows them to organize and review their collection.
+Users will be able to create libraries and to organize books in them.
+Beside the storing functionality, NonSoloLibri has a social part that allows them to connect with other people with a friendship system.
+Friends will be able to see the each other collections and wish-lists, so that they can surprise each other with presents.
+A market place is available, where every verified user will be able to sell or buy books.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
-
+## Main folders
+**lib:** This folder contains the source code of the application.
+**dd:** All LaTeX source code concerning the design document, that is a technical description of this application.
+**delivery:** Contains the design document pdf, the elevator pitch and the presentetion.
 
 ## Testing
 flutter test

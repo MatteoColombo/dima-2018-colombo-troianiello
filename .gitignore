@@ -102,8 +102,8 @@ android/app/google-services.json
 **/*/dd.fdb_latexmk
 **/*/__latexindent_temp.tex 
 
-#ignore PDFs
-*.pdf
+#ignore design document folder PDFs
+dd/*.pdf
 
 
 
